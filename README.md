@@ -1,4 +1,4 @@
-# opn6000_opn2500-sdk
+# OPN2500_OPN6000_DEV_KIT
 
 This is the official SDK from Opticon Sensors Europe BV for the Companion Scanners OPN-2500 and OPN-6000
 
