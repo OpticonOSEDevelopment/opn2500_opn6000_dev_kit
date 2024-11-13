@@ -2,7 +2,7 @@
 
 This is the official SDK from Opticon Sensors Europe BV for the Companion Scanners OPN-2500 and OPN-6000
 
-The github pages of this SDK can be found here: [opn2500_opn6000_sdk](https://opticonosedevelopment.github.io/opn2500_opn6000_sdk/)
+The github pages of this SDK can be found here: [opn2500_opn6000_dev_kit](https://opticonosedevelopment.github.io/opn2500_opn6000_dev_kit/)
 
 The prerequisites for using this SDK are:
 - Latest SDK files from this repository
