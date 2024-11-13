@@ -1,0 +1,77 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>GetTime</TITLE>
+</HEAD>
+
+<BODY>
+<H1>GetTime</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>This function fills in the time structure with the current time as stored in the terminal's real-time clock.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>void</SPAN> <A class=clib HREF="./GetTime.html">GetTime</A>( <SPAN class=c-keyword>struct</SPAN> time *timep );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+			<H5><SPAN class=c-keyword>struct</SPAN> time *<I>timep</I></H5>
+			The time structure is defined as follows:
+<PRE>
+<SPAN class=c-keyword>struct</SPAN> time
+{
+    <SPAN class=c-keyword>unsigned char</SPAN> ti_hour;  <SPAN class=c-comment>// hours</SPAN>
+    <SPAN class=c-keyword>unsigned char</SPAN> ti_min;   <SPAN class=c-comment>// minutes</SPAN>
+    <SPAN class=c-keyword>unsigned char</SPAN> ti_sec;   <SPAN class=c-comment>// seconds</SPAN>
+};
+</PRE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>The function fills in the structure, but has no return value.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>The time can be set with the <A class=clib HREF="./SetTime.html">SetTime()</A> function.</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class=c-comment>// GetDate() / GetTime() example
+</SPAN>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>struct</SPAN> date d;
+    <SPAN class=c-keyword>struct</SPAN> time t;
+
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        <A class=clib HREF="./GetDate.html">GetDate</A>( &d );
+        <A class=clib HREF="./GetTime.html">GetTime</A>( &t );
+        printf("\n%02d:%02d:%02d", t.ti_hour, t.ti_min, t.ti_sec);
+        printf(" %02d/%02d/%04d", d.da_day, d.da_mon, d.da_year);
+        <A class=clib HREF="./Delay.html">Delay</A>( 50 );
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+
+</BODY>
+</HTML>

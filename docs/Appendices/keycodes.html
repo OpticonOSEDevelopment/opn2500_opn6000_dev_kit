@@ -1,0 +1,139 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Special key codes</TITLE>
+</HEAD>
+
+<BODY>
+
+<H1>Special key codes</H1>
+
+<P>
+The key codes for special keys are defined in the lists below. The key codes are returned
+by functions like getchar() when the user presses a special key.<BR>
+Note that not all these keys are available on all terminals.<BR><BR>
+</P>
+
+<TABLE class=OPTIONS width=100%>
+	<TR>
+		<TD width=10%><B>Key definition&nbsp</B></TD>
+		<TD width=15%><B>Description</B></TD>
+		<TD><B>Remarks</B></TD>
+	</TR>
+	<TR>
+		<TD width=5%>BS_KEY</TD>
+		<TD>Backspace key</TD>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>ENT_KEY</TD>
+		<TD>Enter key</TD>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>CLR_KEY</TD>
+		<TD>Escape key</TD>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>TRIGGER_KEY</TD>
+		<TD>Trigger key</TD>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>Q1_KEY</TD>
+		<TD>Option key 1</TD>
+		<TD>Is the same as UP_KEY</TD>
+	</TR>
+	<TR>
+		<TD>Q2_KEY</TD>
+		<TD>Option key 2</TD>
+		<TD>Is the same as DOWN_KEY</TD>
+	</TR>
+	<TR>
+		<TD>UP_KEY</TD>
+		<TD>Up arrow key</TD>
+		<TD>
+			Is the same as Q1_KEY<BR>
+		    On the OPN200x, RS3000 and PX20, UP_KEY and DOWN_KEY are the same: The small key.<BR>
+		    On the OPL9723, OPL9724 and OPL9727, this key has a small '1' marking.
+		</TD>
+	</TR>
+	<TR>
+		<TD>DOWN_KEY</TD>
+		<TD>Down arrow key</TD>
+		<TD>
+			Is the same as Q2_KEY<BR>
+			On the OPN200x, RS3000 and PX20, the UP_KEY and DOWN_KEY are the same: The small key.<BR>
+		    On the OPL9723, OPL9724 and OPL9727, this key has a small '2' marking.
+		<TD>
+	</TR>
+	<TR>
+		<TD>LEFT_KEY</TD>
+		<TD>Left arrow key
+		<TD>Is 'shift' plus UP_KEY</TD>
+	</TR>
+	<TR>
+		<TD>RIGHT_KEY</TD>
+		<TD>Right arrow key</TD>
+		<TD>Is 'shift' plus DOWN_KEY</TD>
+	</TR>
+	<TR>
+		<TD>F1_KEY</TD>
+		<TD>Function key 1</TD>
+		<TD></TD>
+	</TR>
+		<TD>F2_KEY</TD>
+		<TD>Function key 2</TD>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>F3_KEY</TD>
+		<TD>Function key 3</TD>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>F4_KEY</TD>
+		<TD>Function key 4</TD>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>F5_KEY</TD>
+		<TD>Function key 5</TD>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>F6_KEY</TD>
+		<TD>Function key 6</TD>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>F7_KEY</TD>
+		<TD>Function key 7</TD>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>F8_KEY</TD>
+		<TD>Function key 8</TD>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>BL_KEY</TD>
+		<TD>Backlight key</TD>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>SHIFT_KEY</TD>
+		<TD>Shift key</TD>
+		<TD>Only when <B>shift is handled by the application</B>, which is enabled by using <a class="clib" href="../functions/SystemSetting.html">SystemSetting</a>("*R");</TD>
+	</TR>
+	<TR>
+		<TD>PWR_KEY</TD>
+		<TD>Power key</TD>
+		<TD>Only when <B>power is handled by the application</B>, which is enabled by using <a class="clib" href="../functions/SystemSetting.html">SystemSetting</a>("*P");</TD>
+	</TR>
+</TABLE>
+
+
+</BODY>

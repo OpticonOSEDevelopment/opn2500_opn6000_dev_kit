@@ -1,0 +1,132 @@
+﻿#filters button {
+    width: 100%;
+    background-color: #e0e0e0;
+    line-height: 1rem;
+    text-align: left;
+    border-radius: 0px !important;
+    color: black;
+}
+
+    #filters button:focus { /*TODO consider http://www.outlinenone.com/*/
+        box-shadow: none;
+    }
+
+    #filters button.active {
+        background-color: #003D66;
+        color: white;
+    }
+
+        #filters button.active > i.neutral {
+            color: white !important;
+        }
+
+#filters td {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+    #filters td:first-child {
+        padding-left: 0px;
+    }
+
+@media (max-width: 384px) {
+    #filters {
+        transform: scale(0.8);
+        transform-origin: top left;
+    }
+}
+
+.matchType {
+    color: black;
+    display: inline-block;
+    cursor: pointer;
+}
+
+    .matchType.active {
+        color: #003D99;
+    }
+
+
+#Advanced {
+    color: black;
+    display: inline-block;
+    cursor: pointer;
+}
+
+    #Advanced.active {
+        color: #003D99;
+    }
+
+#Details {
+    color: black;
+    display: inline-block;
+    cursor: pointer;
+}
+
+    #Details.active {
+        color: #003D99;
+    }
+
+#AllDetails {
+    color: black;
+    display: inline-block;
+    cursor: pointer;
+}
+
+    #AllDetails.active {
+        color: #003D99;
+    }
+
+select,
+option {
+    max-width: inherit;
+}
+
+    option:disabled {
+        color: #989898;
+    }
+
+.clicktable tbody td {
+    cursor: pointer;
+}
+
+input {
+    border: 1px solid #a9a9a9;
+    border-radius: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+    outline: none;
+}
+
+    input[type=search]::-webkit-search-cancel-button {
+        -webkit-appearance: searchfield-cancel-button;
+    }
+
+tr.selected {
+    background-color: #D5E3FC !important; /*#B0BED9*/
+}
+
+table {
+    display: block;
+    white-space: nowrap;
+    width: fit-content !important;
+    width: -moz-fit-content !important;
+    width: -webkit-fit-content !important;
+    line-height: 1;
+}
+
+#scrollTable table {
+    height: calc(var(--app-height) - 490px);
+    min-height: 500px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+@media (max-width: 384px) {
+    #scrollTable table {
+        height: calc(var(--app-height) - 400px) !important;
+        min-height: 200px !important;
+    }
+}

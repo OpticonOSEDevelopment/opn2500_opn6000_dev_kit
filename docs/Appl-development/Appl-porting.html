@@ -1,0 +1,71 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Porting applications</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Porting applications</H1>
+
+<P>Existing applications of the OPN-200x, RS-3000 and PX-20 need to be ported to run on the OPN-2500 and OPN-6000.</P>
+<P>Below you'll find important information when porting applications for these devices.</P>
+    <h2>New Features in the OPN-6000 / OPN-2500</h2>
+    <ul>
+        <li><strong>BLE OptiConnect service</strong> (BLE and USB)</li>
+        <li><strong>Bluetooth Device Firmware Update (DFU)</strong> (via OptiConnect)</li>
+        <li><strong>Bluetooth BLE HID supported</strong> (replaces Bluetooth Classic HID)</li>
+        <li><strong>Both USB-VCP (default) and USB-CDC driver are supported</strong></li>
+        <li><strong>Bluetooth, Batch, and OPN2001 application merged into a single default application</strong></li>
+        <li><strong>Added defaults:</strong>
+            <ul>
+                <li><strong>OPND:</strong> OseComm data collector mode (previously Batch application + `C01`)</li>
+                <li><strong>BPC:</strong> Switch to USB-CDC (Serial scanner mode)</li>
+                <li><strong>BQZ:</strong> Switch to USB-CDC (OPN2001 mode)</li>
+                <li><strong>U2:</strong> OPN-2001 default</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>Removed / Missing Features from the OPN-6000 / OPN-2500</h2>
+    <ul>
+        <li><strong>Bluetooth Classic (HID/SPP) is not supported</strong></li>
+        <li><strong>Scanning of Bluetooth address labels to connect has been removed</strong> (BLE is always slave)</li>
+        <li><strong>Setting a of PIN code is no longer supported</strong> (Replaced by Secure Simple Pairing)</li>
+        <li><strong>NetO protocol is no longer supported</strong> (OseComm or OptiConnect are recommended as alternative)</li>
+    </ul>
+
+    <h2>Changed Default Behaviour (Bluetooth Application)</h2>
+    <ul>
+        <li><strong>Bluetooth BLE HID is set as factory default</strong> (replaces Bluetooth Classic HID)</li>
+        <li><strong>Discoverability</strong>: Device becomes discoverable when pressing the trigger key</li>
+        <li><strong>Memorizing</strong> (when not connected) is enabled by default</li>
+        <li><strong>Memorizing option</strong>: 'Trigger to send' is enabled in BLE HID and USB-HID mode</li>
+        <li><strong>Keyboard toggle on iOS</strong> is now enabled by default</li>
+        <li><strong>`Trigger to connect(able)` uses function key</strong>, not the trigger key</li>
+        <li><strong>Automatically switches into OPN2001 mode</strong> after receiving an OPN2001 interrogate command</li>
+        <li><strong>Manual reset</strong> by pressing both keys for 15 seconds results in white LED. Release the function key to enter bootloader mode (was 20 seconds).</li>
+        <li><strong>Device can enter sleep mode in all connection statuses</strong> (except when connected to USB), greatly improving battery life when connected to Bluetooth.</li>
+        <li><strong>Function key can be used to remove barcodes</strong> when connected to OptiConnect (and when memorizing)</li>
+        <li><strong>Default Bluetooth local name is OPN6000_(serial) instead of OPN6000_(bt.address)</strong> (mobile platforms often hide the Bluetooth address for privacy reasons)</li>
+    </ul>
+
+    <h2>File System / Database Functions</h2>
+    <ul>
+        <li><strong>The Bluetooth, Batch, and OPN2001 application are merged</strong> into a single default application and store their data in the same format.</li>
+        <li><strong>Switch between all applications without losing data.</strong></li>
+        <li><strong>Barcode data is stored in two files:</strong>
+            <ul>
+                <li><code>SCANNED.DAT</code>: barcode data</li>
+                <li><code>SCANNED.IDX</code>: quantity, serial, date, &amp; time</li>
+            </ul>
+        </li>
+        <li><strong>The batch application generates the CSV file</strong> with the configured formatting as soon as the USB-cable is connected instead of while scanning.</li>
+        <li><strong>USB-MSD file system is now 'read/write'</strong> instead of 'read/only' (file system corruption by Windows is resolved).</li>
+        <li><strong>The OPN-6000/OPN-2500 uses ChaN's FatFS filesystem</strong>, which uses functions like <code>f_open</code> and <code>f_close</code> (from <code>ff.h</code> and <code>FileSystem.h</code>).</li>
+        <li><strong>For backwards compatibility</strong>, <code>stdio.h</code> functions like <code>fopen</code> and <code>fclose</code> are supported using a wrapper.</li>
+        <li><strong>Low-level I/O functions</strong> <code>open</code>, <code>close</code>, <code>read</code>, <code>write</code> are no longer supported.</li>
+    </ul>
+
+</BODY>
+

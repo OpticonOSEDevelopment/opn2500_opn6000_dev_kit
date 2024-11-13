@@ -1,0 +1,78 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>UsbIsPowered</TITLE>
+</HEAD>
+
+<BODY>
+<H1>UsbIsPowered</H1>
+
+<TABLE width=100% class=setup>
+    <TR class=setup>
+        <TD class=item>Availability</TD>
+        <TD class=itemdescr>All terminals</TD>
+    </TR>
+
+    <TR class=setup>
+        <TD class=item>Description</TD>
+        <TD class=itemdescr>Returns whether the device is powered by an USB cable.</TD>
+    </TR>
+
+    <TR class=setup>
+        <TD class=item>Syntax</TD>
+        <TD class=itemdescr><SPAN class=c-keyword>int</SPAN> <A class=clib HREF="./UsbIsPowered.html">UsbIsPowered</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+    </TR>
+
+    <TR class=setup>
+        <TD class=item>Arguments</TD>
+        <TD class=itemdescr>None</TD>
+    </TR>
+
+    <TR class=setup>
+        <TD class=item>Returns</TD>
+        <TD class=itemdescr>
+            <TABLE class=OPTIONS width=100%>
+                <TR>
+                    <TD>TRUE</TD>
+                    <TD>Connected.</TD>
+                </TR>
+                <TR>
+                    <TD>FALSE</TD>
+                    <TD>Not connected.</TD>
+                </TR>
+            </TABLE>
+        </TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Remarks</TD>
+        <TD class=itemdescr>Use <A class=clib HREF="./UsbIsConnected.html">UsbIsConnected</A> to detect if the port is available for communication.</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Example</TD>
+        <TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <A class=clib HREF="./SystemSetting.html">SystemSetting</A>("8Z");    <SPAN class=c-comment>// Disable charge indicator</SPAN>
+
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        <SPAN class=c-keyword>if</SPAN>(<A class=clib HREF="./UsbIsConnected.html">UsbIsConnected</A>())
+            <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>(GREEN, 50);
+        <SPAN class=c-keyword>else if</SPAN>(<A class=clib HREF="./UsbIsPowered.html">UsbIsPowered</A>())
+            <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>(ORANGE, 50);
+        <SPAN class=c-keyword>else</SPAN>
+            <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>(RED, 50);
+        <A class=clib HREF="./Delay.html">Delay</A>(50);
+    }
+}
+</PRE>
+        </TD>
+    </TR>
+</TABLE>
+</BODY>
+</HTML>

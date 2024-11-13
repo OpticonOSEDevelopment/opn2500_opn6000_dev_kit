@@ -1,0 +1,45 @@
+﻿/*******************
+*                  *
+* This spinner     *
+* is all CSS based *
+*                  *
+*******************/
+
+/* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+
+.lds-dual-ring {
+    content: " ";
+    display: none;
+    width: 46px;
+    height: 46px;
+    margin: 1px;
+    border-radius: 50%;
+    border: 5px solid #0073C0;
+    border-color: #0073C0 transparent #0073C0 transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+}
+
+.lds-small {
+    width: 23px;
+    height: 23px;
+    border: 3px solid #0073C0;
+    border-color: #0073C0 transparent #0073C0 transparent;
+}
+
+body.loading .lds-dual-ring {
+    display: inline-block;
+}
+
+@keyframes lds-dual-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

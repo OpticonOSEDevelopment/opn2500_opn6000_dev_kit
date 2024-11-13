@@ -1,0 +1,90 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Heap_CoreLeft</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Heap_CoreLeft</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>This function returns the amount of unused memory on the heap that is available to the user for allocating<BR>
+		blocks of memory using functions like malloc() and <A class=clib HREF="./far_malloc.html">far_malloc()</A>.<BR>
+		<B>Note:</B> This function is not the same as the <A class=clib HREF="./CoreLeft.html">CoreLeft()</A> function. On the mentioned terminals, <A class=clib HREF="./CoreLeft.html">CoreLeft</A> returns the amount of space on the RAM disk.
+		</TD>
+
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>unsigned long</SPAN> <A class=clib HREF="./Heap_CoreLeft.html">Heap_CoreLeft</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>The amount (in bytes) of unused memory on the heap that is available to the user for allocating blocks of memory.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>
+			It is possible that malloc() or <A class=clib HREF="./far_malloc.html">far_malloc()</A> returns
+			NULL on a request for a smaller amount of memory than <A class=clib HREF="./Heap_CoreLeft.html">Heap_CoreLeft()</A> reports.
+			This occurs when the reported memory does not consist out of one block, but out of several smaller
+			blocks. malloc() and <A class=clib HREF="./far_malloc.html">far_malloc</A> need a single contiguous block of memory.<br>
+			<br>
+			To determine that amount of memory left for the file system the function <A class=clib HREF="./CoreLeft.html">CoreLeft()</A> should be used.<BR>
+
+			The function <A class=clib HREF="./CoreLeft.html">CoreLeft()</A> can also be used to determine the amount of unused memory on the heap
+			for terminals that don't support <A class=clib HREF="./Heap_CoreLeft.html">Heap_CoreLeft()</A>.
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+	<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdlib.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>unsigned char</SPAN> *block;
+
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+    	<SPAN class=c-keyword>while</SPAN>( getchar() == EOF )
+            <A class=clib HREF="./Idle.html">Idle()</A>;
+
+        printf("\n1: mem = %lu", <A class=clib HREF="./Heap_CoreLeft.html">Heap_CoreLeft</A>());
+
+        <SPAN class=c-keyword>while</SPAN>( getchar() == EOF )
+            <A class=clib HREF="./Idle.html">Idle()</A>;
+
+        block = (<SPAN class=c-keyword>unsigned char</SPAN> *) malloc(5000L);
+
+        printf("\n2: mem = %lu", <A class=clib HREF="./Heap_CoreLeft.html">Heap_CoreLeft</A>());
+
+        <SPAN class=c-keyword>while</SPAN>( getchar() == EOF )
+		    <A class=clib HREF="./Idle.html">Idle()</A>;
+
+        free(block);
+
+        printf("\n3: mem = %lu", <A class=clib HREF="./Heap_CoreLeft.html">Heap_CoreLeft</A>());
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

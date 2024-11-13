@@ -1,0 +1,111 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>GetOsVersion</TITLE>
+</HEAD>
+
+<BODY>
+<H1>GetOsVersion</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>
+			This function returns the version of the Bootloader of the device.
+			The version is returned in an 8 character string and is terminated by a null character.<BR>
+			<BR>
+			<LU>
+				<LI>The first character defines the device Family ('F' = devices with nRF528xx CPU)</LI>
+				<LI>The second character defines the software type (`A` for Bootloader; `B` for OS; `F` for Application )</LI>
+				<LI>The third character defines the device model (`N` for OPN-2500; `M` for OPN-6000)</LI>
+			</LU>
+			
+			<TABLE class=OPTIONS width=100% >
+				<THEAD>
+					<TR>
+						<TH>Code</TH>
+						<TH>Terminal</TH>
+					</TR>
+				</THEAD>
+				<TBODY>
+					<TR>
+						<TD>FBN</TD>
+						<td>OPN-2500</TD>
+					</TR>
+					<TR>
+						<TD>FBM</TD>
+						<td>OPN-6000</TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+
+			<strong>Examples of version strings are:</strong><BR>
+
+			FBNV0128 = OPN-2500 O/S version 1.28<BR>
+			FBMV0128 = OPN-6000 O/S version 1.28
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>char</SPAN> <A class=clib HREF="./GetOsVersion.html">GetOsVersion</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+	</TR>
+
+
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>A pointer to a zero terminated string with the version number.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>int</SPAN> key;
+
+    <A class=clib HREF="./ResetKey.html">ResetKey</A>();
+    printf("\nPress trigger key");
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        <SPAN class=c-keyword>if</SPAN>( (key = getchar()) != EOF)
+        {
+            <A class=clib HREF="./ResetKey.html">ResetKey</A>();
+            <SPAN class=c-keyword>switch</SPAN>( key )
+            {
+                <SPAN class=c-keyword>case</SPAN> TRIGGER_KEY:
+                    <A class=clib HREF="./Sound.html">Sound</A>( TSTANDARD, VHIGH, SHIGH, 0);
+                    printf("\nBootloader = %s", <A class=clib HREF="./GetBootVersion.html">GetBootVersion</A>());
+                    printf("\nO/S = %s", <A class=clib HREF="./GetOsVersion.html">GetOsVersion</A>());
+                    printf("\nAppl. = %s", <A class=clib HREF="./GetApplVersion.html">GetApplVersion</A>());
+                    <SPAN class=c-keyword>break</SPAN>;
+                <SPAN class=c-keyword>default</SPAN>:
+                    <A class=clib HREF="./Sound.html">Sound</A>( TCLICK, VHIGH, SLOW, 0);
+                    <SPAN class=c-keyword>break</SPAN>;
+            }
+        }
+        <A class=clib HREF="./Idle.html">Idle</A>();
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

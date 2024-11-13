@@ -1,0 +1,147 @@
+<!DOCTYPE CrossStudio_Project_File>
+<solution Name="Batch_nRF52840_Appl" target="8" version="2">
+  <configuration
+    Name="Debug OPN2500_Batch"
+    c_preprocessor_definitions="OS_VERSION=&quot;$(OS_VARIANT)$(OS_VERSION)&quot;;APP_VERSION=&quot;$(APP_VARIANT)$(APP_VERSION)&quot;;BOARD_OPN2500_V4_nRF52840;NRF52840_XXAA;DEBUG;NRF_DEBUG"
+    c_user_include_directories="../../../Snippets/Include"
+    gcc_optimization_level="None"
+    linker_section_placement_macros="FLASH_PH_START=0x0;FLASH_PH_SIZE=0x100000;RAM_PH_START=0x20000000;RAM_PH_SIZE=0x40000;FLASH_START=0x1c000;FLASH_SIZE=0x64000;RAM_START=0x200027b0;RAM_SIZE=0x3d850"
+    linker_section_placements_segments="FLASH1 RX 0x0 0x100000;RAM1 RWX 0x20000000 0x40000"
+    macros="OS_VARIANT=FBN;APP_VARIANT=FFN;BOOTLOADER_VARIANT=FAN;BOARD=OPN2500;" />
+  <configuration
+    Name="Debug OPN6000_Batch"
+    c_preprocessor_definitions="OS_VERSION=&quot;$(OS_VARIANT)$(OS_VERSION)&quot;;APP_VERSION=&quot;$(APP_VARIANT)$(APP_VERSION)&quot;;BOARD_OPN6000_nRF52840;NRF52840_XXAA;DEBUG;NRF_DEBUG"
+    c_user_include_directories="../../../Snippets/Include"
+    gcc_optimization_level="None"
+    linker_section_placement_macros="FLASH_PH_START=0x0;FLASH_PH_SIZE=0x100000;RAM_PH_START=0x20000000;RAM_PH_SIZE=0x40000;FLASH_START=0x1c000;FLASH_SIZE=0xCB000;RAM_START=0x200027b0;RAM_SIZE=0x3d850"
+    linker_section_placements_segments="FLASH1 RX 0x0 0x100000;RAM1 RWX 0x20000000 0x40000"
+    macros="OS_VARIANT=FBM;APP_VARIANT=FFM;BOOTLOADER_VARIANT=FAM;BOARD=OPN6000;" />
+  <configuration
+    Name="Release OPN2500_Batch"
+    c_preprocessor_definitions="OS_VERSION=&quot;$(OS_VARIANT)$(OS_VERSION)&quot;;APP_VERSION=&quot;$(APP_VARIANT)$(APP_VERSION)&quot;;BOARD_OPN2500_V4_nRF52840;NRF52840_XXAA;NDEBUG"
+    c_user_include_directories="../../../Snippets/Include"
+    gcc_optimization_level="Optimize For Size"
+    linker_section_placement_macros="FLASH_PH_START=0x0;FLASH_PH_SIZE=0x100000;RAM_PH_START=0x20000000;RAM_PH_SIZE=0x40000;FLASH_START=0x1c000;FLASH_SIZE=0x64000;RAM_START=0x200027b0;RAM_SIZE=0x3d850"
+    linker_section_placements_segments="FLASH1 RX 0x0 0x100000;RAM1 RWX 0x20000000 0x40000"
+    macros="OS_VARIANT=FBN;APP_VARIANT=FFN;BOOTLOADER_VARIANT=FAN;BOARD=OPN2500;" />
+  <configuration
+    Name="Release OPN6000_Batch"
+    c_preprocessor_definitions="OS_VERSION=&quot;$(OS_VARIANT)$(OS_VERSION)&quot;;APP_VERSION=&quot;$(APP_VARIANT)$(APP_VERSION)&quot;;BOARD_OPN6000_nRF52840;NRF52840_XXAA;NDEBUG"
+    c_user_include_directories="../../../Snippets/Include"
+    gcc_optimization_level="Optimize For Size"
+    linker_section_placement_macros="FLASH_PH_START=0x0;FLASH_PH_SIZE=0x100000;RAM_PH_START=0x20000000;RAM_PH_SIZE=0x40000;FLASH_START=0x1c000;FLASH_SIZE=0xCB000;RAM_START=0x200027b0;RAM_SIZE=0x3d850"
+    linker_section_placements_segments="FLASH1 RX 0x0 0x100000;RAM1 RWX 0x20000000 0x40000"
+    macros="OS_VARIANT=FBM;APP_VARIANT=FFM;BOOTLOADER_VARIANT=FAM;BOARD=OPN6000;" />
+  <project Name="Batch_nRF52840_Appl">
+    <configuration
+      Name="Common"
+      arm_architecture="v7EM"
+      arm_core_type="Cortex-M4"
+      arm_endian="Little"
+      arm_fp_abi="Hard"
+      arm_fpu_type="FPv4-SP-D16"
+      arm_linker_heap_size="8192"
+      arm_linker_process_stack_size="0"
+      arm_linker_stack_size="8192"
+      arm_linker_treat_warnings_as_errors="No"
+      arm_simulator_memory_simulation_parameter="RWX 00000000,00100000,FFFFFFFF;RWX 20000000,00010000,CDCDCDCD"
+      arm_target_device_name="nRF52840_xxAA"
+      arm_target_interface_type="SWD"
+      batch_build_configurations="Release OPN2500_Batch;Release OPN6000_Batch"
+      build_output_file_name="$(OutDir)/$(BOARD)_$(OS_VARIANT)$(OS_VERSION)_$(APP_VARIANT)$(APP_VERSION)$(EXE)"
+      c_preprocessor_definitions="FLOAT_ABI_HARD;INITIALIZE_USER_SECTIONS;NO_VTOR_CONFIG;NRF_SD_BLE_API_VERSION=7;S113;SOFTDEVICE_PRESENT"
+      c_user_include_directories="../../../../../SDK/toolchain/cmsis;../../../../../SDK/mdk;../../../../../SDK/softdevice/common;../../../../../SDK/softdevice/s113/headers;../../../../../SDK/softdevice/s113/headers/nrf52;../../../../../SDK/include;../../../../../SDK/include/FileSystem;../../Source;../../Source/Include"
+      debug_additional_load_file1="../../../../../SDK/softdevice/s113/hex/s113_nrf52_7.3.0_softdevice.hex"
+      debug_additional_load_file2="../../../../../SDK/firmware/bootloader/$(BOOTLOADER_VARIANT)$(BOOTLOADER_VERSION).hex"
+      debug_additional_load_file3="$(OutDir)/$(BOARD)_$(BOOTLOADER_VARIANT)$(BOOTLOADER_VERSION)_$(OS_VARIANT)$(OS_VERSION)_$(APP_VARIANT)$(APP_VERSION)_settings.hex"
+      debug_initial_breakpoint="app_main"
+      debug_register_definition_file="../../../../../modules/nrfx/mdk/nrf52840.svd"
+      debug_start_from_entry_point_symbol="No"
+      debug_startup_completion_point="app_main"
+      debug_target_connection="J-Link"
+      gcc_debugging_level="Level 3"
+      gcc_entry_point="Reset_Handler"
+      link_time_optimization="No"
+      linker_output_format="hex"
+      linker_printf_fmt_level="long"
+      linker_printf_width_precision_supported="Yes"
+      linker_scanf_fmt_level="long"
+      linker_section_placement_file="flash_placement.xml"
+      macros="OS_VERSION=V0127p;BOOTLOADER_VERSION=V0030;APP_VERSION=37930;CPU=nRF52840"
+      post_build_command="$(ProjectDir)/postbuild.bat $(BOARD) $(OS_VARIANT)$(OS_VERSION) $(APP_VARIANT)$(APP_VERSION) $(BOOTLOADER_VARIANT)$(BOOTLOADER_VERSION) $(CPU)"
+      post_build_command_wd="$(ProjectDir)/$(OutDir)"
+      project_directory=""
+      project_type="Executable" />
+    <folder Name="Applications">
+      <folder Name="BatchApp">
+        <folder Name="Include">
+          <file file_name="../../Source/include/batch_main.h" />
+        </folder>
+        <file file_name="../../Source/batch_main.c" />
+        <file file_name="../../Source/menu_options.inc" />
+      </folder>
+      <folder Name="Snippets">
+        <folder Name="Include">
+          <file file_name="../../../Snippets/Include/BarcodeBuf.h" />
+          <file file_name="../../../Snippets/Include/BarcodeDBase.h" />
+          <file file_name="../../../Snippets/Include/database.h" />
+          <file file_name="../../../Snippets/Include/DBaseCsv.h" />
+          <file file_name="../../../Snippets/Include/DBaseFix.h" />
+          <file file_name="../../../Snippets/Include/INDEX.H" />
+          <file file_name="../../../Snippets/Include/memorize.h" />
+        </folder>
+        <file file_name="../../../Snippets/BarcodeBuf.c" />
+        <file file_name="../../../../applications/Snippets/BarcodeDbase.c" />
+        <file file_name="../../../../applications/Snippets/INDEX.c" />
+        <file file_name="../../../../applications/Snippets/memorize.c" />
+      </folder>
+    </folder>
+    <folder Name="SDK">
+      <folder Name="Firmware">
+        <folder Name="OPN2500">
+          <configuration
+            Name="Debug OPN6000_Batch"
+            build_exclude_from_build="Yes" />
+          <configuration
+            Name="Release OPN6000_Batch"
+            build_exclude_from_build="Yes" />
+          <file file_name="../../../../../SDK/firmware/bootloader/FAN$(BOOTLOADER_VERSION).HEX" />
+          <file file_name="../../../../../SDK/firmware/library/OPN2500_FBN$(OS_VERSION).a" />
+        </folder>
+        <folder Name="OPN6000">
+          <configuration
+            Name="Debug OPN2500_Batch"
+            build_exclude_from_build="Yes" />
+          <configuration
+            Name="Release OPN2500_Batch"
+            build_exclude_from_build="Yes" />
+          <file file_name="../../../../../SDK/firmware/bootloader/FAM$(BOOTLOADER_VERSION).HEX" />
+          <file file_name="../../../../../SDK/firmware/library/OPN6000_FBM$(OS_VERSION).a" />
+        </folder>
+        <file file_name="../../../../../SDK/softdevice/mbr/hex/mbr_nrf52_2.4.1_mbr.hex" />
+        <file file_name="../../../../../SDK/softdevice/s113/hex/s113_nrf52_7.3.0_softdevice.hex" />
+      </folder>
+      <folder Name="Include">
+        <file file_name="../../../../../SDK/include/app_util.h" />
+        <file file_name="../../../../../SDK/include/boards.h" />
+        <file file_name="../../../../../SDK/include/compiler_abstraction.h" />
+        <file file_name="../../../../../SDK/include/Debug.h" />
+        <file file_name="../../../../../SDK/include/lib.h" />
+        <file file_name="../../../../../SDK/include/lib_legacy.h" />
+        <file file_name="../../../../../SDK/include/nordic_common.h" />
+        <file file_name="../../../../../SDK/include/opn2500_v4_NRF52840.h" />
+        <file file_name="../../../../../SDK/include/opn6000_NRF52840.h" />
+        <file file_name="../../../../../SDK/include/sdk_config.h" />
+        <file file_name="../../../../../SDK/include/sdk_errors.h" />
+      </folder>
+      <folder Name="nRF_SoftDevice">
+        <file file_name="../../../../../SDK/include/nrf_section.h" />
+        <file file_name="../../../../../SDK/include/nrf_section_iter.h" />
+        <file file_name="../../../../../SDK/softdevice/common/nrf_sections.c" />
+      </folder>
+      <folder Name="Source">
+        <file file_name="../../../../../source/version.c" />
+      </folder>
+    </folder>
+  </project>
+</solution>

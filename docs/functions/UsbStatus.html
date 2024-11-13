@@ -1,0 +1,107 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>UsbStatus</TITLE>
+</HEAD>
+
+<BODY>
+<H1>UsbStatus</H1>
+
+<TABLE width=100% class=setup>
+    <TR class=setup>
+        <TD class=item>Availability</TD>
+        <TD class=itemdescr>All terminals</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Description</TD>
+        <TD class=itemdescr>Legacy: Use <A class=clib HREF="./UsbIsConnected.html">UsbIsConnected</A> and <A class=clib HREF="./UsbIsPowered.html">UsbIsPowered</A></TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Syntax</TD>
+        <TD class=itemdescr><SPAN class=c-keyword>int</SPAN> <A class=clib HREF="./UsbStatus.html">UsbStatus</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Arguments</TD>
+        <TD class=itemdescr>None</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Returns</TD>
+        <TD class=itemdescr>
+            <TABLE class=OPTIONS width=100%>
+                <TR>
+                    <TD width="4%">USB_NOT_CONNECTED</TD>
+                    <TD>Not connected to the USB cable</TD>
+                </TR>
+                <TR>
+                    <TD>USB_POWERED</TD>
+                    <TD>Connected to the USB cable, but the COM port isn't open</TD>
+                </TR>
+                <TR>
+                    <TD>USB_OK</TD>
+                    <TD>Connected to the USB cable and the COM port on the PC or laptop is enumerated (use GetDSR() to detect if the port is open or not)</TD>
+                </TR>
+                <TR>
+                    <TD>USB_ERR_NOTREADY</TD>
+                    <TD>Connected to the USB cable, but not ready for communication</TD>
+                </TR>
+                <TR>
+                    <TD>USB_ERR_BUSY</TD>
+                    <TD>Connected to the USB cable, the port is open, but currently busy (not an error state)</TD>
+                </TR>
+            </TABLE>
+        </TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Remarks</TD>
+        <TD class=itemdescr>
+            This function can be used to check if the device is connected to the USB cable and whether it's possible to successfully communicate with the attached PC or laptop.
+        </TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Example</TD>
+        <TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>int</SPAN> previous_status, current_status;
+
+    <A class=clib HREF="./SystemSetting.html">SystemSetting</A>("8Z");    <SPAN class=c-comment>// Disable charge indicator</SPAN>
+
+    previous_status = -1;
+
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        current_status = <A class=clib HREF="./UsbStatus.html">UsbStatus</A>();
+
+        <SPAN class=c-keyword>if</SPAN>(current_status != previous_status)
+        {
+            previous_status = current_status;
+
+            <SPAN class=c-keyword>switch</SPAN>( current_status )
+            {
+                <SPAN class="c-keyword">case</SPAN> USB_NOT_CONNECTED:
+                    <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>(ORANGE, -1);
+                    <SPAN class="c-keyword">break</SPAN>;
+                <SPAN class="c-keyword">case</SPAN> USB_OK:
+                    <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>(GREEN, -1);
+                    <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>(RED, 0);
+                    <SPAN class="c-keyword">break</SPAN>;
+                <SPAN class="c-keyword">default</SPAN>:
+                    <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>(RED, -1);
+                    <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>(GREEN, 0);
+                    <SPAN class="c-keyword">break</SPAN>;
+            }
+        }
+        <A class=clib HREF="./Idle.html">Idle</A>();
+    }
+}
+</PRE>
+        </TD>
+    </TR>
+</TABLE>
+</BODY>
+</HTML>

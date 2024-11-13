@@ -1,0 +1,221 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Cradle OPH100x</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Cradle OPH100x</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Image</TD>
+		<TD class=itemdescr>
+			<A HREF="./CradleOPH100x.html#CRD1001"><IMG alt="CRD1001"  border="2" src="../images/Fcrd1001.jpg"></A>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Dip-switches</TD>
+		<TD class=itemdescr>
+			<A NAME="CRD1001"><H3>CRD1001</H3></A>
+			You can find the DIP switch bank under the rectangular black plastic cover at the bottom of the CRD1001.
+
+			<TABLE class=OPTIONS width=100%>
+				<THEAD>
+					<TR>
+						<TH>DIP switch</TH>
+						<TH>Function</TH>
+						<TH>ON</TH>
+						<TH>OFF</TH>
+						<TH>Factory<BR>defaults</TH>
+					</TR>
+				</THEAD>
+				<TBODY>
+					<TR>
+						<TH>1</TH>
+						<TD>Baudrate</TD>
+						<TD>See table below</TD>
+						<TD>See table below</TD>
+						<TD>ON</TD>
+					</TR>
+					<TR>
+						<TH>2</TH>
+						<TD>Baudrate</TD>
+						<TD>See table below</TD>
+						<TD>See table below</TD>
+						<TD>ON</TD>
+					</TR>
+					<TR>
+						<TH>3</TH>
+						<TD>Baudrate</TD>
+						<TD>See table below</TD>
+						<TD>See table below</TD>
+						<TD>ON</TD>
+					</TR>
+					<TR>
+						<TH>4</TH>
+						<TD>Reserved for future use</TD>
+						<TD></TD>
+						<TD></TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>5</TH>
+						<TD>Reserved for future use</TD>
+						<TD></TD>
+						<TD></TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>6</TH>
+						<TD>Auto baudrate</TD>
+						<TD>Baudrate defined by PC application</TD>
+						<TD>Baudrate as defined by switches</TD>
+						<TD>OFF</TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+			<BR>
+
+			<TABLE class=OPTIONS width=100%>
+				<THEAD>
+					<TR>
+						<TH>Baudrate</TH>
+						<TH>Switch 1</TH>
+						<TH>Switch 2</TH>
+						<TH>Switch 3</TH>
+						<TH>Pulses</TH>
+					</TR>
+				</THEAD>
+				<TBODY>
+					<TR>
+						<TH>1200</TH>
+						<TD>OFF</TD>
+						<TD>OFF</TD>
+						<TD>OFF</TD>
+						<TD>7</TD>
+					</TR>
+					<TR>
+						<TH>2400</TH>
+						<TD>ON</TD>
+						<TD>OFF</TD>
+						<TD>OFF</TD>
+						<TD>6</TD>
+					</TR>
+					<TR>
+						<TH>4800</TH>
+						<TD>OFF</TD>
+						<TD>ON</TD>
+						<TD>OFF</TD>
+						<TD>5</TD>
+					</TR>
+					<TR>
+						<TH>9600</TH>
+						<TD>ON</TD>
+						<TD>ON</TD>
+						<TD>OFF</TD>
+						<TD>4</TD>
+					</TR>
+					<TR>
+						<TH>19200</TH>
+						<TD>OFF</TD>
+						<TD>OFF</TD>
+						<TD>ON</TD>
+						<TD>3</TD>
+					</TR>
+					<TR>
+						<TH>38400</TH>
+						<TD>ON</TD>
+						<TD>OFF</TD>
+						<TD>ON</TD>
+						<TD>2</TD>
+					</TR>
+					<TR>
+						<TH>57600</TH>
+						<TD>OFF</TD>
+						<TD>ON</TD>
+						<TD>ON</TD>
+						<TD>1</TD>
+					</TR>
+					<TR>
+						<TH>115200</TH>
+						<TD>ON</TD>
+						<TD>ON</TD>
+						<TD>ON</TD>
+						<TD>0</TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+			<BR>
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Auto baudrate</TD>
+		<TD class=itemdescr>
+			When the CRD1001 is set to 'autobaudrate', the PC controls the setting of
+			the CRD baudrate controller. In order to be able to do that, the PC uses
+			the DTR and RTS lines. The procedure to set the baudrate is shown below:<BR>
+			<BR>
+			<LI>First pull DTR and RTS high.</LI>
+			<LI>Reset the CRD1001 baudrate controller by pulling RTS low and high again.</LI>
+			<LI>To select the required baudrate, the DTR line is cycled the requisite number
+				of times while RTS remains high. Each time the DTR line is cycled
+				(pulled low, pulled high) this causes the baudrate to cycle the list
+				above. (See the pulses column)</LI>
+			The minimum delay is 15 ms, so keep the level of RTS/DTR steady for at least 15ms.
+		</TD>
+	</TR>
+	
+	<TR class=setup>
+		<TD class=item>CRD1002</TD>
+		<TD class=itemdescr>
+			<A NAME="CRD1002"><H3>CRD1002</H3></A>
+			The CRD1002 is a charging and modem cradle for the OPH1004. The cradle is equipped 
+			with two slots in order to charge both the terminal and a spare battery. Data is 
+			transmitted to a remote host through a dialup connection via a normal telephone 
+			cable.<BR>
+			<BR>
+			The CRD1002 is equipped with an IrDA interface allowing data transfer when the 
+			scanner is inserted for charging. OPH1004 applications that wish to communicate with 
+			remote hosts over the dialup connection must use the TCP/IP library, provided in 
+			this kit.
+		</TD>
+	</TR>
+	
+	<TR class=setup>
+		<TD class=item>CRD1003</TD>
+		<TD class=itemdescr>
+			<A NAME="CRD1003"><H3>CRD1003</H3></A>
+			The CRD1003 is a charging and GSM modem cradle for the OPH1004. The cradle is equipped 
+			with two slots in order to charge both the terminal and a spare battery. Data is 
+			transmitted to a remote host through a cellular data connection to the Internet. 
+			The CRD1003 must be provisioned with an active SIM card to make a cellular data 
+			connection.<BR>
+			<BR>
+			The CRD1003 is equipped with an IrDA interface allowing data transfer when the 
+			scanner is inserted for charging. OPH1004 applications that wish to communicate with 
+			remote hosts over the cellular connection must use the TCP/IP library, provided in 
+			this kit.
+		</TD>
+	</TR>
+	
+	<TR class=setup>
+		<TD class=item>CRD1004</TD>
+		<TD class=itemdescr>
+			<A NAME="CRD1004"><H3>CRD1004</H3></A>
+			The CRD1004 is a charging and communication cradle for the OPH1003 with a built-in 
+			Ethernet interface. It provides similar functions as a cradle with serial interface
+			combined with an ECB1000 Ethernet Converter Box. Towards the terminal it simulates
+			an analog modem for internet access using the PPP protocol.
+			<BR><BR>
+			The CRD1004 also has an USB interface. Using this interface the 
+			cradle can be configured and its firmware can be upgraded. It can also be 
+			operated as an USB-serial cradle. This enables the user do e.g. download new software into the terminal.
+
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+

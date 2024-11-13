@@ -1,0 +1,349 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Cradles for the OPL97xx/DCL153x/PX35/PX36/OPL981x</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Cradles for the OPL97xx/DCL153x/PX35/PX36/OPL981x</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Image</TD>
+		<TD class=itemdescr>
+			<A HREF="./CradleOPL97xx.html#CRD9723"><IMG alt="CRD-9723"  border="2" src="../images/Fcrd9723.jpg"></A>
+			<A HREF="./CradleOPL97xx.html#CRD9723-multi"><IMG alt="CRD-9723 multicradle" border="2" src="../images/Fcrd-multicradle.jpg"></A>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Dip-switches</TD>
+		<TD class=itemdescr>
+			<A NAME="CRD9723"><H3>CRD-9723</H3></A>
+			You can find the DIP switch bank under the rectangular black plastic cover at the bottom of the CRD-9723.
+
+			<TABLE class=OPTIONS width=100%>
+				<THEAD>
+					<TR>
+						<TH>DIP switch</TH>
+						<TH>Function</TH>
+						<TH>ON</TH>
+						<TH>OFF</TH>
+						<TH>Factory<BR>defaults</TH>
+					</TR>
+				</THEAD>
+				<TBODY>
+					<TR>
+						<TH>1</TH>
+						<TD>Baudrate</TD>
+						<TD>See table below</TD>
+						<TD>See table below</TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>2</TH>
+						<TD>Baudrate</TD>
+						<TD>See table below</TD>
+						<TD>See table below</TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>3</TH>
+						<TD>Baudrate</TD>
+						<TD>See table below</TD>
+						<TD>See table below</TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>4</TH>
+						<TD>Spare</TD>
+						<TD></TD>
+						<TD></TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>5</TH>
+						<TD>Spare</TD>
+						<TD></TD>
+						<TD></TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>6</TH>
+						<TD>Auto baudrate</TD>
+						<TD>Baudrate is controlled by the PC</TD>
+						<TD>Switch 1, 2 and 3 determine the baudrate</TD>
+						<TD>ON</TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<THEAD>
+					<TR>
+						<TH>Baudrate</TH>
+						<TH>Switch 1</TH>
+						<TH>Switch 2</TH>
+						<TH>Switch 3</TH>
+						<TH>Pulses</TH>
+					</TR>
+				</THEAD>
+				<TBODY>
+					<TR>
+						<TH>2400</TH>
+						<TD>ON</TD>
+						<TD>OFF</TD>
+						<TD>OFF</TD>
+						<TD>6</TD>
+					</TR>
+					<TR>
+						<TH>4800</TH>
+						<TD>OFF</TD>
+						<TD>ON</TD>
+						<TD>OFF</TD>
+						<TD>5</TD>
+					</TR>
+					<TR>
+						<TH>9600</TH>
+						<TD>ON</TD>
+						<TD>ON</TD>
+						<TD>OFF</TD>
+						<TD>4</TD>
+					</TR>
+					<TR>
+						<TH>19200</TH>
+						<TD>OFF</TD>
+						<TD>OFF</TD>
+						<TD>ON</TD>
+						<TD>3</TD>
+					</TR>
+					<TR>
+						<TH>38400</TH>
+						<TD>ON</TD>
+						<TD>OFF</TD>
+						<TD>ON</TD>
+						<TD>2</TD>
+					</TR>
+					<TR>
+						<TH>57600</TH>
+						<TD>OFF</TD>
+						<TD>ON</TD>
+						<TD>ON</TD>
+						<TD>1</TD>
+					</TR>
+					<TR>
+						<TH>115200</TH>
+						<TD>ON</TD>
+						<TD>ON</TD>
+						<TD>ON</TD>
+						<TD>0</TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TD>
+						<H3>Auto baudrate</H3>
+						<P>
+						When the CRD9723 is set to 'auto baudrate', the PC controls the serial parameters of the cradle.
+						In order to be able to do that, the PC uses the DTR and RTS lines.
+						The procedure to set the baudrate is shown below:<BR>
+						<LI>First pull DTR and RTS high.</LI>
+						<LI>Reset the CRD9723 baudrate controller to 115200 by pulling RTS low and high again. </LI>
+						<LI>To select the required baudrate, the DTR line is cycled the requisite
+						number of times while RTS remains high. Each time the DTR line is cycled
+						(pulled low, pulled high) this causes the baudrate to cycle the list above.
+						(See the pulses column)</LI>
+						The minimum delay is 15 ms, so keep the level of RTS/DTR steady for at least 15ms.
+					</TD>
+				</TR>
+			</TABLE>
+
+			<A NAME="CRD9723-multi"><H3>CRD-9723 multi cradle</H3></A>
+
+			You can find the DIP switch bank under the rectangular black plastic cover at the bottom
+			of the CRD-9723 multicradle. The RS232 cable or the USB cable can be used. When using the USB
+			cable a device driver needs to be installed.  Note that the PX35 are not supported by 
+			this cradle.
+
+			<TABLE class=OPTIONS width=100%>
+				<THEAD>
+					<TR>
+						<TH>DIP switch</TH>
+						<TH>Function</TH>
+						<TH>ON</TH>
+						<TH>OFF</TH>
+						<TH>Factory<BR>defaults</TH>
+					</TR>
+				</THEAD>
+				<TBODY>
+					<TR>
+						<TH>1</TH>
+						<TD>Baudrate</TD>
+						<TD>See table below</TD>
+						<TD>See table below</TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>2</TH>
+						<TD>Baudrate</TD>
+						<TD>See table below</TD>
+						<TD>See table below</TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>3</TH>
+						<TD>Baudrate</TD>
+						<TD>See table below</TD>
+						<TD>See table below</TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>4</TH>
+						<TD>RS232/RS485</TD>
+						<TD>RS232/RS485 </TD>
+						<TD>RS232 only</TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>5</TH>
+						<TD>Cascade</TD>
+						<TD>Cascade ON</TD>
+						<TD>Cascade OFF</TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>6</TH>
+						<TD>RS485 Terminator</TD>
+						<TD>Terminator ON</TD>
+						<TD>Terminator OFF</TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>7</TH>
+						<TD>Factory setting</TD>
+						<TD></TD>
+						<TD></TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>8</TH>
+						<TD>Factory setting</TD>
+						<TD></TD>
+						<TD></TD>
+						<TD>OFF</TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+			<BR>
+			The fixed baudrate settings work for RS485 and RS232. In auto baudrate mode the baudrate
+			is controlled by the application on the host.
+
+			<TABLE class=OPTIONS width=100%>
+				<THEAD>
+					<TR>
+						<TH>Baudrate</TH>
+						<TH>Switch 1</TH>
+						<TH>Switch 2</TH>
+						<TH>Switch 3</TH>
+						<TH>Pulses</TH>
+					</TR>
+				</THEAD>
+				<TBODY>
+					<TR>
+						<TH>Auto baudrate</TH>
+						<TD>OFF</TD>
+						<TD>OFF</TD>
+						<TD>OFF</TD>
+						<TD></TD>
+					</TR>
+					<TR>
+						<TH>2400</TH>
+						<TD>ON</TD>
+						<TD>OFF</TD>
+						<TD>OFF</TD>
+						<TD>6</TD>
+					</TR>
+					<TR>
+						<TH>4800</TH>
+						<TD>OFF</TD>
+						<TD>ON</TD>
+						<TD>OFF</TD>
+						<TD>5</TD>
+					</TR>
+					<TR>
+						<TH>9600</TH>
+						<TD>ON</TD>
+						<TD>ON</TD>
+						<TD>OFF</TD>
+						<TD>4</TD>
+					</TR>
+					<TR>
+						<TH>19200</TH>
+						<TD>OFF</TD>
+						<TD>OFF</TD>
+						<TD>ON</TD>
+						<TD>3</TD>
+					</TR>
+					<TR>
+						<TH>38400</TH>
+						<TD>ON</TD>
+						<TD>OFF</TD>
+						<TD>ON</TD>
+						<TD>2</TD>
+					</TR>
+					<TR>
+						<TH>57600</TH>
+						<TD>OFF</TD>
+						<TD>ON</TD>
+						<TD>ON</TD>
+						<TD>1</TD>
+					</TR>
+					<TR>
+						<TH>115200</TH>
+						<TD>ON</TD>
+						<TD>ON</TD>
+						<TD>ON</TD>
+						<TD>0</TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+			<BR>
+			<BR>
+		</TD>
+	</TR>
+	
+	<TR class=setup>
+		<TD class=item>CRD9726</TD>
+		<TD class=itemdescr>
+			<A NAME="CRD9726"><H3>CRD9726</H3></A>
+			The CRD9726 is a charging and modem cradle for the OPL-style terminals. Data is 
+			transmitted to a remote host through a dialup connection via a normal telephone 
+			cable.
+
+			The CRD9726 is equipped with an IrDA interface allowing data transfer when the 
+			scanner is inserted for charging. Terminal applications that wish to communicate with 
+			remote hosts over the dialup connection must use the TCP/IP library, provided in 
+			this kit.
+		</TD>
+	</TR>
+	
+	<TR class=setup>
+		<TD class=item>CRD9727</TD>
+		<TD class=itemdescr>
+			<A NAME="CRD9727"><H3>CRD9727</H3></A>
+			The CRD9727 is a charging and GSM modem cradle for the OPL-style terminals. Data is 
+			transmitted to a remote host through a cellular data connection to the Internet. 
+			The CRD9727 must be provisioned with an active SIM card to make a cellular data 
+			connection.
+
+			The CRD9727 is equipped with an IrDA interface allowing data transfer when the 
+			scanner is inserted for charging. Terminal applications that wish to communicate with 
+			remote hosts over the cellular connection must use the TCP/IP library, provided in 
+			this kit.
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+

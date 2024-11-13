@@ -1,0 +1,114 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>SystemSetting</TITLE>
+</HEAD>
+
+<BODY>
+<H1>SystemSetting</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>
+			This function can change the <A HREF="../Systemsetting/Systemsettings.html">system settings</A>.<BR>
+			<A HREF="../Systemsetting/Systemsettings.html">System settings</A> are used to change the
+			reading behavior of the handheld terminal, or to change communication settings.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr>
+			<SPAN class=c-keyword>int</SPAN> <A class=clib HREF="./SystemSetting.html">SystemSetting</A>( <SPAN class=c-keyword>char</SPAN> *option_string );
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+			<H5><SPAN class=c-keyword>char</SPAN> *<I>option_string</I></H5>
+			Points to a string containing menu options of 2 to 4 characters, which are listed in the Universal Menu Book.
+			<BR><BR>On <A HREF="https://opticonfigure.opticon.com">OptiConfigure</A> you can find all available menu options for the different terminals.
+
+			<TABLE class=OPTIONS>
+				<TR>
+					<TD><LI><A HREF="https://opticonfigure.opticon.com/configure?scanner=OPN2500">System settings of the OPN-2500</A></TD>
+				</TR>
+				<TR>
+					<TD><LI><A HREF="https://opticonfigure.opticon.com/configure?scanner=OPN6000">System settings of the OPN-6000</A></TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>
+			<TABLE class=options width=100% >
+				<TR>
+					<TD>0</TD>
+					<TD>Option code is supported and set.</TD>
+				</TR>
+
+				<TR>
+					<TD>-1</TD>
+					<TD>Option code is not supported.</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>
+			It is not possible to change the system settings via the communications port using a <ESC>..<CR>
+			sequence, unless of course this behavior is emulated by an application that translates data
+			from the communications port to <A class=clib HREF="./SystemSetting.html">SystemSetting()</A> calls.<BR>
+			By enabling the system setting "YC" (enabling decoding of menu labels), the menu labels in Opticon's Universal Menu
+			Book will be returned as data by <A class=clib HREF="./ReadBarcode.html">ReadBarcode()</A>. <BR>
+			The programmer can pass this data to <A class=clib HREF="./SystemSetting.html">SystemSetting()</A>, thereby emulating the behavior of a
+			scanner directly programmable from the Universal Menu Book. By default this behavior is disabled, therefore passing
+			the menu code "U2" (set to default) to <A class=clib HREF="./SystemSetting.html">systemsettings()</A> will immediately disable the effect of "YC".<BR>
+			Note that 3-letter menu codes should be prefixed with the character '[', making the total characters for a 3-letter menu code 4 characters.  Likewise,
+			4-letter menu codes should be prefixed with the character ']'.
+
+			<H4>IMPORTANT:</H4>
+			System settings that affect a communications port, only take effect after the port is closed and opened again.
+
+			<H4>TIP:</H4>
+			<A class=clib HREF="./SystemSetting.html">SystemSetting()</A> can execute more then one command at a time,
+			when the option_string parameter contains more options, for example:<BR>
+<PRE>
+<A class=clib HREF="./SystemSetting.html">SystemSetting</A>("B0B2R4"); //<SPAN class=c-comment>This enables Code 39 and EAN codes</SPAN>
+</PRE>
+	</TD>
+	</TR>
+	<TR class=setup>
+	<TD class=item>Example</TD>
+	<TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <A class=clib HREF="./SystemSetting.html">SystemSetting</A>("WK");    <SPAN class=c-comment>// Key click on</SPAN>
+
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        printf("\nHello world");
+
+        <A class=clib HREF="./ResetKey.html">ResetKey</A>();
+        <SPAN class=c-keyword>while</SPAN>( !<A class=clib HREF="./kbhit.html">kbhit</A>())
+            <A class=clib HREF="./Idle.html">Idle</A>();
+    }
+}
+</PRE>
+	</TD>
+	</TR>
+</TABLE>
+
+</BODY>
+</HTML>

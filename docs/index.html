@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<link rel="stylesheet" type="text/css" href="./global.css">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opticon C Library development kit</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            height: 100vh;
+			padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="toc">
+
+        <!-- Top bar with logo -->
+        <a href="https://opticon.com"><div class="top-bar"><img src="./images/opticon_logo_vector-transparent.svg" alt="Logo"></div></a>
+        <a href="https://github.com/OpticonOSEDevelopment/opn2500_opn6000_sdk"><h3 style="text-align:center;" >OPN-2500 / OPN-6000 SDK</h3></a>
+    <ul>
+        <!-- Collapsible Installation section with dummy sub-chapter -->
+        <li>
+            <span class="collapsible">1. Getting Started</span>
+            <ul class="content">
+                <li><a href="./Getting-started/Content.html" target="content-frame">1. Introduction</a></li>
+				<li><a href="./Getting-started/Installation.html" target="content-frame">2. Installation</a></li>
+				<li><a href="./Getting-started/FolderContent.html" target="content-frame">3. Folder content</a></li>
+            </ul>
+        </li>
+
+        <!-- Foldable Application development section -->
+        <li>
+            <span class="collapsible">2. Application development</span>
+            <ul class="content">
+                <li><a href="./Appl-development/Appl-writing.html" target="content-frame">1. Writing an application</a></li>
+                <li><a href="./Appl-development/Appl-building.html" target="content-frame">2. Building an application</a></li>
+                <li><a href="./Appl-development/Appl-porting.html" target="content-frame">3. Porting applications</a></li>
+                <li><a href="./Appl-development/Barcode-reading.html" target="content-frame">4. Reading barcodes</a></li>
+                <li><a href="./Appl-development/File-system.html" target="content-frame">5. File system</a></li>
+                <li><a href="./Appl-development/Serial-comm.html" target="content-frame">6. Communication</a></li>
+            </ul>
+        </li>
+
+        <!-- Collapsible Functions section with dummy sub-chapter -->
+        <li>
+            <span class="collapsible">3. Functions</span>
+            <ul class="content">
+                <li><a href="./functions/Introduction.html" target="content-frame">Introduction</a></li>
+                <li><A HREF="./functions/Introduction.html#general" target="content-frame">1.	Configuration functions</A>
+                <li><A HREF="./functions/Introduction.html#scanner" target="content-frame">2.	Scanner functions</A>
+                <li><A HREF="./functions/Introduction.html#led_sound" target="content-frame">3.	Led/Sound functions</A>
+                <li><A HREF="./functions/Introduction.html#keyboard" target="content-frame">4.	Keyboard functions</A>
+                <li><A HREF="./functions/Introduction.html#serial" target="content-frame">5.	Communication functions</A>
+                <li><A HREF="./functions/Introduction.html#bluetooth" target="content-frame">6.	Bluetooth® functions</A>
+                <li><A HREF="./functions/Introduction.html#power" target="content-frame">7.	Power management functions</A>
+                <li><A HREF="./functions/Introduction.html#timer" target="content-frame">8.	Timer functions</A>
+                <li><A HREF="./functions/Introduction.html#date_time" target="content-frame">9.	Date/Time functions</A>
+                <li><A HREF="./functions/Introduction.html#memory" target="content-frame">10.	Memory/file functions</A>
+                <li><A HREF="./functions/Introduction.html#misc" target="content-frame">11.	Miscellaneous</A>
+            </ul>
+        </li>
+
+        <!-- Collapsible Snippets section with dummy sub-chapter -->
+        <li>
+            <span class="collapsible">4. Snippets</span>
+            <ul class="content">
+                <li><a href="./Snippets/Snippets.html" target="content-frame">Snippets</a></li>
+                <li><A HREF="./Snippets/database/database.html" target="content-frame">Database functions</A></li>
+                <li><A HREF="./Snippets/string/string.html" target="content-frame">String functions</A></li>
+                <li><A HREF="./Snippets/miscellaneous/miscellaneous.html" target="content-frame">Miscellaneous</A></li>
+            </ul>
+        </li>
+
+        <!-- Collapsible Loading software section with dummy sub-chapter -->
+        <li>
+            <span class="collapsible">5. Loading software</span>
+            <ul class="content">
+                <li><a href="./Terminals/OPN2500_OPN6000.html" target="content-frame">OPN-2500 & OPN-6000</a></li>
+            </ul>
+        </li>
+
+        <!-- Collapsible System settings section with dummy sub-chapter -->
+        <li>
+            <span class="collapsible">6. System settings</span>
+            <ul class="content">
+                <li><a href="./Systemsetting/Systemsettings.html" target="content-frame">System settings</a></li>
+				<li><a href="https://opticonfigure.opticon.com/configure?scanner=OPN2500" target="content-frame">OptiConfigure: OPN-2500</a></li>
+				<li><a href="https://opticonfigure.opticon.com/configure?scanner=OPN6000" target="content-frame">OptiConfigure: OPN-6000</a></li>
+            </ul>
+        </li>
+
+        <!-- Collapsible Tools section with dummy sub-chapter -->
+        <li>
+            <span class="collapsible">7. Tools</span>
+            <ul class="content">
+                <li><a href="./Tools/Tools.html" target="content-frame">PC Tools</a></li>
+				<li><A HREF="https://opticonfigure.opticon.com" target="_blank">OptiConfigure</A></li>
+				<li><A HREF="https://opticon.com/opticonnect/" target="_blank">OptiConnect</A></li>
+            </ul>
+        </li>
+
+        <!-- Collapsible Support section with dummy sub-chapter -->
+        <li>
+            <span class="collapsible">8. Support</span>
+            <ul class="content">
+                <li><a href="./Support/Support.html" target="content-frame">Support</a></li>
+            </ul>
+        </li>
+    </ul>
+    </div>
+	
+	  <script>
+        // JavaScript for toggling the collapsible sections
+        document.querySelectorAll('.collapsible').forEach(function (collapsible) {
+            collapsible.addEventListener('click', function () {
+                // Toggle active class
+                this.classList.toggle('active');
+
+                // Toggle visibility of the content
+                var content = this.nextElementSibling;
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        });
+    </script>
+	
+	</script>
+
+
+    <iframe id="content" name="content-frame" src="./Getting-started/Content.html"></iframe>
+</body>
+</html>

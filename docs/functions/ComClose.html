@@ -1,0 +1,135 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>ComClose</TITLE>
+</HEAD>
+
+<BODY>
+<H1>ComClose</H1>
+
+<TABLE width=100% class=setup>
+    <TR class=setup>
+        <TD class=item>Availability</TD>
+        <TD class=itemdescr>All terminals</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Description</TD>
+        <TD class=itemdescr>Closes a communications port previously opened by <A class=clib HREF="./ComOpen.html">ComOpen()</A>.</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Syntax</TD>
+        <TD class=itemdescr><SPAN class=c-keyword>int</SPAN> <A class=clib HREF="./ComClose.html">ComClose</A>( <SPAN class=c-keyword>int</SPAN> port );</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Arguments</TD>
+        <TD class=itemdescr>
+            <H5><SPAN class=c-keyword>int</SPAN> <I>port</I></H5>
+            port specifies which communications port is to be closed. See the table below for details.<BR>
+            <BR>
+            <table class="OPTIONS" width="100%">
+                <thead>
+                    <tr>
+                        <th>Terminal</th>
+                        <th>Supported ports</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>OPN-2500 &amp; OPN-6000</td>
+                        <td>COM0<br>COM1<br>COM7<br>COM8<br>COM9<br>COM10<br>COM11<br>COM12<br>COM13<br>COM14<br>COM15<br>COM16<br>COM17<br>COM18</td>
+                        <td>
+                            USB-VCP (Opticon 1D COM-Port)<br>
+                            USB-CDC (Opticon 2D COM-Port)<br>
+                            USB-CDC (OptiConnect)<br>
+                            USB-CDC (Opticon 2D COM-Port)<br>
+                            USB-HID (Human Interface device)<br>
+                            USB-MSD (Mass Storage)<br>
+                            Bluetooth HID (No white list)<br>
+                            Bluetooth HID (White list)<br>
+                            Bluetooth LE UART &amp; OptiConnect (No white list)<br>
+                            Bluetooth LE UART &amp; OptiConnect (White list)<br>
+                            Bluetooth LE OptiConnect(No white list)<br>
+                            Bluetooth LE OptiConnect (White list)<br>
+                            Bluetooth LE UART (No white list)<br>
+                            Bluetooth LE UART (White list)<br>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Returns</TD>
+        <TD class=itemdescr>
+            <TABLE class=OPTIONS width=100%>
+                <TR>
+                    <TD width=5%> 0</TD>
+                    <TD>The port was closed correctly.</TD>
+                </TR>
+                <TR>
+                    <TD>-1</TD>
+                    <TD>An invalid port number was given or, in case of a Bluetooth port, a connection could not be terminated.</TD>
+                </TR>
+            </TABLE>
+        </TD>
+    </TR>
+
+    <TR class=setup>
+        <TD class=item>Remarks</TD>
+        <TD class=itemdescr>
+            Never leave a communication port open longer then necessary, since it increases power consumption.<BR>
+        </TD>
+    </TR>
+
+    <TR class=setup>
+        <TD class=item>Example</TD>
+        <TD class=itemdescr>
+    <PRE>
+<SPAN class="c-preprocessor">#include</SPAN> &lt;stdio.h&gt;
+<SPAN class="c-preprocessor">#include</SPAN> "lib.h"
+
+<SPAN class="c-keyword">void</SPAN> main( <SPAN class="c-keyword">void</SPAN> )
+{
+    <SPAN class="c-keyword">int</SPAN> ch, open, connected;
+
+    <A class=clib HREF="./ComOpen.html">ComOpen</A>( COM9 );    <SPAN class=c-comment>// Open the COM port for USB-VCP</SPAN>
+
+    <A class=clib HREF="./Sound.html">Sound</A>(TSTANDARD, VHIGH, SMEDIUM, SHIGH, 0);
+    open = TRUE;
+    connected = FALSE;
+
+    <SPAN class="c-keyword">for</SPAN>(;;)
+    {
+        <span class="c-keyword">if</span>(connected != <A class=clib HREF="./UsbIsConnected.html">UsbIsConnected</A>())
+        {
+            <A class=clib HREF="./Sound.html">Sound</A>(TLONG, VHIGH, SHIGH, 0);
+            connected = <A class=clib HREF="./UsbIsConnected.html">UsbIsConnected</A>();
+        }
+        
+        <span class="c-keyword">if</span>((ch=getchar()) == TRIGGER_KEY && !open)
+        {
+            <A class=clib HREF="./Sound.html">Sound</A>(TSTANDARD, VHIGH, SMEDIUM, SHIGH, 0);
+            <A class=clib HREF="./ComOpen.html">ComOpen</A>( COM9 );
+            open = TRUE;
+        }
+        <span class="c-keyword">else if</span>(ch == CLR_KEY && open)
+        {
+            <A class=clib HREF="./ComClose.html">ComClose</A>(COM9);
+            <A class=clib HREF="./Sound.html">Sound</A>(TLONG, VHIGH, SERROR, 0);
+            connected = open = FALSE;
+        }
+        
+        <span class="c-keyword">if</span>( (ch = <A class=clib HREF="./GetCom.html">GetCom</A>( 0 )) != -1)    <SPAN class=c-comment>// Echo</SPAN>
+            <A class=clib HREF="./PutCom.html">PutCom</A>( ch );
+        
+        <A class=clib HREF="./Idle.html">Idle</A>();    <SPAN class=c-comment>// Very important to lower the power consumption</SPAN>
+    }
+}
+</PRE>
+        </TD>
+    </TR>
+</TABLE>
+</BODY>
+</HTML>

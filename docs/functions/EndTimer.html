@@ -1,0 +1,80 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>EndTimer</TITLE>
+</HEAD>
+
+<BODY>
+<H1>EndTimer</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>This function checks if the time specified with the <A class=clib HREF="./StartTimer.html">StartTimer()</A> function has elapsed.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>int</SPAN> <A class=clib HREF="./EndTimer.html">EndTimer</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TD>0</TD>
+					<TD>The specified time has not yet elapsed.</TD>
+				</TR>
+				<TR>
+					<TD>1</TD>
+					<TD>The specified time has elapsed.</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+	<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <A class=clib HREF="./AutoPowerDown.html">AutoPowerDown</A>(ON, 30*50);     <SPAN class=c-comment>// Auto power down time of 30s</SPAN>
+
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        printf("\nWaiting for 5 sec");
+        <A class=clib HREF="./StartTimer.html">StartTimer</A>( 250+1 );
+        <SPAN class=c-keyword>while</SPAN>( !<A class=clib HREF="./EndTimer.html">EndTimer</A>())
+        {
+            printf("\nTime left %d s", <A class=clib HREF="./TimerValue.html">TimerValue</A>()/50);
+            <A class=clib HREF="./Sound.html">Sound</A>( TSTANDARD, VSTANDARD, SMEDIUM, 0);
+            <A class=clib HREF="./Delay.html">Delay</A>( 50 );
+        }
+
+        printf("\nDone");
+        <A class=clib HREF="./ResetKey.html">ResetKey</A>();
+        <SPAN class=c-keyword>while</SPAN>( !<A class=clib HREF="./kbhit.html">kbhit</A>())
+            <A class=clib HREF="./Idle.html">Idle</A>();
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

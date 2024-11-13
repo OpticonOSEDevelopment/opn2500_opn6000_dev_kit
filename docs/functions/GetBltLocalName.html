@@ -1,0 +1,60 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>GetBltLocalName</TITLE>
+</HEAD>
+
+<BODY>
+<H1>GetBltLocalName</H1>
+
+<TABLE width=100% class=setup>
+    <TR class=setup>
+        <TD class=item>Availability</TD>
+        <TD class=itemdescr>All terminals</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Description</TD>
+        <TD class=itemdescr>This function returns the current local name that's stored in flash memory.</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Syntax</TD>
+        <TD class=itemdescr><SPAN class=c-keyword>char</SPAN>* <A class=clib HREF="./GetBltLocalName.html">GetBltLocalName</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Arguments</TD>
+        <TD class=itemdescr>None</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Returns</TD>
+        <TD class=itemdescr>An character pointer to the local name stored in flash memory.</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Remarks</TD>
+        <TD class=itemdescr>The Bluetooth local name can be changed using the <A class=clib HREF="./SetBltLocalName.html">SetBltLocalName()</A> function.</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Example</TD>
+        <TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        printf("\nLocal name: %s", <A class=clib HREF="./GetBltLocalName.html">GetBltLocalName</A>());
+        <A class=clib HREF="./ResetKey.html">ResetKey</A>();
+        <SPAN class=c-keyword>while</SPAN>( !<A class=clib HREF="./kbhit.html">kbhit</A>() )
+            <A class=clib HREF="./Idle.html">Idle</A>();
+        <A class=clib HREF="./SetBltLocalName.html">SetBltLocalName</A>(MODEL_NAME"_EXAMPLE");
+    }
+}
+</PRE>
+        </TD>
+    </TR>
+</TABLE>
+
+</BODY>
+</HTML>

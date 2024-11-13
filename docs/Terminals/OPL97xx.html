@@ -1,0 +1,402 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Loading software on the OPL97xx</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Loading software on the OPL97xx</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Image</TD>
+		<TD class=itemdescr>
+			<A HREF="./OPL97xx.html#OPL9723"><IMG alt="OPL9723"  border="2" src="../images/Fopl9723.jpg"></A>
+			<A HREF="./OPL97xx.html#OPL9724"><IMG alt="OPL9724"  border="2" src="../images/Fopl9724.jpg"></A>
+			<A HREF="./OPL97xx.html#OPL9725"><IMG alt="OPL9725"  border="2" src="../images/Fopl9725.jpg"></A>
+			<A HREF="./OPL97xx.html#OPL9726"><IMG alt="OPL9726"  border="2" src="../images/Fopl9726.jpg"></A>
+			<A HREF="./OPL97xx.html#OPL9727"><IMG alt="OPL9727"  border="2" src="../images/Fopl9727.jpg"></A>
+			<A HREF="./OPL97xx.html#OPL9728"><IMG alt="OPL9728"  border="2" src="../images/Fopl9728.jpg"></A>
+			<A HREF="./OPL97xx.html#OPL9723R"><IMG alt="OPL9723R"  border="2" src="../images/Fopl9723R.jpg"></A>
+			<A HREF="./OPL97xx.html#OPL9712"><IMG alt="OPL9712"  border="2" src="../images/Fopl9728.jpg"></A>
+			<A HREF="./OPL97xx.html#OPL9713"><IMG alt="OPL9713"  border="2" src="../images/Fopl9713.jpg"></A>
+
+			<BR>
+			On all OPL97xx terminals runs an OS (operating system) and an application. The OS and the application can be loaded
+			by a small PC application called <A HREF="../Tools/Appload.html">APPLOAD</A>.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Software codes</TD>
+		<TD>
+			The different models of the OPL97xx terminals have their own Operating System version that can be distinguished by an unique 3 letter code (starting with 'LB').
+			Before you try to load a new Operating System on an OPL97xx you have to know which Operating System file (i.e. LBBVxxxx.S32 for the OPL9723) must be loaded on your terminal.
+			In the table below you can find which software code belongs to which OPL97xx terminal.<BR>
+			<BR>
+
+			<TABLE width=50% class=OPTIONS>
+				<THEAD>
+					<TR>
+						<TH>Code</TH>
+						<TH>Terminal</TH>
+					</TR>
+				</THEAD>
+				<TBODY>
+					<TR>
+						<TD>LBB</TD>
+						<TD><A HREF="./OPL97xx.html#OPL9723">OPL9723</A>, <A HREF="./OPL97xx.html#OPL9725">OPL9725</A>, <A HREF="./OPL97xx.html#OPL9726">OPL9726</A>, <A HREF="./OPL97xx.html#OPL9727">OPL9727</A></TD>
+					</TR>
+					<TR>
+						<TD>LBC</TD>
+						<TD><A HREF="./OPL97xx.html#OPL9724">OPL9724</A> (old<SUP>*</SUP>)</TD>
+					</TR>
+					<TR>
+						<TD>LBD</TD>
+						<TD><A HREF="./OPL97xx.html#OPL9728">OPL9728</A></TD>
+					</TR>
+					<TR>
+						<TD>LBF</TD>
+						<TD><A HREF="./OPL97xx.html#OPL9723R">OPL9723R</A> (Also known as the OPL9738)</TD>
+					</TR>
+					<TR>
+						<TD>LBO</TD>
+						<TD><A HREF="./OPL97xx.html#OPL9712">OPL9712</A></TD>
+					</TR>
+					<TR>
+						<TD>LBP</TD>
+						<TD><A HREF="./OPL97xx.html#OPL9713">OPL9713</A></TD>
+					</TR>
+					<TR>
+						<TD>LBR</TD>
+						<TD><A HREF="./OPL97xx.html#OPL9724">OPL9724</A> (new<SUP>*</SUP>)</TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+			<P>
+				<B>*Note:</B> The OPL9724s that have been produced till approximately 2006 have another software code than the newer OPL9724s.
+				To determine the software code of an OPL9724 with certainty, you can find the version of the Operating system (OS) in the
+				<A HREF="../Appl-development/Sysmenu.html">System menu</A> by selecting <A HREF="../Appl-development/Sysmenu.html#version">Show version</A>.
+			</P>
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item><A NAME="OPL9723">OPL9723</A></TD>
+		<TD class=itemdescr>
+			To load a new OS or application in the OPL9723 by cradle, set the <A HREF="../Cradles/CradleOPL97xx.html">cradle</A> in auto baudrate mode.
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH width=50%>Load OS</TH>
+					<TH width=50%>Load application</TH>
+				</TR>
+				<TR>
+					<TD>
+						<H4>Automatic</H4>
+						Place the OPL9723 in the cradle select the OS by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+					<TD>
+						<H4>Automatic</H4>
+						Place the OPL9723 in the cradle select the application by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+				</TR>
+				<TR>
+					<TD>
+						<H4>System menu</H4>
+						Press all three buttons at the same time.<BR>
+						Use key 2 (Q2_KEY) to scroll to Download application.<BR>
+						Press the trigger key to select.<BR>
+						Place the OPL9723 in the cradle select the OS by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+					<TD>
+						<H4>System menu</H4>
+						Press all three buttons at the same time.<BR>
+						Use key 2 (Q2_KEY) to scroll to Download application.<BR>
+						Press the trigger key to select.<BR>
+						Place the OPL9723 in the cradle select the application by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item><A NAME="OPL9724">OPL9724</A></TD>
+		<TD class=itemdescr>
+			To load a new OS or application in the OPL9724 by the cradle, set the <A HREF="../Cradles/CradleOPL97xx.html">cradle</A> in auto baudrate mode.
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH width=50%>Load OS</TH>
+					<TH width=50%>Load application</TH>
+				</TR>
+				<TR>
+					<TD>
+						<H4>Automatic (cradle)</H4>
+						To use this option the bluetooth communication port must not be open.
+						Place the OPL9724 in the cradle select the OS by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+					<TD>
+						<H4>Automatic (cradle)</H4>
+						To use this option the bluetooth communication port must not be open.
+						Place the OPL9724 in the cradle select the application by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+				</TR>
+				<TR>
+					<TD>
+						<H4>System menu (cradle)</H4>
+						Press all three buttons at the same time.<BR>
+						Use key 2 (Q2_KEY) to scroll to Download application.<BR>
+						Press the trigger key to select. <BR>
+						Press key 1 (Q1_KEY) to use download by IrDA.<BR>
+						Place the OPL9724 in the cradle select the OS by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+					<TD>
+						<H4>System menu (cradle)</H4>
+						Press all three buttons at the same time.<BR>
+						Use key 2 (Q2_KEY) to scroll to Download application.<BR>
+						Press the trigger key to select. <BR>
+						Press key 1 (Q1_KEY) to use download by IrDA.<BR>
+						Place the OPL9724 in the cradle select the application by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+				</TR>
+				<TR>
+					<TD>
+						<H4>System menu (bluetooth)</H4>
+						Not possible.
+					</TD>
+					<TD>
+						<H4>System menu (bluetooth)</H4>
+						First you need to discover or set address of the bluetooth host you want to connect to<BR>
+						Press all three buttons at the same time.<BR>
+						Use key 2 (Q2_KEY) to scroll to Download application.<BR>
+						Press the trigger key to select. <BR>
+						Press key 2 (Q2_KEY) to use download by bluetooth.<BR>
+						Place the OPL9724 in the cradle select the application by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item><A NAME="OPL9725">OPL9725</A></TD>
+		<TD class=itemdescr>
+			To load a new OS or application in the OPL9725 by cradle, set the <A HREF="../Cradles/CradleOPL97xx.html">cradle</A> in auto baudrate mode.
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH width=50%>Load OS</TH>
+					<TH width=50%>Load application</TH>
+				</TR>
+				<TR>
+					<TD>
+						<H4>Automatic</H4>
+						Place the OPL9725 in the cradle select the OS by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+					<TD>
+						<H4>Automatic</H4>
+						Place the OPL9725 in the cradle select the application by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item><A NAME="OPL9726">OPL9726</A></TD>
+		<TD class=itemdescr>
+			To load a new OS or application in the OPL9726 by cradle, set the <A HREF="../Cradles/CradleOPL97xx.html">cradle</A> in auto baudrate mode.
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH width=50%>Load OS</TH>
+					<TH width=50%>Load application</TH>
+				</TR>
+				<TR>
+					<TD>
+						<H4>Automatic</H4>
+						Place the OPL9726 in the cradle select the OS by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+					<TD>
+						<H4>Automatic</H4>
+						Place the OPL9726 in the cradle select the application by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item><A NAME="OPL9727">OPL9727</A></TD>
+		<TD class=itemdescr>
+			To load a new OS or application in the OPL9727 by cradle, set the <A HREF="../Cradles/CradleOPL97xx.html">cradle</A> in auto baudrate mode.
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH width=50%>Load OS</TH>
+					<TH width=50%>Load application</TH>
+				</TR>
+				<TR>
+					<TD>
+						<H4>Automatic</H4>
+						Place the OPL9727 in the cradle select the OS by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+					<TD>
+						<H4>Automatic</H4>
+						Place the OPL9727 in the cradle select the application by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item><A NAME="OPL9728">OPL9728</A></TD>
+		<TD class=itemdescr>
+			To load a new OS or application in the OPL9728 by cradle, set the <A HREF="../Cradles/CradleOPL97xx.html">cradle</A> in auto baudrate mode.
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH width=50%>Load OS</TH>
+					<TH width=50%>Load application</TH>
+				</TR>
+				<TR>
+					<TD>
+						<H4>Automatic</H4>
+						Place the OPL9728 in the cradle select the OS by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+					<TD>
+						<H4>Automatic</H4>
+						Place the OPL9728 in the cradle select the application by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+				</TR>
+				<TR>
+					<TD>
+						<H4>System menu</H4>
+						Press the Scroll-up, trigger and Scroll-down key at the same time.<BR>
+						Use the Scroll-down key (Q2_KEY) to scroll to Download application.<BR>
+						Press the trigger key to select.<BR>
+						Place the OPL9728 in the cradle select the OS by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+					<TD>
+						<H4>System menu</H4>
+						Press the Scroll-up, trigger and Scroll-down key at the same time.<BR>
+						Use the Scroll-down key (Q2_KEY) to scroll to Download application.<BR>
+						Press the trigger key to select.<BR>
+						Place the OPL9728 in the cradle select the application by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item><A NAME="OPL9723R">OPL9723R</A></TD>
+		<TD class=itemdescr>
+			To load a new OS or application in the OPL9723R by cradle, set the <A HREF="../Cradles/CradleOPL97xx.html">cradle</A> in auto baudrate mode.
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH width=50%>Load OS</TH>
+					<TH width=50%>Load application</TH>
+				</TR>
+				<TR>
+					<TD>
+						<H4>Automatic</H4>
+						Place the OPL9723R in the cradle select the OS by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+					<TD>
+						<H4>Automatic</H4>
+						Place the OPL9723R in the cradle select the application by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item><A NAME="OPL9712">OPL9712</A></TD>
+		<TD class=itemdescr>
+			To load a new OS or application in the OPL9712 by the cradle, set the <A HREF="../Cradles/CradleOPL97xx.html">cradle</A> in auto baudrate mode.
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH width=50%>Load OS</TH>
+					<TH width=50%>Load application</TH>
+				</TR>
+				<TR>
+					<TD>
+						<H4>Automatic (cradle)</H4>
+						To use this option the bluetooth communication port must not be open.
+						Place the OPL9712 in the cradle select the OS by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+					<TD>
+						<H4>Automatic (cradle)</H4>
+						To use this option the bluetooth communication port must not be open.
+						Place the OPL9712 in the cradle select the application by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+				</TR>
+				<TR>
+					<TD>
+						<H4>System menu (cradle)</H4>
+						Press all three buttons at the same time.<BR>
+						Use key 2 (Q2_KEY) to scroll to Download application.<BR>
+						Press the trigger key to select. <BR>
+						Press key 1 (Q1_KEY) to use download by IrDA.<BR>
+						Place the OPL9712 in the cradle select the OS by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+					<TD>
+						<H4>System menu (cradle)</H4>
+						Press all three buttons at the same time.<BR>
+						Use key 2 (Q2_KEY) to scroll to Download application.<BR>
+						Press the trigger key to select. <BR>
+						Press key 1 (Q1_KEY) to use download by IrDA.<BR>
+						Place the OPL9712 in the cradle select the application by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+				</TR>
+				<TR>
+					<TD>
+						<H4>System menu (bluetooth)</H4>
+						Not possible.
+					</TD>
+					<TD>
+						<H4>System menu (bluetooth)</H4>
+						First you need to discover or set address of the bluetooth host you want to connect to<BR>
+						Press all three buttons at the same time.<BR>
+						Use key 2 (Q2_KEY) to scroll to Download application.<BR>
+						Press the trigger key to select. <BR>
+						Press key 2 (Q2_KEY) to use download by bluetooth.<BR>
+						Place the OPL9712 in the cradle select the application by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item><A NAME="OPL9713">OPL9713</A></TD>
+		<TD class=itemdescr>
+			To load a new OS or application in the OPL9713 by cradle, set the <A HREF="../Cradles/CradleOPL97xx.html">cradle</A> in auto baudrate mode.
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH width=50%>Load OS</TH>
+					<TH width=50%>Load application</TH>
+				</TR>
+				<TR>
+					<TD>
+						<H4>Automatic</H4>
+						Place the OPL9713 in the cradle select the OS by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+					<TD>
+						<H4>Automatic</H4>
+						Place the OPL9713 in the cradle select the application by <A HREF="../Tools/Appload.html">appload</A>.
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+
+</TABLE>
+</BODY>
+</HTML>

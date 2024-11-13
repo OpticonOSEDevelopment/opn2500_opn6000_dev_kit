@@ -1,0 +1,90 @@
+<link rel="stylesheet" type="text/css" href="../../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>GetWeekNumber</TITLE>
+</HEAD>
+
+<BODY>
+<H1>GetWeekNumber</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>
+			Return a short integer value representing the current week number of todays date.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr>
+			<SPAN class=c-keyword>short</SPAN> GetWeekNumber( <SPAN class=c-keyword>void</SPAN> );
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+			none
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>
+			short integer value representing the week number of todays date.<BR>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>Calculates the ISO-8601 Week Number: 1-1-2005 was weeknumber 53 , 1-1-2009 was weeknumber 1</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+
+
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-comment>// Returns the week number of todays date</SPAN>
+<SPAN class=c-keyword>short</SPAN> GetWeekNumber( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>unsigned long</SPAN> ulF, ulS, ulT;
+    <SPAN class=c-keyword>unsigned long</SPAN> m, y, a;
+    <SPAN class=c-keyword>unsigned long</SPAN> ulJDN;
+    <SPAN class=c-keyword>struct</SPAN> date d = {0};
+
+    <A class=clib HREF="../../functions/GetDate.html">GetDate</A>( &d );
+
+    a = (14UL - d.da_mon ) / 12UL;
+    y = d.da_year + 4800UL - a;
+    m = d.da_mon + (12UL*a) - 3UL;
+
+    ulJDN = d.da_day + (( 153UL * m + 2UL) / 5UL) + (365UL * y) + (y / 4UL) - (y / 100UL) + (y / 400UL) - 32045UL;
+
+    ulF = ( ulJDN + 31741UL - ( ulJDN % 7UL )) % 146097UL % 36524UL % 1461UL;
+    ulS = ulF / 1460UL;
+    ulT = (( ulF - ulS ) % 365UL) + ulS;
+
+    <SPAN class=c-keyword>return</SPAN> (<SPAN class=c-keyword>short</SPAN>)((ulT / 7UL) + 1UL);
+}
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>struct</SPAN> date d = {0};
+
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        <A class=clib HREF="../../functions/GetDate.html">GetDate</A>( &d );
+        printf("%02d-%02d-%04d\nWeek number %d\n", d.da_day, d.da_mon, d.da_year, GetWeekNumber() );
+
+        <A class=clib HREF="../../functions/Delay.html">Delay</A>( 250 ); <SPAN class=c-comment>// wait 5 seconds before update</SPAN>
+    }
+}
+</PRE>
+
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

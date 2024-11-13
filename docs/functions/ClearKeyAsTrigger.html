@@ -1,0 +1,109 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>ClearKeyAsTrigger</TITLE>
+</HEAD>
+
+<BODY>
+<H1>ClearKeyAsTrigger</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>
+			This function makes it possible to use the small clear key as an additional trigger key to enable the scanner and read barcodes.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>void</SPAN> <A class=clib HREF="./ClearKeyAsTrigger.html">ClearKeyAsTrigger</A>( <SPAN class=c-keyword>int</SPAN> enabled );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+			<H5><SPAN class=c-keyword>int</SPAN> <I>enabled</I></H5>
+			<BR>
+			<I>enabled</I> can have the following values:
+
+			<TABLE class=OPTIONS width=100% >
+				<TR>
+					<TD>TRUE</TD>
+					<TD>The clear key operates as a trigger key in regards to reading barcodes.</TD>
+				</TR>
+				<TR>
+					<TD>FALSE</TD>
+					<TD>The clear key can't be used as trigger key to read barcodes.</TD>
+				</TR>
+				<TR>
+					<TD>-1</TD>
+					<TD>Returns the current value of <I>enabled</I>.</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>Returns the new/current value of <I>enabled</I>.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>By default the clear key does not behave like a trigger key in regards to reading barcodes.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE><SPAN class="c-comment">// This program reads barcodes by both the trigger key and the small clear key. </SPAN>
+<SPAN class="c-comment">// After each successful decode it shows a good read LED and makes a buzzer sound.</SPAN>
+
+<SPAN class="c-preprocessor">#include &lt;stdio.h&gt;</SPAN>
+<SPAN class="c-preprocessor">#include &quot;lib.h&quot;</SPAN>
+
+<SPAN class="c-keyword">void</SPAN> main( <SPAN class="c-keyword">void</SPAN> )
+{
+    <SPAN class="c-keyword">int</SPAN> ch;
+    <SPAN class="c-keyword">char</SPAN> bcr_buf[42] = {0};
+    <SPAN class="c-keyword">struct</SPAN> barcode code = {0};
+
+    <SPAN class="c-keyword">static</SPAN> <SPAN class="c-keyword">int</SPAN> last_key_pressed = -1;    <SPAN class="c-comment">// Used to determine whether a barcode was read using the clear key or trigger key</SPAN>
+
+    code.min   = 3;
+    code.max   = 41;
+    code.text  = bcr_buf;
+
+    <A class="clib" href="../functions/ClearKeyAsTrigger.html">ClearKeyAsTrigger</A>(TRUE);            <SPAN class="c-comment">  // This function makes it possible to use the small clear key </SPAN>
+                                        <SPAN class="c-comment">  // as additional trigger key to enable the scanner and read barcodes. </SPAN>
+
+    <A class="clib" href="../functions/ScannerPower.html">ScannerPower</A>(SINGLE|TRIGGER, 250);    <SPAN class="c-comment">// Single read / Trigger mode / 5 seconds</SPAN>
+
+    <SPAN class="c-keyword">for</SPAN>(;;)
+    {
+        <SPAN class="c-keyword">if</SPAN>( (ch=getchar()) &gt; 0 )
+            last_key_pressed = ch;        <SPAN class="c-comment">// Used to determine whether a barcode was read using the clear key or trigger key</SPAN>
+
+        <SPAN class="c-keyword">if</SPAN>(<A class="clib" href="../functions/ReadBarcode.html">ReadBarcode</A>(&amp;code) == OK)
+        {
+            <SPAN class="c-keyword">if</SPAN>(last_key_pressed == TRIGGER_KEY)
+                <A class="clib" href="../functions/GoodReadLed.html">GoodReadLed</A>(GREEN, 10);
+            <SPAN class="c-keyword">else</SPAN>
+                <A class="clib" href="../functions/GoodReadLed.html">GoodReadLed</A>(ORANGE, 10);
+
+            <A class="clib" href="../functions/Sound.html">Sound</A>( TSTANDARD, VHIGH, SMEDIUM, SHIGH, 0);
+            printf(&quot;%*s\r&quot;, code.length, code.text);
+        }
+
+        <A class="clib" href="../functions/Idle.html">Idle</A>();
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+
+</BODY>
+</HTML>

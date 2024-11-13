@@ -1,0 +1,90 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>CheckTime</TITLE>
+</HEAD>
+
+<BODY>
+<H1>CheckTime</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>Checks if the time structure passed to the function holds a valid time. For instance, if you specify 61 minutes past 2, the function will return FALSE.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>int</SPAN> <A class=clib HREF="./CheckTime.html">CheckTime</A>( <SPAN class=c-keyword>struct</SPAN> time *timep );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+			<H5><SPAN class=c-keyword>struct</SPAN> time *<I>timep</I></H5>
+			Pointer to the time structure that is to be checked.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TD>OK</TD>
+					<TD>When the time is valid.</TD>
+				</TR>
+				<TR>
+					<TD>ERROR</TD>
+					<TD>When the time is invalid.</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+	
+	<pre>
+<span class="c-preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="c-preprocessor">#include &quot;lib.h&quot;</span>
+
+<span class="c-keyword">void</span> main( <span class="c-keyword">void</span> )
+{
+    <span class="c-keyword">struct</span> time t;
+
+    t.ti_hour = 12;
+    t.ti_min = 12;
+    <span class="c-keyword">for</span>(;;)
+    {
+        t.ti_sec = 62;
+        printf(&quot;\nTime: %02d:%02d:%02d&quot;,t.ti_hour,t.ti_min,t.ti_sec);
+        <span class="c-keyword">if</span>( <a class="clib" href="./CheckTime.html">CheckTime</a>( &amp;t ) == OK )
+            printf(&quot;\nTime ok!!&quot;);
+        <span class="c-keyword">else</span>
+            printf(&quot;\nIllegal time!!&quot;);
+        <span class="c-keyword">while</span>( !kbhit() )
+            <a class="clib" href="./Idle.html">Idle</a>();
+        <a class="clib" href="./ResetKey.html">ResetKey</a>();
+
+        t.ti_sec = 12;
+        printf(&quot;\nTime: %02d:%02d:%02d&quot;,t.ti_hour,t.ti_min,t.ti_sec);
+        <span class="c-keyword">if</span>( <a class="clib" href="./CheckTime.html">CheckTime</a>( &amp;t ) == OK )
+            printf(&quot;\nTime ok!!&quot;);
+        <span class="c-keyword">else</span>
+            printf(&quot;\nIllegal time!!&quot;);
+        <span class="c-keyword">while</span>( !kbhit() )
+            <a class="clib" href="./Idle.html">Idle</a>();
+        <a class="clib" href="./ResetKey.html">ResetKey</a>();
+    }
+}
+</pre>
+
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

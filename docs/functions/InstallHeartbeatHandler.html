@@ -1,0 +1,97 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>InstallHeartbeatHandler</TITLE>
+</HEAD>
+
+<BODY>
+<H1>InstallHeartbeatHandler</H1>
+
+<TABLE width=100% class=setup>
+    <TR class=setup>
+        <TD class=item>Availability</TD>
+        <TD class=itemdescr>All terminals</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Description</TD>
+        <TD class=itemdescr>
+            With <A class=clib HREF="./InstallHeartbeatHandler.html">InstallHeartbeatHandler</A>, you can install callback
+            functions that will be called every 20ms by the operating system.
+        </TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Syntax</TD>
+        <TD class=itemdescr>
+
+        <SPAN class=c-keyword>typedef void</SPAN>(*heartbeat_function)(<SPAN class=c-keyword>void</SPAN>);<BR>
+
+        <SPAN class=c-keyword>int</SPAN> <A class=clib HREF="./InstallHeartbeatHandler.html">InstallHeartbeatHandler</A>( heartbeat_function userfunction );</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Arguments</TD>
+        <TD class=itemdescr>
+            <H5>
+            <SPAN class=c-keyword>heartbeat_function</SPAN>   <I>userfunction</I><BR>
+            </H5>
+            The name of the function that is to be installed.
+        </TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Returns</TD>
+        <TD class=itemdescr>OK, in case the handler is successfully installed, or the handler was already installed. ERROR, in case there are too many handlers installed.</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Remarks</TD>
+        <TD class=itemdescr>
+            <H4>WARNING:</H4>
+            Make sure that userfunction() only uses very little time. The heartbeat is a interrupt routine that locks system resources, so when it calls userfunction(),
+            other interrupts are blocked until userfunction() returns.<BR> In any case, the userfunction call must return within 2.5 seconds, or the system will do a restart.
+            So it is recommended to use this function with great care.<BR>
+        </TD>
+    </TR>
+
+    <TR class=setup>
+        <TD class=item>Example</TD>
+        <TD class=itemdescr>
+<PRE>
+<SPAN class="c-comment">// The code fragment below installs a callback function</SPAN>
+<SPAN class="c-comment">// that is executed by the operating system every 20ms.</SPAN>
+<SPAN class="c-comment">// The callback makes sure that the red LED is switched</SPAN>
+<SPAN class="c-comment">// on for a short time every 2 seconds.</SPAN>
+<SPAN class="c-comment">// (Press function key to uninstall)</SPAN>
+<SPAN class="c-preprocessor">#include &lt;stdio.h&gt;</SPAN>
+<SPAN class="c-preprocessor">#include &quot;lib.h&quot;</SPAN>
+
+<SPAN class="c-keyword">int</SPAN> Callback(<SPAN class="c-keyword">void</SPAN>)
+{
+    <SPAN class="c-keyword">static</SPAN> <SPAN class="c-keyword">int</SPAN> counter=100;
+
+    <SPAN class="c-keyword">if</SPAN> (--counter == 0)
+    {
+        <A class="clib" href="../functions/GoodReadLed.html">GoodReadLed</A>(RED,10);
+        counter = 100;
+        <SPAN class="c-keyword">return</SPAN> TRUE; <SPAN class="c-comment">// Return TRUE to indicate device needs to wake-up</SPAN>
+    }
+    <SPAN class="c-keyword">return</SPAN> TRUE; <SPAN class="c-comment">// Return FALSE to indicate can stay asleep (return DISABLED if the device may power off)</SPAN>
+}
+
+<SPAN class="c-keyword">void</SPAN> main( <SPAN class="c-keyword">void</SPAN> )
+{
+    printf(&quot;\nTimer callback&quot;);
+
+    <A class="clib" href="../functions/InstallHeartbeatHandler.html">InstallHeartbeatHandler</A>(Callback);
+
+    <SPAN class="c-keyword">while</SPAN>(1)
+    {
+		<SPAN class="c-keyword">if</SPAN> (getchar() == CLR_KEY)
+            <A class="clib" href="../functions/RemoveHeartbeatHandler.html">RemoveHeartbeatHandler</A>(Callback);
+	}
+    <A class="clib" href="../functions/Idle.html">Idle</A>();
+}
+</PRE>
+        </TD>
+    </TR>
+</TABLE>
+</BODY>
+</HTML>

@@ -1,0 +1,79 @@
+﻿.sortable li {
+    display: inline-block;
+    float: left;
+    margin-right: 30px;
+}
+
+img {
+    cursor: pointer;
+}
+
+@media (max-width: 990px) {
+    #tableBody select, input {
+        width: 100px;
+    }
+}
+
+@media (max-width: 612px) {
+    #tableBody select, input {
+        width: 60px;
+    }
+}
+
+@media (max-width: 462px) {
+    #tableBody select, input {
+        width: 40px;
+    }
+}
+
+#templateSettings:hover {
+    cursor: pointer;
+}
+
+input {
+    border: 1px solid #a9a9a9;
+    border-radius: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+    outline: none;
+}
+
+    input:disabled, select:disabled {
+        background-color: whitesmoke;
+    }
+
+td {
+    padding: 4px;
+}
+
+    td:nth-child(2) {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+
+    td:nth-last-child(2) {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+.spacer {
+    width: 0px;
+    padding: 3px;
+    background: none;
+}
+
+.modal-body select {
+    border-radius: 4px;
+    height: 34px;
+    outline: none;
+}
+
+.modal-body .template-input {
+    border: 1px solid #a9a9a9;
+    border-radius: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+    height: 34px;
+    max-width: 127px;
+    outline: none;
+}

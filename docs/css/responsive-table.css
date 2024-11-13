@@ -1,0 +1,46 @@
+﻿@media (min-width: 1200px) {
+    table.compact, table.compact td, table.compact th {
+        /*Compact is a datatables class removing a lot of padding on big tables. Here we'll also shrink down font sizes*/
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 1199px) {
+    table {
+        /*Let's not do anything here yet*/
+    }
+    
+    table.compact, table.compact td, table.compact th {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 991px) {
+    table, table td, table th {
+        line-height: 1.25;
+        padding: .5rem;
+    }
+}
+
+@media (max-width: 767px) {
+    table, table td, table th {
+        font-size: 14px;
+        padding: .25rem;
+    }
+    
+    table.compact, table.compact td, table.compact th {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 575px) {
+    table {
+        font-size: 12px;
+        line-height: 1;
+    }
+    
+    table.compact, table.compact td, table.compact th {
+        font-size: 11px;
+
+    }
+}

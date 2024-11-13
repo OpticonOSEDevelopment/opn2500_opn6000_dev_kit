@@ -1,0 +1,59 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Appload</TITLE>
+</HEAD>
+
+<BODY>
+<H1>NetO32</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>
+			<IMG alt="APPLOAD"  src="./NetO32/Images/Neto32Main.jpg"></A><BR>
+			<BR>
+			The NetO32 application is a Windows 32bit implementation of	the NetO protocol.
+			NetO is the standard protocol that is implemented on the whole Opticon hand
+			held terminal range. With this protocol an Opticon Terminal can send or receive
+			files from a host device (PC). The host (PC) is the device that takes the
+			initiative by sending a small poll command to the terminal(s) with a specific
+			ID. The terminal can respond if the poll command ID matches the ID of the
+			terminal or if the poll command sends the broadcast ID. When the terminal
+			responds to the Poll command it will tell the host that it wants to send or
+			receive files. The host will then start the up or download if that is possible.
+			The get a safe transfer of the file some check are included in the transfer to
+			see if anything goes wrong. When the transfer of the file is completed a new
+			file will be on the terminal or on the host.
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Options</TD>
+		<TD class=itemdescr>
+			Press on the different areas of the screenshot below to browse through the configration options of NetO32.<BR>
+			<BR>
+			<IMG src="./NetO32/Images/RS232.jpg" USEMAP="#RS232_PAGE">
+			<MAP NAME="RS232_PAGE">
+				<AREA SHAPE = "rect" COORDS="23,37,165,54"   HREF="./NetO32/RS232_OPTIONS.html">
+				<AREA SHAPE = "rect" COORDS="38,70,165,86"   HREF="./NetO32/Download_OPTIONS.html">
+				<AREA SHAPE = "rect" COORDS="38,87,165,102"  HREF="./NetO32/Upload_OPTIONS.html">
+				<AREA SHAPE = "rect" COORDS="38,103,166,118" HREF="./NetO32/PollTime_OPTIONS.html">
+				<AREA SHAPE = "rect" COORDS="38,135,166,152" HREF="./NetO32/Appearance_OPTIONS.html">
+				<AREA SHAPE = "rect" COORDS="38,153,164,169" HREF="./NetO32/Log_OPTIONS.html">
+
+				<AREA SHAPE = "rect" COORDS="180,89,280,144"  HREF="./NetO32/RS232_OPTIONS.html#comport">
+				<AREA SHAPE = "rect" COORDS="180,156,279,301" HREF="./NetO32/RS232_OPTIONS.html#Baudrate">
+				<AREA SHAPE = "rect" COORDS="310,91,410,168"  HREF="./NetO32/RS232_OPTIONS.html#Parity">
+				<AREA SHAPE = "rect" COORDS="310,173,409,234" HREF="./NetO32/RS232_OPTIONS.html#Bytesize">
+				<AREA SHAPE = "rect" COORDS="310,240,409,301" HREF="./NetO32/RS232_OPTIONS.html#Stopbits">
+				<AREA SHAPE = "rect" COORDS="416,90,561,202"  HREF="./NetO32/RS232_OPTIONS.html#Irda">
+			</MAP>
+		</TD>
+	</TR>
+
+
+</TABLE>
+</BODY>
+</HTML>

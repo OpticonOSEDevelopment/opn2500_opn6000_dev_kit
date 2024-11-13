@@ -1,0 +1,114 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>GetSystemTime</TITLE>
+</HEAD>
+
+<BODY>
+<H1>GetSystemTime</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>
+			This function returns the current value of the system timer. This timer continuously
+			increments every timer tick and doesn't have to be started and it also doesn't stop like a
+			timeout timer. This function makes it possible to create
+			multiple timed processes that run "simultaneously" in an application.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>unsigned long</SPAN> <A class=clib HREF="./GetSystemTime.html">GetSystemTime</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>
+			Returns the current value of the system timer. <BR>The duration of one timer tick is 20ms.<BR>
+			For example, 1 second takes 50 timer ticks.<BR>
+			<BR>
+			The system timer has a range of 0 to 4294967295, which means the timer can run
+			for nearly 1000 days, before it resets to zero.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>
+			The system timer can be (re)set with the <A class=clib HREF="./SetSystemTime.html">SetSystemTime()</A> function.<BR>
+			<BR>
+			Resetting the system timer doesn't affect the time or date of the operating system in any way.<BR>
+			<BR>
+			When only 1 timer is needed in your application, it's better to use the <A class=clib HREF="./StartTimer.html">StartTimer()</A> function.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-preprocessor>#define</SPAN> HIGH_DELAY      ( 13 * 5 )      <SPAN class=c-comment>//Note that these are prime numbers</SPAN>
+<SPAN class=c-preprocessor>#define</SPAN> MEDIUM_DELAY    ( 23 * 5 )
+<SPAN class=c-preprocessor>#define</SPAN> LOW_DELAY       ( 37 * 5 )
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>unsigned long</SPAN> current_time;
+    <SPAN class=c-keyword>unsigned long</SPAN> next_high_time;
+    <SPAN class=c-keyword>unsigned long</SPAN> next_medium_time;
+    <SPAN class=c-keyword>unsigned long</SPAN> next_low_time;
+
+    <A class=clib HREF="./SetSystemTime.html">SetSystemTime</A>(0);      <SPAN class=c-comment>//Reset system timer to zero</SPAN>
+
+    next_high_time = HIGH_DELAY;
+    next_medium_time = MEDIUM_DELAY;
+    next_low_time = LOW_DELAY;
+
+    printf("\n3 independent\ntimers using\nGetSystemTime");
+
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        current_time = <A class=clib HREF="./GetSystemTime.html">GetSystemTime</A>();
+
+        if(current_time>=next_low_time)
+        {
+            <A class=clib HREF="./Sound.html">Sound</A>( TSTANDARD, VSTANDARD, SLOW, 0);
+            <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>(RED,10);
+            next_low_time += LOW_DELAY;
+        }
+
+        if(current_time>=next_medium_time)
+        {
+            <A class=clib HREF="./Sound.html">Sound</A>( TSTANDARD, VSTANDARD, SMEDIUM, 0);
+            <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>(ORANGE,10);
+            next_medium_time += MEDIUM_DELAY;
+        }
+
+        if(current_time>=next_high_time)
+        {
+            <A class=clib HREF="./Sound.html">Sound</A>( TSTANDARD, VSTANDARD, SHIGH, 0);
+            <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>(GREEN,10);
+            next_high_time += HIGH_DELAY;
+        }
+
+        <A class=clib HREF="./Idle.html">Idle</A>();
+    }
+}
+
+</PRE>
+
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

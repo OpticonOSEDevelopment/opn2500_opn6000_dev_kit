@@ -1,0 +1,79 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>TriggerPressed</TITLE>
+</HEAD>
+
+<BODY>
+<H1>TriggerPressed</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>
+			This function returns the current state of the trigger key.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>int</SPAN> <A class=clib HREF="./TriggerPressed.html">TriggerPressed</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TD>&gt= 1</TD>
+					<TD>The trigger key is pressed down.</TD>
+				</TR>
+				<TR>
+					<TD>0</TD>
+					<TD>The trigger key is not pressed down.</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+	<TD class=item>Remarks</TD>
+	<TD class=itemdescr>
+		When the trigger key is pressed down this event is interpreted as a key stroke.<BR>
+		The key stroke is placed in the keyboard buffer as TRIGGER_KEY, which can be returned by the function getchar()<BR>
+	</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class=c-comment>// This example will sound the buzzer when the trigger key is being pressed</SPAN>
+
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{    
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        printf("\nPress any key!");
+        <SPAN class=c-keyword>if</SPAN>( <A class=clib HREF="./TriggerPressed.html">TriggerPressed</A>() )
+            <A class=clib HREF="./Sound.html">Sound</A>( TSTANDARD, VHIGH, SMEDIUM, 0);
+        <SPAN class=c-keyword>if</SPAN>( <A class=clib HREF="./DownPressed.html">DownPressed</A>() )
+            <A class=clib HREF="./Sound.html">Sound</A>( TSTANDARD, VHIGH, SLOW, 0);
+        <A class=clib HREF="./Idle.html">Idle</A>();
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

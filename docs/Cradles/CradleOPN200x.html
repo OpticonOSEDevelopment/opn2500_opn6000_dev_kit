@@ -1,0 +1,134 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Cradle OPN2002</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Cradle OPN2002</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Image</TD>
+		<TD class=itemdescr>
+			<A HREF="./CradleOPN200x.html#CRD2000"><IMG alt="CRD2000"  border="2" src="../images/Fcrd2000.jpg"></A>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Dip-switches</TD>
+		<TD class=itemdescr>
+			<A NAME="CRD2000"><H3>CRD2000</H3></A>
+			There are no DIP switches on the CRD2000.This cradle works either via USB or via RS232 and both interfaces do not require any configuration.<BR>
+			<BR>
+			The USB driver for this cradle can be downloaded from the Opticon web site, from this location:
+			<TABLE width=75% class=OPTIONS>
+				<TBODY>
+					<TR>
+						<TD><A HREF="https://www.opticon.com/support/Drivers/USB%20Drivers%20Installer.exe">Windows� driver installer</TD>
+						<TD>USB driver for Windows� 2000, XP& Vista, 8, 10 and 11,</TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Communication</TD>
+		<TD class=itemdescr>
+			The 10 slots of the CRD2000 multi cradle make it possible to quickly transfer barcode data of multiple OPN2002s to a central PC and load databases
+			and/or configuration files onto the OPN2002.<BR>
+			<BR>
+			To be able to do this easily, the OPN2002 offers a set of functions to transfer files from and to the OPN2002s using the NetO protocol. However, the difference between transferring
+			files using the NetO protocol on a single-slot cradle and a multi-cradle is that the use of terminal IDs is mandatory on both the PC as well as on the
+			OPN2002. This is to prevent that all OPN2002s in the cradle will try to send their data simultaneously.<BR>
+			<BR>
+			Since the OPN2002 doesn't have a system menu in which a terminal ID can be configured, each OPN2002 has its own unique serial number
+			stored in non-volatile memory, which can be used as terminal ID for transferring files using the NetO protocol.
+			On the OPN2002, the serial number can be retrieved by calling the function <A class=clib HREF="../functions/GetSerialNumber.html">GetSerialNumber</A>(),
+			which can then be used as parameter of the functions <A class=clib HREF="../functions/neto_receive.html">neto_receive</A>
+			and <A class=clib HREF="../functions/neto_transmit.html">neto_transmit</A>.
+			Since the serial number of OPN2002s is printed on the back of the terminal, the serials numbers can easily by added on the PC in the <A HREF="../Tools/NetO32.html">NetO32</A>
+			application. The 6-digit serial numbers can be added at 'Tools > Options > Polling and Timing > Terminals to Poll'.<BR>
+			<BR>
+			Below you'll find a small example program that demonstrates how the serial number can be used as parameter of the NetO functions. This program
+			simply sends the files it has just received back to PC, so make sure you haven't enabled the option 'Downloaded files > Append' in <A HREF="../Tools/NetO32.html">NetO32</A> to prevent
+			the file to double in size everytime it's send back.<BR>
+			<BR>
+			<P>
+				<B>Remarks</B>
+				<LU>
+					<LI>The CRD2000 does not allow multiple OPN2002s to send data at the same time to avoid data collisions.
+						The cradle uses the 'first come first serve' principle, so as soon as one OPN2002s starts communicating, the other OPN2002s in the cradle
+						will be muted until the currently active OPN2002 stops communicating for at least 250ms.
+					</LI>
+					<LI>The latest version of the <A HREF="../Tools/NetO32.html">NetO32</A> application can be downloaded from our web site. The minimum required version for using the CRD2000 is version 2.07.</LI>
+					<LI>When using <A HREF="../Tools/NetO32.html">NetO32</A>, don't configure a Poll Speed faster than 0,5s because due to the 250ms time-out mentioned above the OPN2002 will respond
+					to a poll after 280 to 480ms.</LI>
+
+				</LU>
+			</P>
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Loading software</TD>
+		<TD class=itemdescr>
+			Be aware that the CRD2000 can NOT load new software on multiple OPN2002s simultaneously, because only one OPN2002 can communicate to a PC at the same time.<BR>
+			<BR>
+			Since all terminals in a CRD2000 cradle will be able to receive the data that <A HREF="../Tools/Appload.html">Appload</A> is sent to the cradle,
+			but the OPN2002s can't tell whether they are currently muted or not, the loading of software would go terribly wrong for all OPN2002s
+			in the CRD2000 cradle besides one. The end result would be OPN2002s with faulty software that will need to be restored by loading
+			the software again (one at a time). See the <A HREF="../Terminals/OPN200x.html#TroubleShooting">trouble shooting</A> section for more information about
+			loading software on OPN2002s with faulty or crashing software.<BR>
+			<BR>
+			To prevent such problems, please read the <A HREF="../Terminals/OPN200x.html#OPN2002">Loading software on the OPN2002</A> section carefully, before loading any software by using the CRD2000.
+		</TD>
+	</TR>
+
+
+<TR class=setup>
+		<TD class=item>Example</TD>
+			<TD class=itemdescr>
+<PRE><SPAN class="c-preprocessor">#include &quot;lib.h&quot;</SPAN>
+<SPAN class="c-preprocessor">#include &lt;stdio.h&gt;</SPAN>
+<SPAN class="c-preprocessor">#include &lt;string.h&gt;</SPAN>
+
+<SPAN class="c-keyword">void</SPAN> main(<SPAN class="c-keyword">void</SPAN>)
+{
+    <SPAN class="c-keyword">char</SPAN> ftest[10][MAX_FNAME];
+    <SPAN class="c-keyword">int</SPAN> test;
+
+    <SPAN class="c-keyword">char</SPAN> serial_number[6+1];
+
+    sprintf(serial_number, &quot;%-6.6lu&quot;,  <A class="clib" href="../functions/GetSerialNumber.html">GetSerialNumber</A>());
+
+    <A class="clib" href="../functions/ComOpen.html">ComOpen</A>(COM9);
+
+    <SPAN class="c-keyword">for</SPAN>(;;)
+    {
+        test = <A class="clib" href="../functions/neto_receive.html">neto_receive</A>( ftest, serial_number, CLR_KEY, 3);
+
+        <SPAN class="c-keyword">if</SPAN> (test &lt; 0)
+        {
+            <A class="clib" href="../functions/Sound.html">Sound</A>(TSTANDARD, VHIGH, SLOW, 0);
+        }
+        <SPAN class="c-keyword">else</SPAN>
+        {
+            test = <A class="clib" href="../functions/neto_transmit.html">neto_transmit</A>( ftest, test, serial_number, CLR_KEY, 3);
+
+            <SPAN class="c-keyword">if</SPAN> (test &lt; 0)
+            {
+                <A class="clib" href="../functions/Sound.html">Sound</A>(TSTANDARD, VHIGH, SHIGH, 0);
+            }
+        }
+    }
+}
+</PRE>
+    	</TD>
+	</TR>
+
+
+</TABLE>
+</BODY>
+

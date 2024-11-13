@@ -1,0 +1,68 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>GetBatteryLevel</TITLE>
+</HEAD>
+
+<BODY>
+<H1>GetBatteryLevel</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>Returns the battery level of the device in %.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>unsigned int</SPAN> <A class=clib HREF="./GetBatteryLevel.html">GetBatteryLevel</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>
+			The output level of the battery as an unsigned integer value between 0 .. 100. The function only returns 100% when when the device is connected to an external power source and charging has completed.
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>
+
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdlib.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    printf("\nBattery level:");
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        printf("%d %%", GetBatteryLevel() );
+        <A class=clib HREF="./Sound.html">Sound</A>( TCLICK, VMEDIUM, SHIGH, 0);
+        <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>( GREEN, TCLICK);
+        <A class=clib HREF="./Delay.html">Delay</A>(5*50);
+    }
+}
+</PRE>
+	</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

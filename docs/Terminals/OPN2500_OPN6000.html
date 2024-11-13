@@ -1,0 +1,188 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Loading software on the OPN-2500 and OPN-6000</TITLE>
+</HEAD>
+<BODY>
+<H1>Loading software on the OPN-2500 and OPN-6000</H1>
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Image</TD>
+		<TD class=itemdescr>
+			<A HREF="./OPN2500_OPN6000.html#OPN2500"><IMG alt="OPN2500"  border="2" src="../images/Fopn2500.jpg"></A>
+			<A HREF="./OPN2500_OPN6000.html#OPN6000"><IMG alt="OPN6000"  border="2" src="../images/Fopn6000.jpg"></A>
+			<BR>
+			The OPN-2500 and OPN-6000 run a combined Bootloader, OS, Softdevice and application, which can be loaded as a single file
+			by a small PC application called <A HREF="../Tools/Appload.html">APPLOAD</A>.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Software codes</TD>
+		<TD>
+			The OPN terminals use an Operating System version that contains an unique 3 letter code.
+			Before you try to load new firmware on an OPN terminal you have to know which .bin file must be loaded on your terminal.
+			In the table below you can find the software codes for the OPN-2500 and OPN-6000.<BR>
+			<BR>
+			<TABLE width=50% class=OPTIONS>
+				<THEAD>
+					<TR>
+						<TH>Terminal</TH>
+						<TH>Bootloader</TH>
+						<TH>OS</TH>
+						<TH>Application</TH>
+					</TR>
+				</THEAD>
+				<TBODY>
+					<TR>
+						<td>OPN-2500</TD>
+						<TD>FAN</TD>
+						<TD>FBN</TD>
+						<TD>FFN</TD>
+					</TR>
+					<TR>
+						<td>OPN-6000</TD>
+						<TD>FAM</TD>
+						<TD>FBM</TD>
+						<TD>FFM</TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+			<BR>
+			<BR>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>USB Driver</TD>
+		<TD>
+			To be able to communicate with the OPN terminals using USB, you will need to have its USB driver installed on your PC. This driver can be found on our web site on the 'Service and Support' page.<BR>
+			<BR>
+			<TABLE width=50% class=OPTIONS>
+				<TBODY>
+					<TR>
+						<TD align=center><A HREF="https://www.opticon.com/support/Drivers/USB%20Drivers%20Installer.exe">USB Driver Installer</A></TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+			<P>After downloading the USB Drivers installer run the downloaded executable and follow the instuction.</P>
+			<P>After installing the USB driver, you can connect your OPN-2500 or OPN-6000 to USB using the USB-C cable. Windows will then automatically install a virtual COM port on your
+			PC, which can be selected in various applications, like <A HREF="../Tools/Appload.html">Appload</A> or PuTTy</P>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item><A NAME="OPN2500">OPN-2500</A></TD>
+		<TD class=itemdescr>
+			To load a new OS or application onto the OPN-2500, you'll need a USB-C cable (which is supplied with the OPN-2500) and follow the instructions below<BR>
+			<BR>
+			(Alternatively you can use OptiConnect to restore the OPN-2500 to default firmware by Bluetooth)
+			<BR>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH colspan=2 width=100%>Load OS or application. </TH>
+				</TR>
+				<TR>
+					<TD><H4>USB Cable</H4></TD>
+					<TD>
+						Connect the OPN-2500 to your PC or laptop using the USB-C cable.<BR>
+						Start <A HREF="../Tools/Appload.html">Appload</A> and select the (Virtual) COM port of your OPN-2500 in Appload.<BR>
+						Select the firmware file in <A HREF="../Tools/Appload.html">Appload</A>.
+					</TD>
+				</TR>
+				<TR>
+					<TD><H4>Bluetooth (restore to default firmware)</H4></TD>
+					<TD>
+						Halt the Operating System using the method described below.<BR>
+						Start OptiConfigure on any mobile device and select 'Pair Scanner'.<BR>
+						Select your OPN-2500 to connect. <BR>
+						Select 'Yes' to start the firmware update.
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item><A NAME="OPN6000">OPN-6000</A></TD>
+		<TD class=itemdescr>
+			To load a new OS or application onto the OPN-6000, you'll need a USB-C cable (which is supplied with the OPN-6000) and follow the instructions below<BR>
+			<BR>
+			(Alternatively you can use OptiConnect to restore the OPN-6000 to default firmware by Bluetooth)
+			<BR>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH colspan=2 width=100%>Load OS or application. </TH>
+				</TR>
+				<TR>
+					<TD><H4>USB Cable</H4></TD>
+					<TD>
+						Connect the OPN-6000 to your PC or laptop using the USB-C cable.<BR>
+						Start <A HREF="../Tools/Appload.html">Appload</A> and select the (Virtual) COM port of your OPN-6000 in Appload.<BR>
+						Select the firmware file in <A HREF="../Tools/Appload.html">Appload</A>.
+					</TD>
+				</TR>
+				<TR>
+					<TD><H4>Bluetooth (restore to default firmware)</H4></TD>
+					<TD>
+						Halt the Operating System using the method described below.<BR>
+						Start OptiConfigure on any mobile device and select 'Pair Scanner'.<BR>
+						Select your OPN-6000 to connect. <BR>
+						Select 'Yes' to start the firmware update.
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item><A NAME="TroubleShooting">Trouble shooting</A></TD>
+		<TD class=itemdescr>
+			Since the OPN doesn't have a display, it also doesn't have a <A HREF="../Appl-development/Sysmenu.html">system menu</A> to resort to when you've installed a crashing application that prevents you from
+			loading new software on the OPN.<BR>
+			<BR>
+			For this reason the OPN has a few escape mechanisms to allow you to restart, halt your application and/or install new software. This can be very useful in case the OPN has crashed or is constantly restarting due to
+			a crashing application.<BR>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH colspan=2 width=100%>Restart mechanisms</TH>
+
+				</TR>
+				<TR>
+					<TD>Automatic</TD>
+					<TD>
+						The OPN has a watchdog timer to determine whether the OS is still running or has crashed. This watchdog will cause the OPN to restart after about 3 seconds if the OS has crashed.
+						This watchdog timer will not cause a restart when only the application has crashed.
+					</TD>
+				</TR>
+				<TR>
+					<TD>Manually</TD>
+					<TD>
+						The OPN has a manual restart mechanism that allows you to restart in situations that the OS is still running, but your the application has crashed. In order to activate
+						this mechanism, press and hold the trigger and delete key for at least 15 seconds. After the OPN shows a WHITE led, you can release both keys to complete the restart.
+					</TD>
+				</TR>
+			</TABLE>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR><TH width=100%>Halting the Operating System (is case your application crashed or doesn't open the USB-VCP port)</TH></TR>
+				<TR><TD>Restart your application using one of the 2 methods listed above, but keep both keys pressed</TD></TR>
+				<TR><TD>Release the function key first and then the trigger key</TD></TR>
+				<TR><TD>(<I>If successful the LED of your OPN should now be blinking <B><font color=red>red</font></B>. You should now be able to load a new OS using the USB-C cable or OptiConnect)</I></TD></TR>
+			</TABLE>
+
+			<BR>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR><TH width=100%>Restarting an OPN with an halted or missing OS or application</TH></TR>
+				<TR>
+					<TD>
+						If your OPN is blinking <B><font color=red>red</font></B>, because the OS has been halted or is corrupt, 
+						you can either load new software to exit this state or press and hold both keys for 5 seconds.
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

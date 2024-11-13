@@ -1,0 +1,94 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>IsCharging</TITLE>
+</HEAD>
+
+<BODY>
+<H1>IsCharging</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>This function checks whether the device is being charged. </TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>int</SPAN> <A class=clib HREF="./IsCharging.html">IsCharging</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TD width="4%">0</TD>
+					<TD>The device is not connected to USB nor placed on a wireless charger (OPN6000 only)</TD>
+				</TR>
+				<TR>
+					<TD>1</TD>
+					<TD>The device is connected to USB or placed on a wireless charger (OPN6000 only)</TD>
+				</TR>
+				<TR>
+					<TD>2</TD>
+					<TD>The device is connected to USB or placed on a wireless charger and the charging is complete.</TD>
+				</TR>
+				<TR>
+					<TD>3</TD>
+					<TD>The devicex is connected to USB or placed on a wireless charger, but not able to charge (i.e. temperature out of range)</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>int</SPAN> previous_state, current_state;
+
+    previous_state = -1;    <SPAN class=c-comment>// Not equal to 0, 1, etc. </SPAN>
+
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        current_state = <A class=clib HREF="./IsCharging.html">IsCharging</A>();
+        <SPAN class=c-keyword>if</SPAN>( current_state != previous_state)
+        {
+            previous_state = current_state;
+            <SPAN class=c-keyword>switch</SPAN>( current_state )
+            {
+                <SPAN class="c-keyword">case</SPAN> 0:
+                    printf(&quot;Not charging\n&quot;);
+                    <SPAN class="c-keyword">break</SPAN>;
+                <SPAN class="c-keyword">case</SPAN> 1:
+                    printf(&quot;Charging\n&quot;);
+                    <SPAN class="c-keyword">break</SPAN>;
+                <SPAN class="c-keyword">case</SPAN> 2:
+                    printf(&quot;Completed\n&quot;);
+                    <SPAN class="c-keyword">break</SPAN>;
+                <SPAN class="c-keyword">case</SPAN> 3:
+                    printf(&quot;Charging error\n&quot;);
+                    <SPAN class="c-keyword">break</SPAN>;
+            }
+        }
+        <A class=clib HREF="./Idle.html">Idle</A>();
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

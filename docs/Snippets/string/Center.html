@@ -1,0 +1,69 @@
+<link rel="stylesheet" type="text/css" href="../../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Center</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Center</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>Center the contents of the source input string in the input size.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>char</SPAN> *<A class=strfun HREF="./Center.html">Center</A>( <SPAN class=c-keyword>char</SPAN> *pszSource, <SPAN class=c-keyword>int</SPAN> nSize );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+			<H5><SPAN class=c-keyword>char</SPAN> *<I>pszSource</I></H5>
+			The source input string that needs to be centered into the given size.<BR>
+
+			<H5><SPAN class=c-keyword>int</SPAN> <I>nSize</I></H5>
+			The size of where the contents of the souce input string needs to be centered.<BR>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>A pointer to the changed source input string.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>The source input string is changed by this function.
+			<H4>WARNING:</H4>
+			<B>The input string should hold enough space for the size!</B>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+<SPAN class=c-preprocessor>#include</SPAN> "input.h"     <SPAN class=c-comment>//Holds the input functions</SPAN>
+<SPAN class=c-preprocessor>#include</SPAN> "strfunc.h"   <SPAN class=c-comment>//Holds the string manipulation functions</SPAN>
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>static char</SPAN> dummy[ 21 ];
+    
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        strcpy( dummy, "hello!");
+        printf("\forg:|%s|,", dummy );
+        printf("new:|%-12.12s|\n", <A class=strfun HREF="./Center.html">Center</A>( dummy, 12 ));
+        
+        printf("\npress a key");
+        <A class=input HREF="../input/WaitForKey.html">WaitForKey</A>();
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

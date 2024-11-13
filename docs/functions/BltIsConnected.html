@@ -1,0 +1,100 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>BltIsConnected</TITLE>
+</HEAD>
+
+<BODY>
+<H1>BltIsConnected</H1>
+
+<TABLE width=100% class=setup>
+    <TR class=setup>
+        <TD class=item>Availability</TD>
+        <TD class=itemdescr>All terminals</TD>
+    </TR>
+
+    <TR class=setup>
+        <TD class=item>Description</TD>
+        <TD class=itemdescr>Returns the current state of the Bluetooth connection.</TD>
+    </TR>
+
+    <TR class=setup>
+        <TD class=item>Syntax</TD>
+        <TD class=itemdescr><SPAN class=c-keyword>int</SPAN> <A class=clib HREF="./BltIsConnected.html">BltIsConnected</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+    </TR>
+
+    <TR class=setup>
+        <TD class=item>Arguments</TD>
+        <TD class=itemdescr>None</TD>
+    </TR>
+
+    <TR class=setup>
+        <TD class=item>Returns</TD>
+        <TD class=itemdescr>
+            <TABLE class=OPTIONS width=100%>
+                <TR>
+                    <TD>TRUE</TD>
+                    <TD>Connected.</TD>
+                </TR>
+                <TR>
+                    <TD>FALSE</TD>
+                    <TD>Not connected.</TD>
+                </TR>
+            </TABLE>
+        </TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Example</TD>
+        <TD class=itemdescr>
+<PRE>
+<SPAN class="c-preprocessor">#include</SPAN> &lt;stdio.h&gt;
+<SPAN class="c-preprocessor">#include</SPAN> "lib.h"
+
+<SPAN class="c-keyword">void</SPAN> main( <SPAN class="c-keyword">void</SPAN> )
+{
+    <SPAN class="c-keyword">int</SPAN> ch, open, connected;
+
+    <A class=clib HREF="./ComOpen.html">ComOpen</A>( COM12 );    <SPAN class=c-comment>// Enable the COM port for BLE HID (discoverable)</SPAN>
+
+    <A class=clib HREF="./Sound.html">Sound</A>(TSTANDARD, VHIGH, SMEDIUM, SHIGH, 0);
+    open = TRUE;
+    connected = FALSE;
+
+    <SPAN class="c-keyword">for</SPAN>(;;)
+    {   <SPAN class=c-comment>// Sound a high beep when the port is opened by host</SPAN>
+        <span class="c-keyword">if</span>(connected != <A class=clib HREF="./BltIsConnected.html">BltIsConnected</A>())
+        {   <SPAN class=c-comment>// Sound a high beep when connected to host</SPAN>
+            connected = <A class=clib HREF="./BltIsConnected.html">BltIsConnected</A>();
+            <A class=clib HREF="./Sound.html">Sound</A>(TVLONG, VHIGH, connected ? SHIGH : SLOW, 0);
+        }
+        
+        <span class="c-keyword">if</span>((ch=getchar()) == TRIGGER_KEY)
+        {
+            <span class="c-keyword">if</span>(!open)  <SPAN class=c-comment>// Re-Enable the COM port for BLE HID (discoverable)</SPAN>
+            {
+                <A class=clib HREF="./Sound.html">Sound</A>(TSTANDARD, VHIGH, SMEDIUM, SHIGH, 0);
+                <A class=clib HREF="./ComOpen.html">ComOpen</A>( COM12 );
+                open = TRUE;
+            }
+            <span class="c-keyword">else</span>
+            {
+                <A class=clib HREF="./PutCom2.html">PutCom2</A>(COM12, 'X');   <SPAN class=c-comment>// If connected -> Type 'X' on trigger press</SPAN>
+            }
+        }
+        <span class="c-keyword">else if</span>(ch == CLR_KEY && open)   <SPAN class=c-comment>// Close the COM port using function key</SPAN>
+        {
+            <A class=clib HREF="./ComClose.html">ComClose</A>(COM12);
+            <A class=clib HREF="./Sound.html">Sound</A>(TLONG, VHIGH, SERROR, 0);
+            connected = open = FALSE;
+        }
+        <A class=clib HREF="./Idle.html">Idle</A>();    <SPAN class=c-comment>// Very important to lower the power consumption</SPAN>
+    }
+}
+</PRE>
+        </TD>
+    </TR>
+
+</TABLE>
+</BODY>
+</HTML>

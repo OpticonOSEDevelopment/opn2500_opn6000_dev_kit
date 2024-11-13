@@ -1,0 +1,79 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>GetCom</TITLE>
+</HEAD>
+
+<BODY>
+<H1>GetCom</H1>
+
+<TABLE width=100% class=setup>
+    <TR class=setup>
+        <TD class=item>Availability</TD>
+        <TD class=itemdescr>All terminals</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Description</TD>
+        <TD class=itemdescr>
+            This function reads a character from the receive buffer of
+            the serial communications port that was opened last by
+            <A class=clib HREF="./ComOpen.html">ComOpen()</A>.
+        </TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Syntax</TD>
+        <TD class=itemdescr><SPAN class=c-keyword>int</SPAN> <A class=clib HREF="./GetCom.html">GetCom</A>( <SPAN class=c-keyword>int</SPAN> timeout );</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Arguments</TD>
+        <TD class=itemdescr>
+            <H5><SPAN class=c-keyword>int</SPAN> <I>timeout</I></H5>
+            timeout is the time (in steps of 20ms) that the routine tries to get a character from the communications
+            port before returning. For example, timeout = 10 specifies 200 milliseconds.
+            When timeout = 0, the routine returns immediately.
+        </TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Returns</TD>
+        <TD class=itemdescr>On success, when a character is available, <A class=clib HREF="./GetCom.html">GetCom()</A> returns the received character.<BR> On error -1 is returned.</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Remarks</TD>
+        <TD class=itemdescr>
+            - When no port is currently open, ERROR will be returned.<BR>
+            - Note that on the OPN-2500 ;amp OPN-6000 the default port (COM9) is automatically opened at start-up.
+        </TD>
+
+    </TR>
+    <TR class=setup>
+        <TD class=item>Example</TD>
+        <TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>int</SPAN> ch;
+
+    <A class=clib HREF="./ComOpen.html">ComOpen</A>( COM9 );    <SPAN class=c-comment>// Open the USB-VCP port</SPAN>
+
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        <SPAN class=c-keyword>if</SPAN>( (ch = <A class=clib HREF="./GetCom.html">GetCom</A>( 0 )) != -1)
+        {
+            <A class=clib HREF="./PutCom.html">PutCom</A>( ch );
+        }
+
+        <A class=clib HREF="./Idle.html">Idle</A>();    <SPAN class=c-comment>// Very important to lower the power consumption</SPAN>
+    }
+}
+</PRE>
+
+        </TD>
+    </TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,156 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>AutoPowerDown</TITLE>
+</HEAD>
+
+<BODY>
+<H1>AutoPowerDown</H1>
+
+<TABLE width=100% class=setup>
+    <TR class=setup>
+        <TD class=item>Availability</TD>
+        <TD class=itemdescr>All terminals</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Description</TD>
+        <TD class=itemdescr>
+            The OPN-2500 and OPN-6000 have 4 power states: active, idle, sleep (power down) and power off. This function controls the sleep (power down) and power off time.
+            Every time when the user presses a key, or when the communications port receives data, the count down for automatic power down is reset.
+        </TD>
+    </TR>
+
+    <TR class=setup>
+        <TD class=item>Syntax</TD>
+        <TD class=itemdescr><SPAN class=c-keyword>void</SPAN> <A class=clib HREF="./AutoPowerDown.html">AutoPowerDown</A>(<SPAN class=c-keyword>int</SPAN> command, <SPAN class=c-keyword>unsigned long</SPAN> time);</TD>
+    </TR>
+
+    <TR class=setup>
+        <TD class=item>Arguments</TD>
+        <TD class=itemdescr>
+            <H5><SPAN class=c-keyword>int</SPAN> <I>command</I></H5>
+            The action that <A class=clib HREF="./AutoPowerDown.html">AutoPowerDown()</A> must perform. One of the following values:
+
+            <TABLE width=100% class=OPTIONS>
+                <TR>
+                    <TD width=6%>OFF</TD>
+                    <TD>Disables the <A class=clib HREF="./AutoPowerDown.html">AutoPowerDown</A> feature. The time parameter is ignored and the previously configured time is lost.</TD>
+                </TR>
+                <TR>
+                    <TD>ON</TD>
+                    <TD>Enables the <A class=clib HREF="./AutoPowerDown.html">AutoPowerDown()</A> feature, and sets the 'on' time, specified by time in steps of 20 milliseconds. The 'on' time is the specified value * 20 milliseconds. E.g. time = 3000, means 20ms*3000 = 60 seconds.</TD>
+                </TR>
+                <TR>
+                    <TD>ADP_RESET</TD>
+                    <TD>Resets the countdown for automatic power down. The time parameter is ignored. Note that the countdown for automatic power down is also reset when a key is pressed, or when data is received via the serial port.</TD>
+                </TR>
+                <TR>
+                    <TD>ADP_NOW</TD>
+                    <TD>Causes the scanner to power down immediately. The time parameter is ignored.</TD>
+                </TR>
+                <TR>
+                    <TD>ADP_SUSPEND</TD>
+                    <TD>
+                        Suspends the <A class=clib HREF="./AutoPowerDown.html">AutoPowerDown</A> timer until this function is called again
+                        with ADP_RESUME, ON or NOW. The time parameter is ignored.<BR>
+                    </TD>
+                </TR>
+                <TR>
+                    <TD>ADP_RESUME</TD>
+                    <TD>
+                        Resumes the <A class=clib HREF="./AutoPowerDown.html">AutoPowerDown</A> timer, if it was suspended earlier by
+                        this function using ADP_SUSPEND. The time parameter is ignored.<BR>
+                    </TD>
+                </TR>
+                <TR>
+                    <TD>APD_SHUTDOWN_ON</TD>
+                    <TD>
+                        Completely shutdown the device. The application will restart on pressing a key or connecting to USB. Note: be sure that there is no open file. Use the shutdown callback API call for this purpose.
+                    </TD>
+                </TR>
+                <TR>
+                    <TD>APD_SHUTDOWN_OFF</TD>
+                    <TD>
+                        Completely shutdown disabled
+                    </TD>
+                </TR>
+                
+            </TABLE>
+            <H5><SPAN class=c-keyword>unsigned long</SPAN> <I>time</I></H5>
+            The time before the terminal powers down automatically.
+        </TD>
+    </TR>
+
+    <TR class=setup>
+        <TD class=item>Returns</TD>
+        <TD class=itemdescr>None</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Remarks</TD>
+        <TD class=itemdescr>
+            time is an unsigned long. The maximum value is 4294967295, approx. 2.5 years. The minimum value is theoretically zero, but the power down time is limited to 1 second.<BR>
+            The default power down and off times are different for the various terminals, and are shown below:
+
+            <TABLE width=100% class=OPTIONS>
+                <TR class=OPTIONS>
+                    <TH class=OPTIONS>Device</TH>
+                    <TH class=OPTIONS>Sleep (Power down)</TH>
+                    <TH class=OPTIONS>Power off</TH>
+                </TR>
+                <TR class=OPTIONS>
+                    <TD class=OPTIONS>OPN-2500</TD>
+                    <TD class=OPTIONS>1 second</TD>
+                    <TD class=OPTIONS>2 seconds</TD>
+                </TR>
+                <TR class=OPTIONS>
+                    <TD class=OPTIONS>OPN-6000</TD>
+                    <TD class=OPTIONS>2 seconds</TD>
+                    <TD class=OPTIONS>10 minutes</TD>
+                </TR>
+            </TABLE>            
+            When turning a device off after a certain time the power consumption is reduced to almost 0, which will greatly extend the battery life 
+            <br>
+            Be very sure that when you use the APD_SHUTDOWN_ON, to never leave files open before the system shuts down.
+            <BR>
+            To make sure that no files are left open, use the new API-function 'Application_ShutdownCallback' which installs a call back function, 
+            which is called before the device powers off (when idle or forced due to a low battery) and when the USB cable is connected in USB-MSD mode.<br>
+        </TD>
+    </TR>
+
+    <TR class=setup>
+    <TD class=item>Example</TD>
+    <TD class=itemdescr>
+<PRE>
+<SPAN class="c-preprocessor">#include &lt;stdio.h&gt;</SPAN>
+<SPAN class="c-preprocessor">#include &quot;lib.h&quot;</SPAN>
+
+<SPAN class="c-keyword">void</SPAN> main(<SPAN class="c-keyword">void</SPAN>)
+{
+    <A class="clib" href="../functions/AutoPowerDown.html">AutoPowerDown</A>(ON, 1*50); <SPAN class="c-comment">// 1 second</SPAN>
+    <A class="clib" href="../functions/AutoPowerDown.html">AutoPowerDown</A>(APD_SHUTDOWN_ON, 20*50); <SPAN class="c-comment">// 20 seconds</SPAN>
+
+    <SPAN class="c-keyword">if</SPAN> (<A class="clib" href="../functions/IsColdBoot.html">IsColdBoot</A>())
+        <A class="clib" href="../functions/Sound.html">Sound</A>(TSTANDARD, VHIGH, SLOW, SMEDIUM, SHIGH, SLOW, SMEDIUM, SHIGH, 0); <SPAN class="c-comment">// 6 tones: Start-up beep</SPAN>
+    <SPAN class="c-keyword">else</SPAN>
+        <A class="clib" href="../functions/Sound.html">Sound</A>(TSTANDARD, VHIGH, SHIGH, SMEDIUM, SHIGH, 0); <SPAN class="c-comment">// 3 tones: was powered off beep</SPAN>
+        
+    <A class="clib" href="../functions/PoweredDown.html">PoweredDown</A>();   <SPAN class="c-comment">// Reset the sleep flag on start-up</SPAN>
+
+    <SPAN class="c-keyword">for</SPAN>(;;)
+    {
+        <SPAN class="c-keyword">if</SPAN>(<A class="clib" href="../functions/getchar.html">getchar</A>() == TRIGGER_KEY)
+        {
+            <SPAN class="c-keyword">if</SPAN>(<A class="clib" href="../functions/PoweredDown.html">PoweredDown</A>())
+                <A class="clib" href="../functions/Sound.html">Sound</A>(TSTANDARD, VHIGH, SMEDIUM, SHIGH, 0); <SPAN class="c-comment">// 2 tones: Device has slept</SPAN>
+        }
+
+        <A class="clib" href="../functions/Idle.html">Idle</A>(); <SPAN class="c-comment">// Important to lower power consumption while awake</SPAN>
+    }
+}
+</PRE>
+</TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

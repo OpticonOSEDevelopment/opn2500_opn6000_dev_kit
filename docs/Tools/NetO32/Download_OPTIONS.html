@@ -1,0 +1,90 @@
+<link rel="stylesheet" type="text/css" href="../../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Download Options</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Download Options</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+	<TD class=item>Description</TD>
+	<TD class=itemdescr>
+		Press on the different areas of the screenshot below to browse through this NetO32 help.<BR>
+		<BR>
+		<IMG src="./Images/Download.jpg" USEMAP="#Download_PAGE">
+		<MAP NAME="Download_PAGE">
+			<AREA SHAPE = "rect" COORDS="23,37,165,54" HREF=".\RS232_OPTIONS.html">
+			<AREA SHAPE = "rect" COORDS="38,70,165,86" HREF=".\Download_OPTIONS.html">
+			<AREA SHAPE = "rect" COORDS="38,87,165,102" HREF=".\Upload_OPTIONS.html">
+			<AREA SHAPE = "rect" COORDS="38,103,166,118" HREF=".\PollTime_OPTIONS.html">
+			<AREA SHAPE = "rect" COORDS="38,135,166,152" HREF=".\Appearance_OPTIONS.html">
+			<AREA SHAPE = "rect" COORDS="38,153,164,169" HREF=".\Log_OPTIONS.html">
+
+			<AREA SHAPE = "rect" COORDS="180,129,617,182" HREF=".\Download_OPTIONS.html#ReceiveDirectory">
+			<AREA SHAPE = "rect" COORDS="180,199,325,281" HREF=".\Download_OPTIONS.html#DownloadType">
+		</MAP>
+	</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Options</TD>
+		<TD class=itemdescr>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH class=item><A NAME="ReceiveDirectory"></A>Receive Directory</TH>
+				</TR>
+				<TR>
+					<TD>
+						Receiving directory displays the directory into which the data files will be stored that
+						are received from the handheld terminal(s). To change the directory press the small folder button. A directory
+						selector dialog appears. After selecting the correct directory click the OK button to keep the settings.
+					</TD>
+				</TR>
+			</TABLE>
+
+			<BR>
+			<BR>
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH class=item><A NAME="DownloadType"></A>Downloaded files</TH>
+				</TR>
+				<TR>
+					<TD>There are three options for the file(s) that have been downloaded from the handheld terminal(s). The default value is 'Append'.</TD>
+				</TR>
+			</TABLE>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR class=OPTIONS>
+				<TH class=OPTIONS width=80>Option</TH>
+				<TH class=OPTIONS>Description</TH>
+				</TR>
+
+				<TR class=OPTIONS>
+				<TD class=OPTIONS>Append</TD>
+				<TD class=OPTIONS>Append the received file to the contents of the same filename that already exists.
+							When the file does not exist a new file is created.
+				</TD>
+				</TR>
+
+				<TR class=OPTIONS>
+				<TD class=OPTIONS>Overwrite</TD>
+				<TD class=OPTIONS>Overwrites the old file with the same name if possible, a previous downloaded data file is lost.
+					If the downloaded file does not exist then a new file is created.
+				</TD>
+				</TR>
+
+				<TR class=OPTIONS>
+				<TD class=OPTIONS>Unique</TD>
+				<TD class=OPTIONS>Create a new filename every download. When the a file with the same name already exists,
+					the extension of the filename is changed. The possible available values for the extension range from 000 to 999.
+				</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

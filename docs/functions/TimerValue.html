@@ -1,0 +1,72 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>TimerValue</TITLE>
+</HEAD>
+
+<BODY>
+<H1>TimerValue</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>Returns the time that is left of the time that was specified with the <A HREF="./StartTimer.html">StartTimer()</A> function. The time is specified in units of 20 milliseconds.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>int</SPAN> <A class=clib HREF="./TimerValue.html">TimerValue</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>
+			Remaining timer value in units of 20 milliseconds. For example, if
+			<A class=clib HREF="./TimerValue.html">TimerValue()</A> returns 5, 100 milliseconds will
+			elapse before the timer is finished.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>The timer can be started with the
+		<A class=clib HREF="./StartTimer.html">StartTimer()</A> function.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        printf("\nWait for 5 sec");
+        <A class=clib HREF="./StartTimer.html">StartTimer</A>( 5 * 50 );
+        <SPAN class=c-keyword>while</SPAN>( !<A class=clib HREF="./EndTimer.html">EndTimer</A>())
+        {
+            printf("\nTime left %d s", <A class=clib HREF="./TimerValue.html">TimerValue</A>()/50);
+            <A class=clib HREF="./Sound.html">Sound</A>( TSTANDARD, VSTANDARD, SMEDIUM, 0);
+            <A class=clib HREF="./Delay.html">Delay</A>( 50 );
+        }
+
+        printf("\nDone");
+        <A class=clib HREF="./ResetKey.html">ResetKey</A>();
+        <SPAN class=c-keyword>while</SPAN>( !<A class=clib HREF="./kbhit.html">kbhit</A>())
+            <A class=clib HREF="./Idle.html">Idle</A>();
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

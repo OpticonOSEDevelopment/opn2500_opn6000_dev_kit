@@ -1,0 +1,72 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>GetBatteryVoltage</TITLE>
+</HEAD>
+
+<BODY>
+<H1>GetBatteryVoltage</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>Returns the output voltage level of the battery pack in millivolts.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>unsigned int</SPAN> <A class=clib HREF="./GetBatteryVoltage.html">GetBatteryVoltage</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>None</TD>
+	</TR> 
+
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>
+			The output voltage level of the battery pack in millivolts.
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>
+			The relation between the battery pack output voltage level and the remaining battery capacity
+			depends on the type of batteries and on the charging and discharging history.
+			It is difficult if not impossible to determine the remaining battery capacity from the battery voltage precisely.
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdlib.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>unsigned int</SPAN> voltage;
+
+    printf("\nBattery voltage:");
+
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        voltage = <A class=clib HREF="./GetBatteryVoltage.html">GetBatteryVoltage</A>();
+        printf("\r%dmV", voltage);
+        <A class=clib HREF="./Sound.html">Sound</A>(TCLICK, VMEDIUM, SHIGH, 0);
+        <A class=clib HREF="./Delay.html">Delay</A>(5*50);
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

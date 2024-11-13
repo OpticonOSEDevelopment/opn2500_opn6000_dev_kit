@@ -1,0 +1,59 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>WaitKey</TITLE>
+</HEAD>
+
+<BODY>
+<H1>WaitKey</H1>
+
+<TABLE width=100% class=setup>
+    <TR class=setup>
+        <TD class=item>Availability</TD>
+        <TD class=itemdescr>All terminals</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Description</TD>
+        <TD class=itemdescr>This function blocks execution until a key is pressed.</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Syntax</TD>
+        <TD class=itemdescr><SPAN class=c-keyword>int</SPAN> <A class=clib HREF="./WaitKey.html">WaitKey</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Arguments</TD>
+        <TD class=itemdescr>None</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Returns</TD>
+        <TD class=itemdescr>When a key is pressed, the function will return the pressed key (TRIGGER_KEY or CLR_KEY)</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Example</TD>
+        <TD class=itemdescr>
+<PRE>
+<SPAN class="c-preprocessor">#include</SPAN> &lt;stdio.h&gt;
+<SPAN class="c-preprocessor">#include</SPAN> &quot;lib.h&quot;
+
+<SPAN class="c-keyword">void</SPAN> main( <SPAN class="c-keyword">void</SPAN> )
+{
+    <SPAN class="c-keyword">int</SPAN> key = -1;
+
+    <SPAN class="c-keyword">for</SPAN>(;;)
+    {
+         printf(&quot;\nPress any key&quot;);
+
+         <A class="clib" href="./ResetKey.html">ResetKey</A>();
+
+         key = <A class="clib" href="./WaitKey.html">WaitKey</A>();
+
+         <A class="clib" href="./GoodReadLed.html">GoodReadLed</A>((key == TRIGGER_KEY) ? GREEN : RED, 50);        <SPAN class="c-comment">// ON, 1 second</SPAN>
+    }
+}
+</PRE>
+        </TD>
+    </TR>
+</TABLE>
+</BODY>
+</HTML>

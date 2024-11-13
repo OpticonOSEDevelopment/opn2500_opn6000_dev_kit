@@ -1,0 +1,126 @@
+<link rel="stylesheet" type="text/css" href="../../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>WhatDayOfWeek</TITLE>
+</HEAD>
+
+<BODY>
+<H1>WhatDayOfWeek</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>
+			Return an integer value representing the current day of the week.
+			Starting with Sunday as 0.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr>
+			<SPAN class=c-keyword>int</SPAN> WhatDayOfWeek( <SPAN class=c-keyword>void</SPAN> );
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+			none
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>
+			Integer value representing the current day of the week.<BR>
+			<br>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TD>0</TD>
+					<TD>Sunday</TD>
+				</TR>
+				<TR>
+					<TD>1</TD>
+					<TD>Monday</TD>
+				</TR>
+				<TR>
+					<TD>2</TD>
+					<TD>Tuesday</TD>
+				</TR>
+				<TR>
+					<TD>3</TD>
+					<TD>Wednesday</TD>
+				</TR>
+				<TR>
+					<TD>4</TD>
+					<TD>Thursday</TD>
+				</TR>
+				<TR>
+					<TD>5</TD>
+					<TD>Friday</TD>
+				</TR>
+				<TR>
+					<TD>6</TD>
+					<TD>Saterday</TD>
+				</TR>
+
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+
+
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-comment>//
+// Array with the names of the days of the week
+//</SPAN>
+<SPAN class=c-keyword>const char</SPAN> day[][9+1] =
+{
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+};
+
+<SPAN class=c-comment>// Returns the current day of the week
+// 0 = sunday, 1 = monday, 2 = tuesday, 3 = wednesday
+// 4 = thursday, 5 = friday, 6 = saturday</SPAN>
+<SPAN class=c-keyword>int</SPAN> WhatDayOfWeek( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>int</SPAN> m, y, a;
+    <SPAN class=c-keyword>struct</SPAN> date curr_date;
+
+    <A class=clib HREF="../../functions/GetDate.html">GetDate</A>( &curr_date );
+    a = (14 - curr_date.da_mon ) / 12;
+    y = curr_date.da_year - a;
+    m = curr_date.da_mon + (12*a) - 2;
+
+    <SPAN class=c-keyword>return</SPAN>((curr_date.da_day + y + (y/4) - (y/100) + (y/400) + ((31*m)/12))%7 );
+}
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        printf("\f%s", (<SPAN class=c-keyword>char</SPAN>*)day[ WhatDayOfWeek() ] );
+        <A class=clib HREF="../../functions/Delay.html">Delay</A>( 250 ); <SPAN class=c-comment>// wait 5 seconds before update</SPAN>
+    }
+}
+</PRE>
+
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

@@ -1,0 +1,56 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>DelayMs</TITLE>
+</HEAD>
+
+<BODY>
+<H1>DelayMs</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>This function pauses execution for a number of milliseconds, specified by the argument <I>ms</I>.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>void</SPAN> <A class=clib HREF="./DelayMs.html">DelayMs</A>( <SPAN class=c-keyword>unsigned short</SPAN> ms );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+			<H5><SPAN class=c-keyword>unsigned short</SPAN> <I>ms</I></H5>
+			The number of milliseconds to wait.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+	<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        <A class=clib HREF="./Sound.html">Sound</A>(TSTANDARD, VHIGH, SHIGH, 0);
+        <A class=clib HREF="./DelayMs.html">DelayMs</A>( 500 );    <SPAN class=c-comment>// sounds a beep every 500 milliseconds </SPAN>
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

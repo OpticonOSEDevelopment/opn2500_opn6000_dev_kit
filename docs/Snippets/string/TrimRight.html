@@ -1,0 +1,66 @@
+<link rel="stylesheet" type="text/css" href="../../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>TrimRight</TITLE>
+</HEAD>
+
+<BODY>
+<H1>TrimRight</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>Removes the specific trailing characters from a string.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>char</SPAN> *<A class=strfun HREF="./TrimRight.html">TrimRight</A>( <SPAN class=c-keyword>char</SPAN> *pszSource, <SPAN class=c-keyword>char</SPAN> removeChar );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+			<H5><SPAN class=c-keyword>char</SPAN> *<I>pszSource</I></H5>
+			The source input string where the trailing characters need be be remove from.<BR>
+
+			<H5><SPAN class=c-keyword>char</SPAN> <I>removeChar</I></H5>
+			The specific key that is used to remove from the source input string.<BR>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>A pointer to the changed source input string.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>The source input string is changed by this function.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+<SPAN class=c-preprocessor>#include</SPAN> "input.h"     <SPAN class=c-comment>//Holds the input functions</SPAN>
+<SPAN class=c-preprocessor>#include</SPAN> "strfunc.h"   <SPAN class=c-comment>//Holds the string manipulation functions</SPAN>
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>static char</SPAN> dummy[ 21 ];
+    
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        strcpy( dummy, "      123456      ");
+        printf("\forg:|%s|,", dummy );
+        printf("new:|%s|\n", <A class=strfun HREF="./TrimRight.html">TrimRight</A>( dummy, ' ' ));
+        
+        printf("\npress a key");
+        <A class=input HREF="../input/WaitForKey.html">WaitForKey</A>();
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

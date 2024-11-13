@@ -1,0 +1,168 @@
+<link rel="stylesheet" type="text/css" href="../../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Barcode Database functions</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Barcode Database functions</H1>
+
+<P>
+	The barcode database functions that will be described in this section can be used to 
+	handle all your barcode data in your application
+</P>
+
+<TABLE class=OPTIONS width=100%>
+	<TR>
+		<TH width=40%>Record size</TH>
+		<TD>Variable</TD>
+	</TR>
+	<TR>
+		<TH>Support of sorted and unsorted databases</TH>
+		<TD>Unsorted</TD>
+	</TR>
+	<TR>
+		<TH>Availability of search functions</TH>
+		<TD>Yes</TD>
+	</TR>
+	<TR>
+		<TH>Availability of sort functions</TH>
+		<TD>No</TD>
+	</TR>
+	<TR>
+		<TH>Uses an Index file</TH>
+		<TD>Yes</TD>
+	</TR>
+</TABLE>
+
+
+<H3>1. Sources of all database functions</H3>
+
+<P>
+	To be able to use the database functions, include the following header file
+	and source file	in your project.
+</P>
+
+<TABLE class=OPTIONS width=100%>
+	<TR>
+		<TH width=40%>Header file</TH>
+		<TD><A HREF="../source/memorize.h">memorize.h (source)</A></TD>
+	</TR>
+	<TR>
+		<TH>Source file</TH>
+		<TD><A HREF="../source/memorize.c">memorize.c (source)</A></TD>
+	</TR>
+</TABLE>
+<p>Low level database and indexing functions used by memorize.c</p>
+<TABLE class=OPTIONS width=100%>
+	<TR>
+		<TH width=40%>Header file</TH>
+		<TD><A HREF="../source/BarcodeDbase.h">BarcodeDbase.h (source)</A></TD>
+	</TR>
+	<TR>
+		<TH>Source file</TH>
+		<TD><A HREF="../source/BarcodeDbase.c">BarcodeDbase.c (source)</A></TD>
+	</TR>
+	<TR>
+		<TH width=40%>Header file</TH>
+		<TD><A HREF="../source/INDEX.h">INDEX.h (source)</A></TD>
+	</TR>
+	<TR>
+		<TH>Source file</TH>
+		<TD><A HREF="../source/INDEX.c">INDEX.c (source)</A></TD>
+	</TR>
+</TABLE>
+
+<P>NOTE: All functions return OK on success and ERROR on failure</P>
+
+<H3>2. Creating, opening and closing a database</H3>
+
+<P>
+	The following functions can be used to create, open and close a database.
+</P>
+
+
+<TABLE class=OPTIONS width=100%>
+	<TR>
+		<TD width=40%><SPAN class="c-keyword">int</SPAN> InitStorage(<SPAN class="c-keyword">int</SPAN> quantity_options)</TD>
+		<TD>Configures handling of duplicate barcodes on insertion and deleting using flags:<BR>
+			<UL>
+				<LI>no flags (0): All barcodes will be appended to the database (existing barcodes can be deleted from the bottom)
+				<LI>SUMMED_QUANTITIES: Identical barcodes must be summed
+				<LI>KEEP_ZERO_QUANTITY: A record with quantity of 0 should be kept in de database
+				<LI>ALLOW_NEGATIVES: Barcodes can be added with negative quantities
+			</UL>
+		</TD>
+	</TR>
+	<TR>
+		<TD><SPAN class="c-keyword">int</SPAN> OpenStorage(<SPAN class="c-keyword">void</SPAN>)</TD>
+		<TD>Opens a database file and creates a new one if it doesn't exist.</TD>
+	</TR>
+	<TR>
+		<TD><SPAN class="c-keyword">int</SPAN> CloseStorage(<SPAN class="c-keyword">void</SPAN>)</TD>
+		<TD>Closes a database file that was opened</TD>
+	</TR>
+	<TR>
+		<TD><SPAN class="c-keyword">int</SPAN> DeleteStorage(<SPAN class="c-keyword">void</SPAN>)</TD>
+		<TD>Deletes the complete database (permanently!)</TD>
+	</TR>	
+</TABLE>
+
+<H3>3. Database properties</H3>
+
+<P>
+	The following functions return general properties and information of the
+	current state of the database.
+</P>
+
+<TABLE class=OPTIONS width=100%>
+	<TR>
+		<TD><SPAN class="c-keyword">int</SPAN> BarcodesInMemory(<SPAN class="c-keyword">void</SPAN>)</A></TD>
+		<TD>Gets the total number of records that are stored in the database.</TD>
+	</TR>
+</TABLE>
+
+<H3>4. Store, delete, adds, substract, find or match barcodes in the database</H3>
+
+<TABLE class="OPTIONS" width="100%">
+    <TR>
+        <TD><SPAN class="c-keyword">int</SPAN> UpdateBarcodeInMemory(<SPAN class="c-keyword">struct</SPAN> barcode *pCode)</TD>
+        <TD>Stores, deletes, adds or removes the specified barcode with the given quantity.</TD>
+    </TR>
+    <TR>
+        <TD><SPAN class="c-keyword">int</SPAN> DeleteCurrentBarcodeFromMemory(<SPAN class="c-keyword">void</SPAN>)</TD>
+        <TD>Deletes the barcode that was last retrieved by 'ReadCurrentBarcodeFromMemory' or 'ReadNextBarcodeFromMemory'.</TD>
+    </TR>
+    <TR>
+        <TD><SPAN class="c-keyword">int</SPAN> IsLastBarcodeInMemory(<SPAN class="c-keyword">struct</SPAN> barcode *pCode)</TD>
+        <TD>Checks if the last barcode in memory matches the specified barcode.</TD>
+    </TR>
+    <TR>
+        <TD><SPAN class="c-keyword">int</SPAN> FindFirstBarcodeInMemory(<SPAN class="c-keyword">struct</SPAN> barcode *pCode)</TD>
+        <TD>Finds the first matching barcode in memory.</TD>
+    </TR>
+    <TR>
+        <TD><SPAN class="c-keyword">int</SPAN> FindLastBarcodeInMemory(<SPAN class="c-keyword">struct</SPAN> barcode *pCode)</TD>
+        <TD>Finds the last matching barcode in memory.</TD>
+    </TR>
+    <TR>
+        <TD><SPAN class="c-keyword">int</SPAN> ReadCurrentBarcodeFromMemory(<SPAN class="c-keyword">struct</SPAN> barcode *pCode)</TD>
+        <TD>Returns the first available (not-deleted) barcode from memory.</TD>
+    </TR>
+    <TR>
+        <TD><SPAN class="c-keyword">int</SPAN> ReadNextBarcodeFromMemory(<SPAN class="c-keyword">struct</SPAN> barcode *pCode)</TD>
+        <TD>Returns the next available (not-deleted) barcode from memory.</TD>
+    </TR>
+    <TR>
+        <TD><SPAN class="c-keyword">int</SPAN> ReadFirstBarcodeFromMemory(<SPAN class="c-keyword">struct</SPAN> barcode *pCode)</TD>
+        <TD>Returns the first (not-deleted) barcode in memory.</TD>
+    </TR>
+    <TR>
+        <TD><SPAN class="c-keyword">int</SPAN> ReadLastBarcodeFromMemory(<SPAN class="c-keyword">struct</SPAN> barcode *pCode)</TD>
+        <TD>Returns the last (not-deleted) barcode in memory.</TD>
+    </TR>
+</TABLE>
+<PRE>
+</BODY>
+

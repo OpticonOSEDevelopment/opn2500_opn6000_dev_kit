@@ -1,0 +1,78 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Character map</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Character map</H1>
+
+<H3><A NAME="PHL_OPL">1. Character map</A></H3>
+
+The character map for the Opticon terminals is shown below. The characters can be used
+in the various printing functions like printf(), putchar(), etc.
+These characters are available in all system fonts.<BR>
+<BR>
+Character 0x7F on the PX35, PX36, H13, OPL9815, H13+, OPH300x & OPH100x terminals is the &euro; (euro sign).<BR>
+<BR>
+Note that some characters like 0x0A or 0x0D can only be printed on the display by
+<A HREF="../functions/printsymbol.html">printsymbol()</A>.<BR>
+<BR>
+<img src="../images/Charmap_PHL_OPL.gif"></img>
+<BR>
+<BR>
+
+<H3>2. Example program showing the character map</H3>
+
+The following example is a small program that shows all characters 0x00 - 0xFF, 16 at a time.
+When you press an arbitrary key the next 16 characters will be displayed.
+<PRE>
+<SPAN class=c-comment>// This example will show all characters 0x00 - 0xFF, 16 at a time.
+// When you press an arbitrary key the next 16 characters will be displayed.
+</SPAN>
+
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-preprocessor>#define</SPAN> STEP   16
+<SPAN class=c-preprocessor>#define</SPAN> SPACE  32
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>int</SPAN> i, j;
+
+    <SPAN class=c-keyword>while</SPAN>(1)
+    {
+        <SPAN class=c-keyword>for</SPAN>( i=0; i&lt256; i+= STEP )
+        {
+            <SPAN class=c-keyword>for</SPAN>( j=0; j&ltSTEP/2; j++ )
+            {
+                <A class=clib HREF="../functions/gotoxy.html">gotoxy</A>(j,0);
+                <A class=clib HREF="../functions/printsymbol.html">printsymbol</A>(SPACE);
+                <SPAN class=c-keyword>if</SPAN> (i + j < 256)
+                    <A class=clib HREF="../functions/printsymbol.html">printsymbol</A>(i + j);
+            }
+
+            <SPAN class=c-keyword>for</SPAN>( j=0; j&ltSTEP/2; j++ )
+            {
+                <A class=clib HREF="../functions/gotoxy.html">gotoxy</A>(j,1);
+                <A class=clib HREF="../functions/printsymbol.html">printsymbol</A>(SPACE);
+                <SPAN class=c-keyword>if</SPAN> (i + j + STEP/2 &lt 256)
+                    <A class=clib HREF="../functions/printsymbol.html">printsymbol</A>(i + j + STEP/2);
+            }
+
+            <A class=clib HREF="../functions/gotoxy.html">gotoxy</A>(12,0);
+            printf("%03d", i);
+            <A class=clib HREF="../functions/gotoxy.html">gotoxy</A>(12,1);
+            printf("%03d", i + STEP - 1);
+
+            <A class=clib HREF="../functions/ResetKey.html">ResetKey</A>();
+            <SPAN class=c-keyword>while</SPAN>(!<A class=clib HREF="../functions/kbhit.html">kbhit</A>())
+                <A class=clib HREF="../functions/Idle.html">Idle</A>();
+        }
+    }
+}
+</PRE>
+
+</BODY>

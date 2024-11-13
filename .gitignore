@@ -1,0 +1,8 @@
+*.emSession
+projects/applications/BluetoothAppl/Projects/ses/Output
+projects/applications/BatchApplication/Projects/ses/Output
+projects/applications/HelloWorld/Output
+projects/applications/Examples/Output
+docs/functions/rename.bat
+projects/applications/Examples/OPN2500_Examples_SetAlarm.jlink
+projects/applications/Examples/OPN6000_Examples_SetAlarm.jlink

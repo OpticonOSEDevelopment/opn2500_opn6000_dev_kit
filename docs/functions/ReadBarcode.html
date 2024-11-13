@@ -1,0 +1,142 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>ReadBarcode</TITLE>
+</HEAD>
+
+<BODY>
+<H1>ReadBarcode</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>This function tries to fetch a barcode from the scanner.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>unsigned int</SPAN> <A class=clib HREF="./ReadBarcode.html">ReadBarcode</A>( <SPAN class=c-keyword>struct</SPAN> barcode *barcodep );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+			<H5><SPAN class=c-keyword>struct</SPAN> barcode *<I>barcodep</I></H5>
+			The structure barcode is defined as follows:
+<PRE>
+<SPAN class=c-keyword>struct</SPAN> barcode
+{
+    <SPAN class=c-keyword>char</SPAN> *text;
+    <SPAN class=c-keyword>int</SPAN> length;
+    <SPAN class=c-keyword>int</SPAN> id;
+    <SPAN class=c-keyword>int</SPAN> min;
+    <SPAN class=c-keyword>int</SPAN> max;
+};
+</PRE>
+			<TABLE class=OPTIONS width=100%>
+				<THEAD>
+					<TR>
+						<TH>Member</TH>
+						<TH>Description</TH>
+					</TR>
+				</THEAD>
+				<TBODY>
+					<TR>
+						<TD>text</TD>
+						<TD>
+							Pointer to a user supplied character buffer.
+							<A class=clib HREF="./ReadBarcode.html">ReadBarcode()</A> places a
+							zero-terminated barcode string in the text struct member on a successful read.
+						</TD>
+					</TR>
+					<TR>
+						<TD>length</TD>
+						<TD>Contains the number of characters returned in text struct member.</TD>
+					</TR>
+					<TR>
+						<TD>id</TD>
+						<TD>
+							The symbology of the barcode that was scanned. In the LIB.H file, a constant is defined for
+							all supported symbologies. Look under the section "Constants for id member" to check out the various constants.
+						</TD>
+					</TR>
+					<TR>
+						<TD>min</TD>
+						<TD>The minimum allowed length of a barcode.</TD>
+					</TR>
+					<TR>
+						<TD>max</TD>
+						<TD>The maximum allowed length of a barcode.</TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>
+			<TABLE class=OPTIONS width=100% >
+				<TR>
+					<TD>OK</TD>
+					<TD>A barcode was available.</TD>
+				</TR>
+				<TR>
+					<TD>ERROR</TD>
+					<TD>No barcode was available.</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>
+			<A class=clib HREF="./ReadBarcode.html">ReadBarcode()</A> tries to find a barcode in the OS buffer that is filled with decoded barcode data.<BR>
+			If <A class=clib HREF="./ReadBarcode.html">ReadBarcode()</A> finds a barcode in the buffer, it fills the barcode structure, and returns.<BR>
+			If no barcode was read, <A class=clib HREF="./ReadBarcode.html">ReadBarcode()</A> calls <A class=clib HREF="./Idle.html">Idle()</A> and returns.<BR><BR>
+			Use the <A class=clib HREF="./SystemSetting.html">SystemSetting()</A> function to select which barcode symbologies must be read.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+
+<SPAN class="c-comment">// This program reads and displays a barcode. After each successful barcode reading,</SPAN>
+<SPAN class="c-comment">// it gives a good read signal on the LED and a buzzer signal.</SPAN>
+
+<SPAN class="c-preprocessor">#include</SPAN> &lt;stdio.h&gt;
+<SPAN class="c-preprocessor">#include</SPAN> &quot;lib.h&quot;
+
+<SPAN class="c-keyword">void</SPAN> main( <SPAN class="c-keyword">void</SPAN> )
+{
+    <SPAN class="c-keyword">char</SPAN> bcr_buf[42] = {0};
+    <SPAN class="c-keyword">struct</SPAN> barcode code  = {0};
+
+    code.min   = 3;
+    code.max   = 41;
+    code.text  = bcr_buf;
+
+    <A class="clib" href="./ScannerPower.html">ScannerPower</A>(SINGLE|TRIGGER, 100);        <SPAN class="c-comment">// Single read, trigger mode, 2 sec</SPAN>
+
+    <SPAN class="c-keyword">for</SPAN>(;;)
+    {
+        <SPAN class="c-keyword">if</SPAN>(<A class="clib" href="./ReadBarcode.html">ReadBarcode</A>(&amp;code) == OK)
+        {
+             <A class="clib" href="./GoodReadLed.html">GoodReadLed</A>(GREEN, 10);
+             <A class="clib" href="./Sound.html">Sound</A>( TSTANDARD, VHIGH, SMEDIUM, SHIGH, 0);
+             printf(&quot;%*s\r&quot;, code.length, code.text);
+        }
+
+        <A class="clib" HREF="./Idle.html">Idle</A>();
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+
+</BODY>
+</HTML>

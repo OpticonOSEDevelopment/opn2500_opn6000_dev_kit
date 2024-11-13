@@ -1,0 +1,68 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>GetSerialNumber</TITLE>
+</HEAD>
+
+<BODY>
+<H1>GetSerialNumber</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>
+			This function returns the unique serial number that is printed on the back of the terminal. The main advantage of
+			using this function instead of <A class=clib HREF="./GetTerminalId.html">GetTerminalId()</A> is that the serial number is
+			unique and never has to be manually (re)configured.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>long</SPAN> <A class=clib HREF="./GetSerialNumber.html">GetSerialNumber</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>The unique serial number of the terminal that is printed on the back of the terminal.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>The serial number is programmed in non-volatile memory during production and can not be manually changed.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class="c-preprocessor">#include &lt;stdio.h&gt;</SPAN>
+<SPAN class="c-preprocessor">#include &quot;lib.h&quot;</SPAN>
+
+<SPAN class="c-keyword">void</SPAN> main(<SPAN class="c-keyword">void</SPAN>)
+{
+    <SPAN class="c-keyword">for</SPAN>(;;)
+    {
+        <A class="clib" href="../functions/ResetKey.html">ResetKey</A>();
+
+        <SPAN class="c-keyword">while</SPAN>(!kbhit())
+            <A class="clib" href="../functions/Idle.html">Idle</A>();
+
+        printf(&quot;\nSerial: %06ld&quot;, <A class="clib" href="../functions/GetSerialNumber.html">GetSerialNumber</A>());
+        <A class="clib" href="../functions/Sound.html">Sound</A>(TSTANDARD, VHIGH, SHIGH, 0);
+    }
+}
+</PRE>
+
+		</TD>
+	</TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

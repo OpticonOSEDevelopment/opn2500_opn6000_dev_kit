@@ -1,0 +1,39 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Building an application</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Select your application template</H1>
+
+
+    <p>In the folder <code>Projects/Applications</code> some applications can be found with basic and advanced features that are commenly used on OPN-2500 / OPN-6000. They provide a good starting point for writing your own application or when only small customizations are required.</p>
+
+First select the application that is most suitable for your application. 
+
+	<h2>HelloWorld</h2>
+    <p>&rarr; Simple application to demonstrate reading of bar codes and menu-labels and basic power management features</p>
+	
+    <h2>BatchApplication</h2>
+    <p>&rarr; Batch application to demonstrate using the OPN as batch device and communication using USB-MSD and OseComm</p>
+
+    <h2>BluetoothAppl</h2>
+    <p>&rarr; Bluetooth application to demonstrate Bluetooth BLE Serial, HID and OptiConnect as well as USB-HID, USB-CDC and USB-VCP and memorizing</p>
+
+<h1>Editing and building</h1>
+    <p>Open the projects file of your selected application: <codeHelloWorld.emProject</code>, <code>BatchApplication\Projects\ses\Batch_Appl.emProject</code> or <code>BluetoothAppl\Projects\ses\Bluetooth_Appl.emProject</code></p>
+
+	<p>Select a source file for editing in the solution explorer.</p>
+	
+	<p>To build your application select 'Build' from the menu bar.</p>
+	
+    <p>After building, the resulting <code>.bin</code> file can be found in the root folder of the applications</p>
+
+<h2>Loading firmware</h2>
+
+See chapter <A HREF="../Terminals/OPN2500_OPN6000.html">Loading firmware on the OPN-2500 / OPN-6000</A> on how to load the firmware using Appload. 
+
+</BODY>
+</HTML>

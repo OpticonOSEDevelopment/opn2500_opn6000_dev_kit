@@ -1,0 +1,589 @@
+<link rel="stylesheet" type="text/css" href="../../global.css">
+<HTML>
+	<HEAD>
+		<TITLE>Command line options</TITLE>
+			<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252"></HEAD>
+	<BODY>
+		<H1>Command line options</H1>
+		<TABLE width="100%" class="setup">
+			<TR class="setup">
+				<TD class="item">Description</TD>
+				<TD class="itemdescr">
+					The NetO32 application can be configured from the command line. This way by
+					starting the application some specific behavior of the application can be
+					accomplished. The command line parameters are discussed as they can be found in
+					the options men.
+				</TD>
+			</TR>
+			<TR class="setup">
+				<TD class="item">.NSF file</TD>
+				<TD class="itemdescr">When a *.NSF (NetO save File) file is given as command line
+					parameter the previously saved settings of a communication run can be restored.<BR>
+					<BR>
+					Example:<BR>
+					Start NetO32 application with a previously saved settings file.
+					<PRE>C:\NetO32&gt;NetO32 testme.nsf</PRE>
+				</TD>
+			</TR>
+			<TR class="setup">
+				<TD class="item">RS232</TD>
+				<TD class="itemdescr">
+					<TABLE width="100%" class="OPTIONS">
+						<TR class="OPTIONS">
+							<TH class="OPTIONS" width="60">
+								Option</TH>
+							<TH class="OPTIONS">
+								Description</TH>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-c:</TD>
+							<TD class="OPTIONS">Set the serial COM port to where the terminal is connected. The
+								default serial port number is COM1<BR>
+								<BR>
+								Example:<BR>
+								Start NetO32 application with COM2
+								<PRE>C:\NetO32&gt;NetO32 -c:2</PRE>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-b:</TD>
+							<TD class="OPTIONS">Set the communication speed. The default communication speed is
+								19200 baud.
+								<P>
+									The communication speed can be one of the following values:
+									<LI>
+									115200 baud
+									<LI>
+									57600 baud
+									<LI>
+									38400 baud
+									<LI>
+									19200 baud
+									<LI>
+									9600 baud
+									<LI>
+									4800 baud
+									<LI>
+								2400 baud
+								<P></P>
+								Example:<BR>
+								Start NetO32 application with 115200 baud
+								<PRE>
+C:\NetO32&gt;NetO32 -b:115200
+</PRE>
+								</LI>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-p:</TD>
+							<TD class="OPTIONS">Change the parity setting, default is 0 - No parity.
+								<P>
+									The parity option can be one of these values:
+									<LI>
+									0 - No parity
+									<LI>
+									1 - Odd parity
+									<LI>
+								2 - Even parity
+								<P></P>
+								Example:<BR>
+								Start NetO32 with even parity
+								<PRE>
+C:\NetO32&gt;NetO32 -p:2
+</PRE>
+								</LI>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-d:</TD>
+							<TD class="OPTIONS">Change the amount of data bits used, default is 8.
+								<P>
+									The data bits parameter can be one of these values:
+									<LI>
+									8 data bits
+									<LI>
+								7 data bits
+								<P></P>
+								Example:<BR>
+								Start NetO32 with 7 data bits
+								<PRE>
+C:\NetO32&gt;NetO32 -d:7
+</PRE>
+								</LI>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-s:</TD>
+							<TD class="OPTIONS">Set the amount of stop bits default 0 - means one stop bit.
+								<P>
+									The stop bits parameter can be one of these values:
+									<LI>
+									0 - one stop bit
+									<LI>
+								2 - two stop bits
+								<P></P>
+								Example:<BR>
+								Start NetO32 with 2 stop bits
+								<PRE>
+C:\NetO32&gt;NetO32 -s:2
+</PRE>
+								</LI>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-i:</TD>
+							<TD class="OPTIONS">Set the IrDA adapter or compatible adapter of your choice,
+								default 0 - No IrDA adapter.
+								<P>
+									The IrDA adapter parameter can be one of these values:
+									<LI>
+									0 - No IrDA adapter
+									<LI>
+									1 - Litelink compatible
+									<LI>
+									2 - Tekram compatible
+									<LI>
+									3 - ActiSys compatible
+									<LI>
+								4 - Opticon IRU-1300 cradle
+								<P></P>
+								Example:<BR>
+								Start NetO32 with IrDA adapter set to Opticon IRU-1300 cradle:
+								<PRE>
+C:\NetO32&gt;NetO32 -i:4
+</PRE>
+								</LI>
+							</TD>
+						</TR>
+					</TABLE>
+				</TD>
+			</TR>
+			<TR class="setup">
+				<TD class="item">Download</TD>
+				<TD class="itemdescr">
+					<TABLE width="100%" class="OPTIONS">
+						<TR class="OPTIONS">
+							<TH class="OPTIONS" width="60">
+								Option</TH>
+							<TH class="OPTIONS">
+								Description</TH>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-dr:</TD>
+							<TD class="OPTIONS">Set the folder where the received files are stored. The default
+								folder is the Root of C:<BR>
+								<BR>
+								Example:<BR>
+								Start NetO32 with the download path set to "c:\opticon"
+								<PRE>C:\NetO32&gt;Neto32 -dr:c:\opticon</PRE>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-dt:</TD>
+							<TD class="OPTIONS">Set download receive type. The default value is append the
+								newly received data to the file if it exists.
+								<P>
+									The download receive type can be one of these values:
+									<LI>
+									0 - Append
+									<LI>
+									1 - Overwrite
+									<LI>
+								2 - Unique
+								<P></P>
+								Example:<BR>
+								Start NetO32 in a way that newly received files overwrite existing files
+								<PRE>C:\NetO32&gt;Neto32 -dt:1</PRE>
+								</LI>
+							</TD>
+						</TR>
+					</TABLE>
+				</TD>
+			</TR>
+			<TR class="setup">
+				<TD class="item">Upload</TD>
+				<TD class="itemdescr">
+					<TABLE width="100%" class="OPTIONS">
+						<TR class="OPTIONS">
+							<TH class="OPTIONS" width="60">
+								Option</TH>
+							<TH class="OPTIONS">
+								Description</TH>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-u:</TD>
+							<TD class="OPTIONS">Set the file(s) that need to be transferred to the terminal. No
+								default value<BR>
+								<BR>
+								Example:<BR>
+								Start NetO32 with 2 files to transmit to the terminal
+								<PRE>C:\NetO32&gt;Neto32 -u:c:\opticon\file1.txt -u:c:\opticon\file2.txt</PRE>
+							</TD>
+						</TR>
+					</TABLE>
+				</TD>
+			</TR>
+			<TR class="setup">
+				<TD class="item">Polling and Timing</TD>
+				<TD class="itemdescr">
+					<TABLE width="100%" class="OPTIONS">
+						<TR class="OPTIONS">
+							<TH class="OPTIONS" width="60">
+								Option</TH>
+							<TH class="OPTIONS">
+								Description</TH>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-ps:</TD>
+							<TD class="OPTIONS">Set the poll speed. The default poll speed value is 500.
+								<P>
+									The poll speed parameter can be one of these values:
+									<LI>
+									100 - Poll every 0.1 seconds
+									<LI>
+									200 - Poll every 0.2 seconds
+									<LI>
+									500 - Poll every 0.5 seconds
+									<LI>
+									1000 - Poll every second
+									<LI>
+									2000 - Poll every 2 seconds
+									<LI>
+									5000 - Poll every 5 seconds
+									<LI>
+									10000 - Poll every 10 seconds
+									<LI>
+								20000 - Poll every 20 seconds
+								<P></P>
+								Example:<BR>
+								Start NetO32 with a poll speed of 1 second per poll
+								<PRE>C:\NetO32&gt;Neto32 -ps:1000</PRE>
+								</LI>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-t:</TD>
+							<TD class="OPTIONS">Set a specific terminal ID, there is no default value. The
+								terminal ID parameter max size is 6 characters.
+								<BR>
+								<BR>
+								Example:<BR>
+								Start NetO32 with Terminal ID "123456"
+								<PRE>C:\NetO32&gt;Neto32 -t:123456</PRE>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-rxtx:</TD>
+							<TD class="OPTIONS">Set an extra transmit receive delay. This value is needed when
+								using an RS485 multi drop network. The default value is 1ms. Valid
+								input of this parameter lies between 1ms and 999 ms.
+								<BR>
+								<BR>
+								Example:<BR>
+								Start NetO32 with a Rx/Tx delay of 5 ms
+								<PRE>C:\NetO32&gt;Neto32 -rxtx:5</PRE>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-pt:</TD>
+							<TD class="OPTIONS">Set the protocol type, the default value is 0 - Continuous
+								protocol.
+								<P>
+									The protocol type parameter can be one of these values:
+									<LI>
+									0 - Continuous
+									<LI>
+								1 - Single
+								<P></P>
+								Example:<BR>
+								Start NetO32 with the Single run protocol.
+								<PRE>C:\NetO32&gt;Neto32 -pt:1</PRE>
+								</LI>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-qs:</TD>
+							<TD class="OPTIONS">Enable or disable the quit after single run. Default is 0 - Do
+								not quit after single run. This command line parameter has only effect when the
+								-pt: command line parameter is set to 1 - Single run.
+								<P>
+									The protocol type parameter can be one of these values:
+									<LI>
+									0 - Do not quit after single run
+									<LI>
+								1 - Quit after single run.
+								<P></P>
+								Example:<BR>
+								Start NetO32 with Quit after single run.
+								<PRE>C:\NetO32&gt;Neto32 -pt:1 -qs:1</PRE>
+								</LI>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-spt:</TD>
+							<TD class="OPTIONS">Enable or disable the Poll timeout timer. Default is 0 - Poll
+								timeout timer is not enabled. This command line parameter has only effect when
+								the -pt: command line parameter is set to 1 - Single run.
+								<P>
+									The protocol type parameter can be one of these values:
+									<LI>
+									0 - Do not stop after poll timeout
+									<LI>
+								1 - Stop after poll timeout.
+								<P></P>
+								Example:<BR>
+								Start NetO32 with stop after poll timeout.
+								<PRE>C:\NetO32&gt;Neto32 -pt:1 -spt:1</PRE>
+								</LI>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-spe:</TD>
+							<TD class="OPTIONS">Set the Poll timeout time, default value is 5 seconds. This
+								command line parameter has only effect when the -pt: command line parameter is
+								set to 1 - Single run and -spt: command line parameter is set to 1 - stop after
+								poll timeout. The poll timeout time can range between 1 and 32000 seconds.
+								<BR>
+								<BR>
+								Example:<BR>
+								Start NetO32 with stop poll timeout after 20 seconds.
+								<PRE>C:\NetO32&gt;Neto32 -pt:1 -spt:1 -spt:20</PRE>
+							</TD>
+						</TR>
+					</TABLE>
+				</TD>
+			</TR>
+			<TR class="setup">
+				<TD class="item">Appearance</TD>
+				<TD class="itemdescr">
+					<TABLE width="100%" class="OPTIONS">
+						<TR class="OPTIONS">
+							<TH class="OPTIONS" width="60">
+								Option</TH>
+							<TH class="OPTIONS">
+								Description</TH>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-asat:</TD>
+							<TD class="OPTIONS">Enable or disable the NetO32 application to start in the system
+								tray. Default 0 - Start not in System Tray.
+								<P>
+									The start in system tray can have one of these values:
+									<LI>
+									0 - Start not in system tray
+									<LI>
+								1 - Start in system tray
+								<P></P>
+								Example:<BR>
+								Start NetO32 in the system tray
+								<PRE>C:\NetO32&gt;Neto32 -asat:1</PRE>
+								</LI>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-asm:</TD>
+							<TD class="OPTIONS">Enable or disable the NetO32 protocol message window when the
+								application is minimized to the system tray. The default value is 0 - Show when
+								minimized in system tray.
+								<P>
+									The show message window when minimized in system tray can have one of these
+									values:
+									<LI>
+									0 - Do not show message window when minimized
+									<LI>
+								1 - Show message window when minimized
+								<P></P>
+								Example:<BR>
+								Start NetO32 and show when message window when any protocol status messages are
+								available
+								<PRE>C:\NetO32&gt;Neto32 -asm:1</PRE>
+								</LI>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-asf:</TD>
+							<TD class="OPTIONS">Enable or disable the showing of the file progress in the
+								NetO32 protocol message window. The default value is 1 - Show when file
+								progress, this option can only been seen if the -asm: parameter = 1.
+								<P>
+									The show file progress message window when minimized in system tray can have
+									one of these values:
+									<LI>
+									0 - Do not file progress
+									<LI>
+								1 - Show file progress
+								<P></P>
+								Example:<BR>
+								Start NetO32 and show the message window with the file progress bar.
+								<PRE>C:\NetO32&gt;Neto32 -asm:1 -asf:1</PRE>
+								</LI>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-ast:</TD>
+							<TD class="OPTIONS">Enable or disable the showing of the total file(s) progress in
+								the NetO32 protocol message window. The default value is 1 - Show when total
+								file(s) progress, this option can only been seen if the -asm: parameter = 1.
+								<P>
+									The show total file(s) progress message window when minimized in system tray
+									can have one of these values:
+									<LI>
+									0 - Do not total file(s) progress
+									<LI>
+								1 - Show total file(s) progress
+								<P></P>
+								Example:<BR>
+								Start NetO32 and show the message window with the total file(s) progress bar.
+								<PRE>C:\NetO32&gt;Neto32 -asm:1 -ast:1</PRE>
+								</LI>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-asi:</TD>
+							<TD class="OPTIONS">Enable or disable the showing of the progress status
+								information. The default value is 1 - Show progress status information, this
+								option can only been seen if the -asm: parameter = 1.
+								<P>
+									The show progress status information can have one of these values:
+									<LI>
+									0 - Do not progress status information
+									<LI>
+								1 - Show progress status information
+								<P></P>
+								Example:<BR>
+								Start NetO32 and show a message window with the progress status info.
+								<PRE>C:\NetO32&gt;Neto32 -asm:1 -asi:1</PRE>
+								</LI>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-asp:</TD>
+							<TD class="OPTIONS">Start the NetO protocol when the NetO32 application is
+								executed. The default value is 0 - Start NetO protocol at startup.
+								<P>
+									The start protocol at startup parameter can have one of these values:
+									<LI>
+									0 - Do not start protocol at startup
+									<LI>
+								1 - Start protocol at startup
+								<P></P>
+								Example:<BR>
+								Start NetO32 and start the NetO protocol directly.
+								<PRE>C:\NetO32&gt;Neto32 -asp:1</PRE>
+								</LI>
+							</TD>
+						</TR>
+					</TABLE>
+				</TD>
+			</TR>
+			<TR class="setup">
+				<TD class="item">Log</TD>
+				<TD class="itemdescr">
+					<TABLE width="100%" class="OPTIONS">
+						<TR class="OPTIONS">
+							<TH class="OPTIONS" width="60">
+								Option</TH>
+							<TH class="OPTIONS">
+								Description</TH>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-lslf:</TD>
+							<TD class="OPTIONS">Store messages in a log file. Default 0 - Do not store messages
+								in a log file.
+								<P>
+									The store messages in a log file can have one of these values:
+									<LI>
+									0 - Do not store messages in a log file
+									<LI>
+								1 - Store messages in a log file
+								<P></P>
+								Example:<BR>
+								Start NetO32 and store the messages in a log file
+								<PRE>C:\NetO32&gt;Neto32 -lslf:1</PRE>
+								</LI>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-lfo:</TD>
+							<TD class="OPTIONS">Set how to store the options in a log file. Default 0 - Store
+								log in a new log file at startup.
+								<P>
+									The log file options can have one of these values:
+									<LI>
+									0 - Store log in a new log file at startup
+									<LI>
+								1 - Store log in a specific log file. With this options the -ls: parameter
+								needs to be set also.
+								<P></P>
+								Example:<BR>
+								Start NetO32 and store the messages in a new log file at startup
+								<PRE>C:\NetO32&gt;Neto32 -lslf:1 -lfo:0</PRE>
+								</LI>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-ls:</TD>
+							<TD class="OPTIONS">Set a specific log file. Default not filled in.<BR>
+								<BR>
+								Example:<BR>
+								Start NetO32 and store the messages in a specific log file.
+								<PRE>C:\NetO32&gt;Neto32 -lslf:1 -lfo:1 -ls:c:\log\Neto32.log</PRE>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-le:</TD>
+							<TD class="OPTIONS">Enable or disable the storing of error messages in a log file.
+								Default 1 - Store Error messages in log file.
+								<P>
+									The store error messages in a log file can have one of these values:
+									<LI>
+									0 - Do not store error messages in a log file
+									<LI>
+								1 - Store error messages in a log file
+								<P></P>
+								Example:<BR>
+								Start NetO32 and store the error messages in a specific log file.
+								<PRE>C:\NetO32&gt;Neto32 -lslf:1 -lfo:1 -ls:c:\log\Neto32.log -le:1</PRE>
+								</LI>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-lc:</TD>
+							<TD class="OPTIONS">Enable or disable the storing of completion messages in a log
+								file. Default 1 - Store completion messages in log file.
+								<P>
+									The store completion messages in a log file can have one of these values:
+									<LI>
+									0 - Do not store completion messages in a log file
+									<LI>
+								1 - Store completion messages in a log file
+								<P></P>
+								Example:<BR>
+								Start NetO32 and store the completion messages in a specific log file.
+								<PRE>C:\NetO32&gt;Neto32 -lslf:1 -lfo:1 -ls:c:\log\Neto32.log -lc:1</PRE>
+								</LI>
+							</TD>
+						</TR>
+						<TR class="OPTIONS">
+							<TD class="OPTIONS">-lsrd:</TD>
+							<TD class="OPTIONS">Enable or disable the storing of send receive messages in a log
+								file. Default 1 - Store send receive messages in a log file.
+								<P>
+									The store send receive messages in a log file can have one of these values:
+									<LI>
+									0 - Do not store send / receive messages in a log file
+									<LI>
+								1 - Store send / receive messages in a log file
+								<P></P>
+								Example:<BR>
+								Start NetO32 and store the send and receive messages in a specific log file.
+								<PRE>C:\NetO32&gt;Neto32 -lslf:1 -lfo:1 -ls:c:\log\Neto32.log -lsrd:1</PRE>
+								</LI>
+							</TD>
+						</TR>
+					</TABLE>
+				</TD>
+			</TR>
+		</TABLE>
+	</BODY>
+</HTML>

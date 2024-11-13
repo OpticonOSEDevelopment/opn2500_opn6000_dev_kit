@@ -1,0 +1,61 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>GetBltAddress</TITLE>
+</HEAD>
+
+<BODY>
+<H1>GetBltAddress</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>This function returns the current remote Bluetooth address that's stored in flash memory.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>unsigned char</SPAN>* <A class=clib HREF="./GetBltAddress.html">GetBltAddress</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>The Bluetooth address that is stored in the flash memory.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>
+			The <A class=clib HREF="./SetBltAddress.html">SetBltAddress()</A> function is obsolete, because with BLE the remote Bluetooth device connects to your terminal and not the other way around
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        printf("\nBlt address is: %s", <A class=clib HREF="./GetBltAddress.html">GetBltAddress</A>());
+        <A class=clib HREF="./ResetKey.html">ResetKey</A>();
+        <SPAN class=c-keyword>while</SPAN>( !<A class=clib HREF="./kbhit.html">kbhit</A>() )
+            <A class=clib HREF="./Idle.html">Idle</A>();
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+
+</BODY>
+</HTML>

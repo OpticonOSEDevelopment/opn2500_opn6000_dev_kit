@@ -1,0 +1,99 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>SetDateTime</TITLE>
+</HEAD>
+
+<BODY>
+<H1>SetDateTime</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr><A class=clib HREF="./SetDateTime.html">SetDateTime()</A> sets the date and time in the terminal's real-time clock to the date in the date structure and the time in the time structure.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>int</SPAN> <A class=clib HREF="./SetDateTime.html">SetDateTime</A>( <SPAN class=c-keyword>struct</SPAN> date *datep, <SPAN class=c-keyword>struct</SPAN> time *timep );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+						<H5><SPAN class=c-keyword>struct</SPAN> date *<I>datep</I></H5>
+			The date structure is defined as follows:
+<PRE>
+<SPAN class=c-keyword>struct</SPAN> date
+{
+    <SPAN class=c-keyword>unsigned int</SPAN> da_year;   <SPAN class=c-comment>// current year, 4 digits</SPAN>
+    <SPAN class=c-keyword>unsigned char</SPAN> da_day;   <SPAN class=c-comment>// day of the month</SPAN>
+    <SPAN class=c-keyword>unsigned char</SPAN> da_mon;   <SPAN class=c-comment>// month; 1 = January</SPAN>
+};
+</PRE>
+
+			<H5><SPAN class=c-keyword>struct</SPAN> time *<I>timep</I></H5>
+			The time structure is defined as follows:
+<PRE>
+<SPAN class=c-keyword>struct</SPAN> time
+{
+    <SPAN class=c-keyword>unsigned char</SPAN> ti_hour;  <SPAN class=c-comment>// hours</SPAN>
+    <SPAN class=c-keyword>unsigned char</SPAN> ti_min;   <SPAN class=c-comment>// minutes</SPAN>
+    <SPAN class=c-keyword>unsigned char</SPAN> ti_sec;   <SPAN class=c-comment>// seconds</SPAN>
+};
+</PRE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>
+			<TABLE class=OPTIONS width=100% >
+				<TR>
+					<TD>OK</TD>
+					<TD>Date and time were valid and successfully set.</TD>
+				</TR>
+				<TR>
+					<TD>ERROR</TD>
+					<TD>Date and time were invalid.</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>This function can be used to set the date and time in a single function call, without calling both <A class=clib HREF="./SetDate.html">SetDate</A>() and <A class=clib HREF="./SetTime.html">SetTime</A>().</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class=c-comment>// SetDateTime() / GetDateTime() example
+</SPAN>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>struct</SPAN> date d = { .da_day = 3, .da_mon = 11, .da_year = 2028 };
+    <SPAN class=c-keyword>struct</SPAN> time t = { .ti_hour = 8, .ti_min = 9, .ti_sec = 42 };
+
+    <A class=clib HREF="./SetDateTime.html">SetDateTime</A>( &d,  &t );
+
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        <A class=clib HREF="./GetDate.html">GetDateTime</A>( &d, &t );
+        printf("\n%02d:%02d:%02d", t.ti_hour, t.ti_min, t.ti_sec);
+        printf(" %02d/%02d/%04d", d.da_day, d.da_mon, d.da_year);
+        <A class=clib HREF="./Delay.html">Delay</A>( 50 );
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,114 @@
+<link rel="stylesheet" type="text/css" href="../../global.css">
+<HTML>
+	<HEAD>
+		<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+		<TITLE>Log Options</TITLE>
+	</HEAD>
+	<BODY>
+	<H1>Log Options</H1>
+	<TABLE width="100%" class="setup">
+		<TR class="setup">
+			<TD class="item">Description</TD>
+			<TD class="itemdescr">
+			Press on the different areas of the screenshot below to browse through this NetO32 help.<BR>
+			<BR>
+			<IMG src="./Images/Log.jpg" USEMAP="#Log_PAGE"> <MAP NAME="Log_PAGE">
+					<AREA SHAPE="rect" COORDS="23,37,165,54" HREF=".\RS232_OPTIONS.html">
+					<AREA SHAPE="rect" COORDS="38,70,165,86" HREF=".\Download_OPTIONS.html">
+					<AREA SHAPE="rect" COORDS="38,87,165,102" HREF=".\Upload_OPTIONS.html">
+					<AREA SHAPE="rect" COORDS="38,103,166,118" HREF=".\PollTime_OPTIONS.html">
+					<AREA SHAPE="rect" COORDS="38,135,166,152" HREF=".\Appearance_OPTIONS.html">
+					<AREA SHAPE="rect" COORDS="38,153,164,169" HREF=".\Log_OPTIONS.html">
+					<AREA SHAPE="rect" COORDS="189,82,613,104" HREF=".\Log_OPTIONS.html#StoreLogFile">
+					<AREA SHAPE="rect" COORDS="208,109,617,205" HREF=".\Log_OPTIONS.html#logFileOptions">
+					<AREA SHAPE="rect" COORDS="192,206,614,226" HREF=".\Log_OPTIONS.html#LogError">
+					<AREA SHAPE="rect" COORDS="191,231,613,252" HREF=".\Log_OPTIONS.html#LogCompletions">
+					<AREA SHAPE="rect" COORDS="191,256,612,276" HREF=".\Log_OPTIONS.html#LogSndRcvData">
+				</MAP>
+			</TD>
+		</TR>
+
+		<TR class=setup>
+		<TD class=item>Options</TD>
+		<TD class=itemdescr>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH class="item"><A NAME="StoreLogFile"></A>Store Log in file</TH>
+				</TR>
+				<TR>
+					<TD>
+						If enabled, NetO32 will store the log messages into a file.
+						This way later can been seen what problems occurred and when they
+						did happen. By default this option is not enabled.
+					</TD>
+				</TR>
+			</TABLE>
+
+			<BR>
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH class="item"><A NAME="logFileOptions"></A>Log file options</TH>
+				</TR>
+				<TR>
+					<TD>
+						Log file options can set the Log file. The option New log at
+						startup, creates a new log name when the NetO32 application is started. The
+						format of this name is [YYYYMMDDhhmmss].log where Y stand for Year, M for
+						Month,D for Day, h for hour, m for minute and s for second. This way every time
+						the NetO32 application a new file is created and these files are easily sorted
+						for keeping track. The second option is Specific log file. The way the user
+						can select a specific log file to store the log data in. Every time the NetO32
+						application is started new log data will be appended at the back of this
+						specific file. This option can result in very large files. The default value is
+						New log at startup.
+					</TD>
+				</TR>
+			</TABLE>
+
+			<BR>
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH class="item"><A NAME="LogError"></A>Log errors</TH>
+				</TR>
+				<TR>
+					<TD>
+						If enabled, then NetO32 will store error messages in the Log file and in the status Log of the main NetO32
+						application window. By default this option is enabled.
+					</TD>
+				</TR>
+			</TABLE>
+
+			<BR>
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH class="item"><A NAME="LogCompletions"></A>Log Completions</TH>
+				</TR>
+				<TR>
+					<TD>
+						If enabled, then NetO32 will store completion messages in the Log file and in the status Log of the main NetO32
+						application window. By default this option is enabled.
+					</TD>
+				</TR>
+			</TABLE>
+
+			<BR>
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH class="item"><A NAME="LogSndRcvData"></A>Log send receive data</TH>
+				</TR>
+				<TR>
+					<TD>
+						If enabled, then NetO32 will log the send and receive data messages in the Log file and in the status Log of the
+						main NetO32 application window. By default this options is enabled.
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+		</TR>
+	</TABLE>
+	</BODY>
+</HTML>

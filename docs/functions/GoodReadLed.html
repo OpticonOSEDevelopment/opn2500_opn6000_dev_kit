@@ -1,0 +1,102 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>GoodReadLed</TITLE>
+</HEAD>
+
+<BODY>
+<H1>GoodReadLed</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>This function controls the RBG LEDs of the device</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>void</SPAN> <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>( <SPAN class=c-keyword>int</SPAN> color, <SPAN class=c-keyword>int</SPAN> time );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+			<H5><SPAN class=c-keyword>int</SPAN> <I>color</I></H5>
+			The color specifies the RBG value of the LED. In 'lib.h' you'll find a list of predefined colors (i.e GREEN, ORANGE and RED)
+			<BR>
+			For a flashing LED do a logical OR with the defines 'LED_FLASH' or 'LED_FLASH_SLOW'
+
+			<H5><SPAN class=c-keyword>int</SPAN> <I>time</I></H5>
+			Defines the time the LED is on in steps of 20 milliseconds. After this time the LED will be
+			switched off. For examples, time = 25 specifies half a second.<BR>
+			<BR>
+			Two values have a special meaning:
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TD>OFF</TD>
+					<TD>Good read LED will be switched off immediately (OFF = 0).</TD>
+				</TR>
+				<TR>
+					<TD>FOREVER</TD>
+					<TD>Good read LED will be continuously on (FOREVER = -1).</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>
+			In case the application allows the user the change the good read led color, using menu commands or OptiConnect,
+			use the define 'GOOD_READ_COLOR' as 'color' parameter to use the configured color in the Operating System<BR>
+			Tip: Use the <A class=clib HREF="./Delay.html">Delay()</A> function if you want to halt program execution
+			until the good read LED is switched off again.
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+	<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>int</SPAN> x;
+
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        <SPAN class=c-keyword>for</SPAN>( x=0; x &lt; 10; x++)
+        {
+            <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>( RED, 25);
+            <A class=clib HREF="./Delay.html">Delay</A>( 50 );
+            <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>( GREEN, 25);
+            <A class=clib HREF="./Delay.html">Delay</A>( 50 );
+            <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>( BLUE, 25);
+            <A class=clib HREF="./Delay.html">Delay</A>( 50 );
+        }
+        <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>( RED | LED_FLASH, FOREVER);
+        <A class=clib HREF="./Delay.html">Delay</A>( 200 );
+        <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>( RED, 0);
+        <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>( GREEN | LED_FLASH, FOREVER);
+        <A class=clib HREF="./Delay.html">Delay</A>( 200 );
+        <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>( GREEN, 0);
+        <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>( BLUE | LED_FLASH, FOREVER);
+        <A class=clib HREF="./Delay.html">Delay</A>( 200 );
+        <A class=clib HREF="./GoodReadLed.html">GoodReadLed</A>( BLUE, 0);
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

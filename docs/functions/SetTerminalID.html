@@ -1,0 +1,80 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>SetTerminalId</TITLE>
+</HEAD>
+
+<BODY>
+<H1>SetTerminalId</H1>
+
+<TABLE width=100% class=setup>
+    <TR class=setup>
+        <TD class=item>Availability</TD>
+        <TD class=itemdescr>All terminals</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Description</TD>
+        <TD class=itemdescr>
+            SetTerminalId sets the ID of the terminal. This can also be done in the system menu,
+            but this function can be used to set the ID in the application. The ID can be read with
+            the function <A class=clib HREF="./GetTerminalId.html">GetTerminalId</A>().
+        </TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Syntax</TD>
+        <TD class=itemdescr><SPAN class=c-keyword>void</SPAN> <A class=clib HREF="./SetTerminalId.html">SetTerminalId</A>( <SPAN class=c-keyword>unsigned int</SPAN> id );</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Arguments</TD>
+        <TD class=itemdescr>
+            <H5><SPAN class=c-keyword>unsigned int</SPAN> <I>id</I></H5>
+            The new value for the terminal ID. The value must be smaller then 10000.
+        </TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Returns</TD>
+        <TD class=itemdescr>None</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Remarks</TD>
+        <TD class=itemdescr>
+            To read the terminal ID, use the function <A class=clib HREF="./GetTerminalId.html">GetTerminalId</A>().
+            Passing a value of 10000 or larger will result in undefined behavior.<BR>
+            <BR>
+            Note that the terminal ID does not necessarily correspond to the term_id argument in <A class=clib HREF="./neto_receive.html">neto_receive</A>() and <A class=clib HREF="./neto_transmit.html">neto_transmit</A>().
+            It is merely meant for your own identification purposes.<BR>
+            <BR>
+            For a description of how to activate the <A HREF="../Appl-development/Sysmenu.html">system menu</A>, click <A HREF="../Appl-development/Sysmenu.html"><u>here</u></A>.
+        </TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Example</TD>
+        <TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <A class=clib HREF="./SetTerminalId.html">SetTerminalId</A>( 1234 );
+
+    <SPAN class="c-keyword">for</SPAN>(;;)
+    {
+        <A class="clib" href="../functions/ResetKey.html">ResetKey</A>();
+
+        <SPAN class="c-keyword">while</SPAN>(!kbhit())
+            <A class="clib" href="../functions/Idle.html">Idle</A>();
+
+        printf(&quot;\nTerminal ID: %d&quot;, <A class="clib" href="../functions/GetTerminalId.html">GetTerminalId</A>());
+        <A class="clib" href="../functions/Sound.html">Sound</A>(TSTANDARD, VHIGH, SHIGH, 0);
+    }
+}
+</PRE>
+        </TD>
+    </TR>
+</TABLE>
+
+</BODY>
+</HTML>
+

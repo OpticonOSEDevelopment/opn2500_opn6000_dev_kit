@@ -1,0 +1,72 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>kbhit</TITLE>
+</HEAD>
+
+<BODY>
+<H1>kbhit</H1>
+
+<TABLE width=100% class=setup>
+    <TR class=setup>
+        <TD class=item>Availability</TD>
+        <TD class=itemdescr>All terminals</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Description</TD>
+        <TD class=itemdescr>This function checks to see if a keystroke is available.</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Syntax</TD>
+        <TD class=itemdescr><SPAN class=c-keyword>unsigned int</SPAN> <A class=clib HREF="./kbhit.html">kbhit</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Arguments</TD>
+        <TD class=itemdescr>None</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Returns</TD>
+        <TD class=itemdescr>When a keystroke is available, <A class=clib HREF="./kbhit.html">kbhit()</A> returns a non-zero integer; zero is returned otherwise.</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Remarks</TD>
+        <TD class=itemdescr>
+            Use the <A class=clib HREF="./Idle.html">Idle()</A> function when <A class=clib HREF="./kbhit.html">kbhit()</A>
+            is used to wait for keyboard input.<BR>
+            When a user wants to wait for a key press, it is advised to call <A class=clib HREF="./ResetKey.html">ResetKey()</A> first, in order to be sure that a
+            previous key, still in the keyboard buffer, doesn't cause <A class=clib HREF="./kbhit.html">kbhit()</A> to return TRUE.
+        </TD>
+    </TR>
+
+    <TR class=setup>
+        <TD class=item>Example</TD>
+        <TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class="c-keyword">void</SPAN> main( <SPAN class="c-keyword">void</SPAN> )
+{
+    <SPAN class="c-keyword">int</SPAN> color = GREEN;
+
+    <SPAN class="c-keyword">for</SPAN>(;;)
+    {
+        printf("\nPress any key");
+
+        <A class="clib" href="./ResetKey.html">ResetKey</A>();
+         
+        <SPAN class="c-keyword">while</SPAN>(!<A class="clib" href="./kbhit.html">kbhit</A>())
+            <A class="clib" href="./Idle.html">Idle</A>();
+
+        <A class="clib" href="./GoodReadLed.html">GoodReadLed</A>(color, 50);        <SPAN class="c-comment">// ON, 1 second</SPAN>
+
+        color = (color == GREEN) ? RED : GREEN;
+    }
+}
+</PRE>
+        </TD>
+    </TR>
+</TABLE>
+</BODY>
+</HTML>

@@ -1,0 +1,61 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Delay</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Delay</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>This function waits for a time specified by the argument time. The time is specified in steps of 20 milliseconds. For example, time = 50 will cause a delay of 20*50 = 1000 milliseconds.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>void</SPAN> <A class=clib HREF="./Delay.html">Delay</A>( <SPAN class=c-keyword>int</SPAN> time );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+			<H5><SPAN class=c-keyword>int</SPAN> <I>time</I></H5>
+			The time is specified in steps of 20 milliseconds.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>This function automatically calls the <A class=clib HREF="./Idle.html">Idle()</A> function in order to reduce power consumption.
+	</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+	<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        printf("\nHello world.");
+        <A class=clib HREF="./Sound.html">Sound</A>(TSTANDARD, VHIGH, SHIGH, 0);
+        <A class=clib HREF="./Delay.html">Delay</A>( 100 );
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

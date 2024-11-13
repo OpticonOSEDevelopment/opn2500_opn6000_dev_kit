@@ -1,0 +1,151 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>ScannerPower</TITLE>
+</HEAD>
+
+<BODY>
+<H1>ScannerPower</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>
+			This function controls the power of the scan engine in the handheld terminal.
+			The scan engine can be switched on continuously, switched on only when the user presses the
+			trigger key, or switched off.
+			The selected power mode remains active, even when a barcode is read and the scanner is
+			switched off. The next trigger press will re-enable the scan engine. Call this function with
+			OFF, to completely disable the scan engine.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>void</SPAN> <A class=clib HREF="./ScannerPower.html">ScannerPower</A>( <SPAN class=c-keyword>int</SPAN> mode, <SPAN class=c-keyword>int</SPAN> time );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+			<H5><SPAN class=c-keyword>int</SPAN> <I>mode</I></H5>
+			mode can have one of the following values:
+
+			<TABLE class=OPTIONS width=100% >
+				<TR>
+					<TD>OFF</TD>
+					<TD>The scan engine is switched off immediately.</TD>
+				</TR>
+				<TR>
+					<TD>ON</TD>
+					<TD>The scan engine is switched on immediately, and switched off when "time*20" ms has elapsed.</TD>
+				</TR>
+				<TR>
+					<TD>SCAN_TRIGGER</TD>
+					<TD>The scan engine is switched on when the user presses a trigger key. The scan engine stays powered for as long as the user presses the trigger key and "time*20" ms hasn't elapsed.</TD>
+				</TR>
+				<TR>
+					<TD>SCAN_SINGLE</TD>
+					<TD>The scan engine is switched on when the user presses a trigger key. The scan engine stays powered regardless of the state of the trigger key, and is only switched off when "time*20" ms has elapsed, or when a successful read has been made by <A class=clib HREF="./ReadBarcode.html">ReadBarcode()</A>.</TD>
+				</TR>
+				<TR>
+					<TD>SCAN_MULTIPLE</TD>
+					<TD>
+						Almost the same as SCAN_SINGLE, however the scan engine is not switched off
+						after a successful read by <A class=clib HREF="./ReadBarcode.html">ReadBarcode()</A>,
+						allowing the user to read another barcode. However, the same barcode can only be read
+						when the scan engine has been moved away from the label first. The scan
+						time specified by time is reset after a successful read.<BR>
+					</TD>
+				</TR>
+				<TR>
+					<TD>SCAN_CONTINUOUS</TD>
+					<TD>
+						The scan engine is switched on when the user presses a trigger key.
+						The scan engine stays powered regardless of the state of the trigger key,
+						and is only switched off when "time*20" ms has elapsed without a successful
+						read made by <A class=clib HREF="./ReadBarcode.html">ReadBarcode()</A>.<BR>
+					</TD>
+				</TR>
+			</TABLE>
+			<BR>
+			The following combinations are also supported
+			<TABLE class=OPTIONS width=100% >
+				<TR>
+					<TD>SCAN_TRIGGER | SCAN_SINGLE</TD>
+					<TD>Same as SCAN_SINGLE, but the scan engine is also turned off when the trigger is released.</TD>
+				</TR>
+				<TR>
+					<TD>SCAN_TRIGGER | SCAN_MULTIPLE</TD>
+					<TD>Same as MULITPLE, but the scan engine is also turned off when the trigger is released.</TD>
+				</TR>
+				<TR>
+					<TD>SCAN_TRIGGER | SCAN_CONTINUOUS</TD>
+					<TD>Same as SCAN_CONTINUOUS, but the scan engine is also turned off when the trigger is released.</TD>
+				</TR>
+			</TABLE>
+
+
+
+			<BR>
+			<H5><SPAN class=c-keyword>int</SPAN> <I>time</I></H5>
+			The time parameter specifies the time that the scan engine is on in steps of 20 milliseconds.<BR>
+			Example: time = 100 specifies that the scan engine is on for 20*100 ms = 2 seconds.<BR>
+			time = 0 is interpreted as zero time. The scan engine is not switched on in this case.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>
+			The scan engine is the part of the terminal that emits the laser beam or
+			LED light and that processes variations in reflected light. When the laser beam is visible
+			or the LED is emitting, the scan engine is on; otherwise it is off.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class="c-comment">// This program reads and displays a barcode. After each successful barcode reading,</SPAN>
+<SPAN class="c-comment">// it gives a good read signal on the LED and a buzzer signal.</SPAN>
+
+<SPAN class="c-preprocessor">#include</SPAN> &lt;stdio.h&gt;
+<SPAN class="c-preprocessor">#include</SPAN> &quot;lib.h&quot;
+
+<SPAN class="c-keyword">void</SPAN> main( <SPAN class="c-keyword">void</SPAN> )
+{
+    <SPAN class="c-keyword">char</SPAN> bcr_buf[42] = {0};
+    <SPAN class="c-keyword">struct</SPAN> barcode code  = {0};
+
+    code.min   = 3;
+    code.max   = 41;
+    code.text  = bcr_buf;
+
+    <A class="clib" href="./ScannerPower.html">ScannerPower</A>(SCAN_SINGLE, 100);        <SPAN class="c-comment">// Single read, 2 seconds</SPAN>
+
+    <SPAN class="c-keyword">for</SPAN>(;;)
+    {
+        <SPAN class="c-keyword">if</SPAN>(<A class="clib" href="./ReadBarcode.html">ReadBarcode</A>(&amp;code) == OK)
+        {
+             <A class="clib" href="./GoodReadLed.html">GoodReadLed</A>(GREEN, 10);
+             <A class="clib" href="./Sound.html">Sound</A>( TSTANDARD, VHIGH, SMEDIUM, SHIGH, 0);
+             printf(&quot;%*s\r&quot;, code.length, code.text);
+        }
+
+        <A class="clib" HREF="./Idle.html">Idle</A>();
+    }
+}
+</PRE>
+
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

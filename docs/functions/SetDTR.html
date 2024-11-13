@@ -1,0 +1,87 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>SetDTR</TITLE>
+</HEAD>
+
+<BODY>
+<H1>SetDTR</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>Sets the level of the DTR line of the USB-VCP or USB-CDC COM-port</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>void</SPAN> <A class=clib HREF="./SetDTR.html">SetDTR</A>( <SPAN class=c-keyword>int</SPAN> level );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+			<H5><SPAN class=c-keyword>int</SPAN> <I>level</I></H5>
+			Two values are defined for level:
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TD>ON</TD>
+					<TD>The DTR line is made active.</TD>
+				</TR>
+				<TR>
+					<TD>OFF</TD>
+					<TD>The DTR line is made inactive.</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>
+			<A class=clib HREF="./SetDTR.html">SetDTR()</A> has no effect when used on other communications ports.<BR>
+			The default state of the DTR line is OFF.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class=c-comment>// The following example demonstrates the use SetDTR() on USB Serial ports</SPAN>
+
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class="c-keyword">int</SPAN> key = -1;
+
+    <A class=clib HREF="./ComOpen.html">ComOpen</A>( COM9 );     <SPAN class=c-comment>// USB-VCP COM-port</SPAN>
+
+    <SPAN class="c-keyword">for</SPAN>(;;)
+    {
+        printf(&quot;\nPress any key&quot;);
+
+        <A class="clib" href="./ResetKey.html">ResetKey</A>();
+
+        key = <A class="clib" href="./WaitKey.html">WaitKey</A>();
+
+        <A class=clib HREF="./SetDTR.html">SetDTR</A>((key == TRIGGER_KEY) ? ON : OFF);
+
+        <A class=clib HREF="./Idle.html">Idle</A>();
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+
+</BODY>
+</HTML>

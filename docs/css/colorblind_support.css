@@ -1,0 +1,80 @@
+﻿/*Colorblind elements are
+    .bad, .badBG, .neutral, .neutralBG, .medium, .mediumBG, .good, .goodBG, .busy, .busyBG, .inactive, .inactiveBG, .btn
+    NOTE: btn is an umbrella class for all Bootstrap buttons (ex. class="btn btn-danger") so btn-{style} with colorblind overrides can be defined in this sheet
+*/
+.bad.CB {
+    color: #d95f02 !important; /*#d01c8b*/
+}
+
+.badBG.CB {
+    background: #d95f02 !important; /*#d01c8b*/
+}
+
+.neutral.CB {
+    color: #003d66 !important;
+}
+
+.neutralBG.CB {
+    background: #003d66 !important;
+}
+
+.medium.CB {
+    color: #7570b3 !important; /*#f1b6da*/
+}
+
+.mediumBG.CB {
+    background: #7570b3 !important; /*#f1b6da*/
+}
+
+.good.CB {
+    color: #1b9e77 !important; /*#4dac26*/
+}
+
+.goodBG.CB {
+    background: #1b9e77 !important; /*#4dac26*/
+}
+
+.busy.CB {
+    color: #b93f00 !important; /*#b93f00*/
+}
+
+.busyBG.CB {
+    background: #b93f00 !important; /*#b93f00*/
+}
+
+.inactive.CB {
+    color: #808080 !important; /*#b93f00*/
+}
+
+.inactiveBG.CB {
+    background: #808080 !important; /*#b93f00*/
+}
+
+/* CB versions of Bootstrap buttons */
+.btn-warning.CB {
+    background-color: #7570b3 !important;
+}
+
+.btn-danger.CB {
+    background-color: #d95f02;
+}
+
+.btn-outline-warning.CB {
+    background-color: inherit;
+    color: #7570b3;
+}
+
+    .btn-outline-warning.CB:hover {
+        background-color: #7570b3;
+        color: #fff;
+    }
+
+.btn-outline-danger.CB {
+    background-color: inherit;
+    color: #d95f02 !important;
+}
+
+    .btn-outline-danger.CB:hover {
+        background-color: #d95f02;
+        color: #fff !important;
+    }

@@ -1,0 +1,223 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Cradle H13</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Cradle H13</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Image</TD>
+		<TD class=itemdescr>
+			<A HREF="./CradleH13.html#CRD13"><IMG alt="CRD13"  border="2" src="../images/Fcrd13.jpg"></A>
+			<IMG alt="CRD13 switches"  border="2" src="../images/crd-13-switches.jpg"></A>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Dip-switches</TD>
+		<TD class=itemdescr>
+			<A NAME="CRD13"><H3>CRD13</H3></A>
+			You can find the DIP switch bank under one of the rectangular black plastic covers at the bottom of the CRD13. The arrow in the drawing above indicates which one.
+
+			<TABLE class=OPTIONS width=100%>
+				<THEAD>
+					<TR>
+						<TH>DIP switch</TH>
+						<TH>Function</TH>
+						<TH>ON</TH>
+						<TH>OFF</TH>
+						<TH>Factory<BR>defaults</TH>
+					</TR>
+				</THEAD>
+				<TBODY>
+					<TR>
+						<TH>1</TH>
+						<TD>Baudrate</TD>
+						<TD>See baud rate table below</TD>
+						<TD>See baud rate table below</TD>
+						<TD>ON</TD>
+					</TR>
+					<TR>
+						<TH>2</TH>
+						<TD>Baudrate</TD>
+						<TD>See baud rate table below</TD>
+						<TD>See baud rate table below</TD>
+						<TD>ON</TD>
+					</TR>
+					<TR>
+						<TH>3</TH>
+						<TD>Baudrate</TD>
+						<TD>See baud rate table below</TD>
+						<TD>See baud rate table below</TD>
+						<TD>ON</TD>
+					</TR>
+					<TR>
+						<TH>4</TH>
+						<TD>Data bits</TD>
+						<TD>7 bits</TD>
+						<TD>8 bits</TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>5</TH>
+						<TD>Parity bits</TD>
+						<TD>See parity table below</TD>
+						<TD>See parity table below</TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>6</TH>
+						<TD>Parity bits</TD>
+						<TD>See parity table below</TD>
+						<TD>See parity table below</TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>7</TH>
+						<TD>Stop bits</TD>
+						<TD>Two</TD>
+						<TD>One</TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>8</TH>
+						<TD>Reserved for future use</TD>
+						<TD></TD>
+						<TD></TD>
+						<TD>OFF</TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+			<BR>
+
+			<TABLE class=OPTIONS width=100%>
+				<THEAD>
+					<TR>
+						<TH>Baudrate</TH>
+						<TH>Switch 1</TH>
+						<TH>Switch 2</TH>
+						<TH>Switch 3</TH>
+						<TH>Pulses</TH>
+					</TR>
+				</THEAD>
+				<TBODY>
+					<TR>
+						<TH>115200</TH>
+						<TD>OFF</TD>
+						<TD>OFF</TD>
+						<TD>OFF</TD>
+						<TD>0</TD>
+					</TR>
+					<TR>
+						<TH>57600</TH>
+						<TD>ON</TD>
+						<TD>OFF</TD>
+						<TD>OFF</TD>
+						<TD>1</TD>
+					</TR>
+					<TR>
+						<TH>38400</TH>
+						<TD>OFF</TD>
+						<TD>ON</TD>
+						<TD>OFF</TD>
+						<TD>2</TD>
+					</TR>
+					<TR>
+						<TH>19200</TH>
+						<TD>ON</TD>
+						<TD>ON</TD>
+						<TD>OFF</TD>
+						<TD>3</TD>
+					</TR>
+					<TR>
+						<TH>9600</TH>
+						<TD>OFF</TD>
+						<TD>OFF</TD>
+						<TD>ON</TD>
+						<TD>4</TD>
+					</TR>
+					<TR>
+						<TH>4M</TH>
+						<TD>ON</TD>
+						<TD>OFF</TD>
+						<TD>ON</TD>
+						<TD>Cannot be set</TD>
+					</TR>
+					<TR>
+						<TH>Auto baudrate</TH>
+						<TD>ON</TD>
+						<TD>ON</TD>
+						<TD>ON</TD>
+						<TD></TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<THEAD>
+					<TR>
+						<TH>Parity</TH>
+						<TH>Switch 5</TH>
+						<TH>Switch 6</TH>
+					</TR>
+				</THEAD>
+				<TBODY>
+					<TR>
+						<TH>No Parity</TH>
+						<TD>OFF</TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>Odd Parity</TH>
+						<TD>ON</TD>
+						<TD>OFF</TD>
+					</TR>
+					<TR>
+						<TH>Even Parity</TH>
+						<TD>OFF</TD>
+						<TD>ON</TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+			<BR>
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Auto baudrate</TD>
+		<TD class=itemdescr>
+			When the CRD13 is set to 'autobaudrate', the PC controls the setting of
+			the CRD baudrate controller. In order to be able to do that, the PC uses
+			the DTR and RTS lines. The procedure to set the baudrate is shown below:<BR>
+			<BR>
+			<LI>First pull DTR and RTS high.</LI>
+			<LI>Reset the CRD13 baudrate controller by pulling RTS low and high again.</LI>
+			<LI>To select the required baudrate, the DTR line is cycled the requisite number
+				of times while RTS remains high. Each time the DTR line is cycled
+				(pulled low, pulled high) this causes the baudrate to cycle the list
+				above. (See the pulses column)</LI>
+			The minimum delay is 15 ms, so keep the level of RTS/DTR steady for at least 15ms.
+		</TD>
+	</TR>
+	
+	<TR class=setup>
+		<TD class=item>CRD13GSM</TD>
+		<TD class=itemdescr>
+			<A NAME="CRD13GSM"><H3>CRD13GSM</H3></A>
+			The CRD13GSM is a charging and GSM modem cradle for the H13. Data is 
+			transmitted to a remote host through a cellular data connection to the Internet. 
+			The CRD13GSM must be provisioned with an active SIM card to make a cellular data 
+			connection.
+
+			The CRD13GSM is equipped with an IrDA interface allowing data transfer when the 
+			scanner is inserted for charging. H13 applications that wish to communicate with 
+			remote hosts over the cellular connection must use the TCP/IP library, provided in 
+			this kit.
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+

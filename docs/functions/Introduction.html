@@ -1,0 +1,552 @@
+<HTML>
+<HEAD>
+<link rel="stylesheet" type="text/css" href="../global.css">
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Functions</TITLE>
+</HEAD>
+<BODY>
+
+<!-- <script src="../script/blocking.js"></script> -->
+
+<H1>Functions</H1>
+
+<H3>ANSI C Functions</H3>
+<P>
+To facilitate application development on Opticon handheld terminals, almost all of the
+standard ANSI C functions plus many other functions for controlling the handheld terminal
+can be used.<BR>
+The standard library supplied by the compiler package contains the code
+for almost all of the ANSI functions. Code that is specific to the handheld terminal
+is included in the operating system. The start-up code contains the
+references to these functions. The prototypes of the supported ANSI functions are described in the include files
+described below in this paragraph. The prototypes of the non-ANSI functions
+are in the include file LIB.H.<BR>
+<BR>
+The ANSI functions are not described in this manual. For a description of the ANSI
+standard library functions you can consult for example the book<BR>'The C programming
+language, second edition' by Brian Kernighan and Dennis Ritchie
+(ISBN number 0-13-110362-8, publisher Prentice Hall).<BR><BR>
+Click on the link below to get an overview of the ANSI C header files and their descriptions
+on how they conform or deviate from the ANSI standard.
+</P>
+
+<H2 align=center><A HREF="#headers?block=0" name="headers" id="link0"  onClick="blocking(0,true)">List of ANSI C header files</A></H2>
+
+<TABLE CLASS="para" ID="number0" width=100%>
+	<TR>
+		<TH>errno.h</TH>
+		<TD>
+			The ERRNO.H include file defines several macros that all relate to the
+			reporting of error conditions mainly related to file handling routines.
+			It is included and conforms to the ANSI specifications.
+		</TD>
+	</TR>
+	<TR>
+	<TH>float.h, limits.h</TH>
+		<TD>
+			These files define macros that expand to various limits and parameters for
+			floating point (FLOAT.H) and integral types (LIMITS.H). They are included
+			and conform to the ANSI specifications.
+		</TD>
+	</TR>
+	<TR>
+	<TH>math.h</TH>
+		<TD>
+			Math.h contains the definitions of the commonly used mathematics functions.
+			It is included and conforms to the ANSI specifications.<BR>
+		</TD>
+	</TR>
+	<TR>
+	<TH>stdarg.h</TH>
+		<TD>
+			This file defines macros and data types for processing a variable number of
+			arguments on a function call. It is included and conforms to the ANSI specifications.
+		</TD>
+	</TR>
+	<TR>
+		<TH>stddef.h</TH>
+		<TD>This include file defines some types. It is included and conforms to the ANSI specifications.</TD>
+	</TR>
+	<TR>
+		<TH>stdio.h</TH>
+		<TD>
+			The stdio.h file contains type declarations, macros and functions for several I/O related functions.
+		</TD>
+	</TR>
+	<TR>
+		<TH>stdlib.h</TH>
+		<TD>
+			This file declares functions for number conversion, storage allocation and
+			similar tasks. All ANSI functions prototyped in STDLIB.H are supported except
+			for the following functions that are not very useful on embedded systems:
+			<B>atexit()</B>, <B>system()</B>, and <B>getenv()</B>.
+		</TD>
+	</TR>
+	<TR>
+		<TH>string.h</TH>
+		<TD>
+			Defines functions for string and memory manipulation. It is included and conforms
+			to the ANSI specifications.
+		</TD>
+	</TR>
+	<TR>
+		<TH>time.h </TH>
+		<TD>Additional to the ANSI time functions, the operating system has several easy to use functions for time and date handling:
+			<A class=clib HREF="./SetTime.html">SetTime</A>(),
+			<A class=clib HREF="./SetDate.html">SetDate</A>(),
+			<A class=clib HREF="./GetTime.html">GetTime</A>(),
+			<A class=clib HREF="./GetDate.html">GetDate</A>().
+		</TD>
+	</TR>
+</TABLE>
+
+<H3>Operating System functions</H3>
+
+<P>In this chapter you'll find the available Operating System C functions grouped by categories.</P>
+<P>To use these functions, include "lib.h" in your source files.</P>
+
+<TABLE class=OPTIONS width=100%>
+	<TR>
+		<TH width=10%>lib.h</TH>
+		<TD>
+			Contains all available Operating System C functions with CamelCase names and defines
+		</TD>
+	</TR>
+	<TR>
+	<TH>lib_legacy.h</TH>
+		<TD>
+			This file is included in lib.h for backwards compatibility, using lower case function names. 
+		</TD>
+	</TR>
+</TABLE>
+
+<P><I>Click on the links below to show the related C functions and their descriptions</I></P>
+
+<TABLE class=OPTIONS width=100% cellspacing=5>
+	<THEAD>
+		<TR>
+			<TH>
+				<A HREF="#general?block=1" name="general" id="link1" onClick="blocking(1,true)">1.	Configuration functions</A>
+
+				<TABLE CLASS="para" ID="number1" width=100%>
+					<TR>
+						<TD width=25%><LI><A HREF="./SystemSetting.html">SystemSetting</A></TD>
+						<TD>Used to change a large diversity of system settings</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./ExecuteMenuLabel.html">ExecuteMenuLabel</A></TD>
+						<TD>Can be used to execute Universal Menu Book labels like a barcode reader</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./SystemSettingsMemorizing.html">SystemSettingsMemorizing</A></TD>
+						<TD>Can be used to store and restore decoder configurations using flash memory</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./ApplicationSettingsMemorizing.html">ApplicationSettingsMemorizing</A></TD>
+						<TD>Can be used to store and restore application configurations using flash memory</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./AddMenuOptionTable.html">AddMenuOptionTable</A></TD>
+						<TD>Can be used to override OS handling of menu options with custom implementations</TD>
+					</TR>
+
+				</TABLE>
+			</TH>
+		</TR>
+		<TR>
+			<TH>
+				<A HREF="#scanner?block=2" name="scanner" id="link1" onClick="blocking(1,true)">2.	Scanner functions</A>
+
+				<TABLE CLASS="para" ID="number2" width=100%>
+					<TR>
+						<TD width=25%><LI><A HREF="./ReadBarcode.html">ReadBarcode</A></TD>
+						<TD>Tries to fetch a barcode from the scanner</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./IsScannerOff.html">IsScannerOff</A></TD>
+						<TD>Checks whether the scan engine is off</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./ScannerPower.html">ScannerPower</A></TD>
+						<TD>Controls the power of the scan engine of the handheld terminal</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./ClearKeyAsTrigger.html">ClearKeyAsTrigger</A></TD>
+						<TD>Allows the clear key to be used a trigger key to read barcodes</TD>
+					</TR>
+				</TABLE>
+			</TH>
+		</TR>
+		
+		<TR>
+			<TH>
+				<A HREF="#led_sound?block=3" name="led_sound" id="link3"  onClick="blocking(3,true)">3.	Led/Sound/Vibrate functions</A>
+				<TABLE CLASS="para" ID="number3" width=100%>
+					<TR>
+						<TD width=25%><LI><A HREF="./GoodReadLed.html">GoodReadLed</A></TD>
+						<TD>Controls the good read (typically main) LED</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./Sound.html">Sound</A></TD>
+						<TD>Sounds one tone or a sequence of tones</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./IsBuzzerOn.html">IsBuzzerOn</A></TD>
+						<TD>Returns whether the buzzer is busy or not</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./Vibrate.html">Vibrate</A></TD>
+						<TD>Controls the vibrating motor (if present)</TD>
+					</TR>
+				</TABLE>
+			</TH>
+		</TR>
+		<TR>
+			<TH>
+				<A HREF="#keyboard?block=4" name="keyboard" id="link4"  onClick="blocking(4,true)">4.	Keyboard functions</A>
+
+				<TABLE CLASS="para" ID="number4" width=100%>
+					<TR>
+						<TD width=25%><LI><A HREF="./DownPressed.html">DownPressed</A></TD>
+						<TD>Returns the current state of the function key</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./kbhit.html">kbhit</A></TD>
+						<TD>Checks to see if a keystroke is available</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./ResetKey.html">ResetKey</A></TD>
+						<TD>Clears the keyboard buffer</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./TriggerPressed.html">TriggerPressed</A></TD>
+						<TD>Returns the current state of the trigger key</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./WaitKey.html">WaitKey</A></TD>
+						<TD>Blocks program execution until a key is pressed</TD>
+					</TR>
+				</TABLE>
+			</TH>
+		</TR>
+		<TR>
+			<TH>
+				<A HREF="#serial?block=5" name="serial" id="link5"  onClick="blocking(5,true)">5.	Communication functions</A>
+
+				<TABLE CLASS="para" ID="number5" width=100%>
+					<TR>
+						<TD width=25%><LI><A HREF="./ComOpen.html">ComOpen</A></TD>
+						<TD>Opens a port for communication</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./ComClose.html">ComClose</A></TD>
+						<TD>Closes a communications port</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./GetCom.html">GetCom</A></TD>
+						<TD>Reads a character from the communications port that was opened last by <A class=clib HREF="./ComOpen.html">ComOpen()</A></TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./GetCom2.html">GetCom2</A></TD>
+						<TD>Reads a character from the specified communications port</A></TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./GetCTS.html">GetCTS</A></TD>
+						<TD>Returns the level of the CTS line. Only works with USB Serial ports</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./GetDSR.html">GetDSR</A></TD>
+						<TD>Returns the level of the DSR line. Only works with USB Serial ports</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./OseComm.html">OseComm</A></TD>
+						<TD>Communication protocol to transmit and receive one or more complete files through a serial communications port</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./PutCom.html">PutCom</A></TD>
+						<TD>Putcom transmits a character through the communications port that was last opened by <A class=clib HREF="./ComOpen.html">ComOpen()</A></TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./PutCom2.html">PutCom2</A></TD>
+						<TD>Putcom2 transmits a character through the specified communications port</A></TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./ResetReceive.html">ResetReceive</A></TD>
+						<TD>Resets the receive buffers of last opened COM-port</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./SetDTR.html">SetDTR</A></TD>
+						<TD>Sets the level of the DTR line. Only works with USB Serial ports</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./SetRTS.html">SetRTS</A></TD>
+						<TD>Sets the level of the RTS line (Only works with USB-VCP ports)</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./SetRING.html">SetRING</A></TD>
+						<TD>Sets the level of the RING line (Only works with USB Serial ports)</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./PutString.html">PutString</A></TD>
+						<TD>Transmits a null terminated string through the communications port that was last opened by <A class=clib HREF="./ComOpen.html">ComOpen()</A></TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./PutString2.html">PutString2</A></TD>
+						<TD>Transmits a null terminated string through the specified communications port</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./PutnString.html">PutnString</A></TD>
+						<TD>Transmits <I>n</I> characters of a character buffer through the communications port that was last opened by <A class=clib HREF="./ComOpen.html">ComOpen()</A></TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./PutnString2.html">PutnString2</A></TD>
+						<TD>Transmits a <I>n</I> byte/char buffer of the specified length through the specified communications port</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./UsbIsConnected.html">UsbIsConnected</A></TD>
+						<TD>Returns the USB connection state (boolean)</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./UsbIsPowered.html">UsbIsPowered</A></TD>
+						<TD>Returns whether is USB cable is connected (boolean)</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./UsbStatus.html">UsbStatus</A></TD>
+						<TD>Returns the USB connection state (enum)</TD>
+					</TR>
+				</TABLE>
+			</TH>
+		</TR>
+		<TR>
+			<TH>
+				<A HREF="#bluetooth?block=6" name="bluetooth" id="link6"  onClick="blocking(6,true)">		6.	Bluetooth functions</A>
+
+				<TABLE CLASS="para" ID="number6" width=100%>
+					<TR>
+						<TD width=25%><LI><A HREF="./BltIsConnected.html">BltIsConnected</A></TD>
+						<TD>Returns the Bluetooth connection state</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./GetBltAddress.html">GetBltAddress</A></TD>
+						<TD>Reads the Bluetooth address from flash</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./GetBltLocalName.html">GetBltLocalName</A></TD>
+						<TD>Reads the localname stored in flash ROM</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./SetBltLocalName.html">SetBltLocalName</A></TD>
+						<TD>Stores the Bluetooth localname in flash memory</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./GetBltLocalAddress.html">GetBltLocalAddress</A></TD>
+						<TD>Returns the local Bluetooth address</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./BltUnpair.html">BltUnpair</A></TD>
+						<TD>Remove stored device pairings and link keys</TD>
+					</TR>
+				</TABLE>
+			</TH>
+		</TR>
+		<TR>
+			<TH>
+				<A HREF="#power?block=7" name="power" id="link7"  onClick="blocking(7,true)">		7.	Power management functions</A>
+
+				<TABLE CLASS="para" ID="number7" width=100%>
+					<TR>
+						<TD width=25%><LI><A HREF="./AutoPowerDown.html">AutoPowerDown</A></TD>
+						<TD>Sets the auto-power-down settings</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./GetBatteryVoltage.html">GetBatteryVoltage</A></TD>
+						<TD>Returns the output voltage level of the battery in mVolts</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./Idle.html">Idle</A></TD>
+						<TD>Sets the reader in a 'sleep' mode to reduce the power consumption</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./IsColdBoot.html">IsColdBoot</A></TD>
+						<TD>This function is used to find out if the device has been automatically powered off or has performed a full reset (cold boot)</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./PoweredDown.html">PoweredDown</A></TD>
+						<TD>This function is used to find out if the handheld terminal has been powered down</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./IsCharging.html">IsCharging</A></TD>
+						<TD>Returns the current charging state of the terminal</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./GetBatteryLevel.html">GetBatteryLevel</A></TD>
+						<TD>Returns the remaining battery capacity as a percentage of the full charge.</TD>
+					</TR>
+				</TABLE>
+			</TH>
+		</TR>
+		<TR>
+			<TH>
+				<A HREF="#timer?block=8" name="timer" id="link8"  onClick="blocking(8,true)">		8.	Timer functions</A>
+
+				<TABLE CLASS="para" ID="number8" width=100%>
+					<TR>
+						<TD width=25%><LI><A HREF="./Delay.html">Delay</A></TD>
+						<TD>Waits for a time specified by its argument</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./DelayMs.html">DelayMs</A></TD>
+						<TD>Waits for a specified number of millseconds</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./StartTimer.html">StartTimer</A></TD>
+						<TD>Starts the time-out timer, which can be used to implement time-outs in an application</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./EndTimer.html">EndTimer</A></TD>
+						<TD>Checks if the time specified with the <A class=clib HREF="./StartTimer.html">StartTimer()</A> function has elapsed</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./TimerValue.html">TimerValue</A></TD>
+						<TD>Returns the time that is left of the time specified with the <A class=clib HREF="./StartTimer.html">StartTimer()</A> function</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./GetSystemTime.html">GetSystemTime</A></TD>
+						<TD>Returns the current value of the continuously running system timer</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./SetSystemTime.html">SetSystemTime</A></TD>
+						<TD>Sets the specified value in the continuously running system timer</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./GetTickCount.html">GetTickCount</A></TD>
+						<TD>Returns the number of timer ticks that have occurred since startup of the OS</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./SetTickCount.html">SetTickCount</A></TD>
+						<TD>Artifically set the number of timer ticks that have occurred since startup of the OS</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./InstallHeartbeatHandler.html">InstallHeartbeatHandler</A></TD>
+						<TD>Installs a callback function that is called every 20ms by the operating system</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./RemoveHeartbeatHandler.html">RemoveHeartbeatHandler</A></TD>
+						<TD>Removes a callback function that was previously installed with a call to <A HREF="./InstallHeartbeatHandler.html">InstallHeartbeatHandler</A></TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./SetAlarm.html">SetAlarm</A></TD>
+						<TD>Function to wakeup the terminal at a specific time</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./IsAlarmOn.html">IsAlarmOn</A></TD>
+						<TD>This function returns whether a alarm is set</TD>
+					</TR>
+				</TABLE>
+			</TH>
+		</TR>
+		<TR>
+			<TH>
+				<A HREF="#date_time?block=9" name="date_time" id="link9"  onClick="blocking(9,true)">		9.	Date/Time functions</A>
+
+				<TABLE CLASS="para" ID="number9" width=100%>
+					<TR>
+						<TD width=25%><LI><A HREF="./CheckDate.html">CheckDate</A></TD>
+						<TD>Checks if the date structure passed to the function holds a valid date</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./CheckTime.html">CheckTime</A></TD>
+						<TD>Checks if the time structure passed to the function holds a valid time</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./GetDate.html">GetDate</A></TD>
+						<TD>Fills in the date structure with the current date stored in the terminal's real-time clock</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./GetTime.html">GetTime</A></TD>
+						<TD>Fills in the time structure with the current time as stored in the terminal's real-time clock</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./GetDateTime.html">GetDateTime</A></TD>
+						<TD>Fills in a time structure and a date structure with the current time and date stored in the terminal's real-time clock</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./SetDate.html">SetDate</A></TD>
+						<TD>Sets the date in the terminal's real-time clock to the date in the date structure</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./SetTime.html">SetTime</A></TD>
+						<TD>Sets the time in the terminal's real-time clock to the time in the time structure</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./SetDateTime.html">SetDateTime</A></TD>
+						<TD>Sets the time and date in the terminal's real-time clock to the time in the time structure and the date in the date structure</TD>
+					</TR>
+				</TABLE>
+			</TH>
+		</TR>
+		<TR>
+			<TH>
+				<A HREF="#memory?block=10" name="memory" id="link10"  onClick="blocking(10,true)">	10.	Memory/file functions</A>
+
+				<TABLE CLASS="para" ID="number10" width=100%>
+					<TR>
+						<TD width=25%><LI><A HREF="./CoreLeft.html">CoreLeft</A></TD>
+						<TD>Returns the amount of memory that is still available to the user</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./Heap_CoreLeft.html">Heap_CoreLeft</A></TD>
+						<TD>Returns the amount of memory that is still available to the user for allocating memory for variables</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./format.html">format</A></TD>
+						<TD>Deletes all files in the RAM disk and initializes the heap</TD>
+					</TR>					
+					<TR>
+						<TD><LI><A HREF="./fsize.html">fsize</A></TD>
+						<TD>Returns the size of a file, measured in bytes</TD>
+					</TR>					
+					<TR>
+						<TD><LI><A HREF="./chsize.html">chsize</A></TD>
+						<TD>Changes the size of a file</TD>
+					</TR>
+				</TABLE>
+			</TH>
+		</TR>
+		<TR>
+			<TH>
+				<A HREF="#misc?block=11" name="misc" id="link11"  onClick="blocking(11,true)">	11.	Miscellaneous</A>
+
+				<TABLE CLASS="para" ID="number11" width=100%>
+					<TR>
+						<TD width=25%><LI><A HREF="./GetSerialNumber.html">GetSerialNumber</A></TD>
+						<TD>Returns the serial number that is printed on the device</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./GetTerminalId.html">GetTerminalId</A></TD>
+						<TD>Returns the configured terminal ID</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./GetOsVersion.html">GetOsVersion</A></TD>
+						<TD>Returns the version of the Operating System</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./GetBootVersion.html">GetBootVersion</A></TD>
+						<TD>Returns the version of the Bootlader</TD>
+					</TR>
+					<TR>
+						<TD><LI><A HREF="./GetApplVersion.html">GetApplVersion</A></TD>
+						<TD>Returns the version of the Application</TD>
+					</TR>
+					<TR>
+						<TD width=25%><LI><A HREF="./SetTerminalId.html">SetTerminalId</A></TD>
+						<TD>Set the terminal ID</TD>
+					</TR>
+				</TABLE>
+			</TH>
+		</TR>
+	</THEAD>
+</TABLE>
+
+</BODY>
+</HTML>

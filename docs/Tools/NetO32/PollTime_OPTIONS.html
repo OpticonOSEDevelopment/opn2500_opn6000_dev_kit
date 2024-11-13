@@ -1,0 +1,156 @@
+<link rel="stylesheet" type="text/css" href="../../global.css">
+<HTML>
+<HEAD>
+	<TITLE>Polling and Timing Options</TITLE>
+	<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+</HEAD>
+<BODY>
+	<H1>Polling and Timing Options</H1>
+	<TABLE width="100%" class="setup">
+		<TR class="setup">
+			<TD class="item">Description</TD>
+			<TD class="itemdescr">
+				Press on the different areas of the screenshot below to browse through this NetO32 help.<BR>
+				<BR>
+				<IMG src="./Images/polltime.jpg" USEMAP="#PollTime_PAGE"> <MAP NAME="PollTime_PAGE">
+					<AREA SHAPE="RECT" COORDS="23,37,165,54" HREF=".\RS232_OPTIONS.html">
+					<AREA SHAPE="RECT" COORDS="38,70,165,86" HREF=".\Download_OPTIONS.html">
+					<AREA SHAPE="RECT" COORDS="38,87,165,102" HREF=".\Upload_OPTIONS.html">
+					<AREA SHAPE="RECT" COORDS="38,103,166,118" HREF=".\PollTime_OPTIONS.html">
+					<AREA SHAPE="RECT" COORDS="38,135,166,152" HREF=".\Appearance_OPTIONS.html">
+					<AREA SHAPE="RECT" COORDS="38,153,164,169" HREF=".\Log_OPTIONS.html">
+					<AREA SHAPE="RECT" COORDS="201,65,595,140" HREF=".\PollTime_OPTIONS.html#Pollspeed">
+					<AREA SHAPE="RECT" COORDS="182,140,387,287" HREF=".\PollTime_OPTIONS.html#Terminals">
+					<AREA SHAPE="RECT" COORDS="413,140,543,202" HREF=".\PollTime_OPTIONS.html#Protocoltype">
+					<AREA SHAPE="RECT" COORDS="423,202,549,222" HREF=".\PollTime_OPTIONS.html#QuitSingle">
+					<AREA SHAPE="RECT" COORDS="422,222,552,240" HREF=".\PollTime_OPTIONS.html#Stoppolltimeout">
+					<AREA SHAPE="RECT" COORDS="413,243,538,298" HREF=".\PollTime_OPTIONS.html#PollTimeout">
+					<AREA SHAPE="RECT" COORDS="181,288,310,344" HREF=".\PollTime_OPTIONS.html#TxRxDelay">
+				</MAP>
+			</TD>
+		</TR>
+
+		<TR class=setup>
+			<TD class=item>Options</TD>
+			<TD class=itemdescr>
+				<TABLE class=OPTIONS width=100%>
+					<TR>
+						<TH class="item"><A NAME="Pollspeed"></A>Poll speed</TH>
+					</TR>
+					<TR>
+						<TD>
+							With the poll speed slider you can set the rate at which
+							polls are sent to the handheld terminal(s). The indicator above the slider
+							shows the time the NetO32 applications waits for an answer before transmitting
+							a new poll. The more polls the NetO32 Application transmits per second, the
+							more handheld terminals have an opportunity to start data transfer. But also,
+							the more polls per second are transmitted the more burden the NetO32
+							application puts on the system. The default value is 0.5 seconds between polls.
+						</TD>
+					</TR>
+				</TABLE>
+
+				<BR>
+
+				<TABLE class=OPTIONS width=100%>
+					<TR>
+						<TH class="item"><A NAME="Terminals"></A>Terminals to Poll</TH>
+					</TR>
+					<TR>
+						<TD>
+							Holds the terminals to poll for. If no handheld terminal ID
+							value is entered the broadcast ID is use ("&amp;&amp;&amp;&amp;&amp;&amp;").
+							When the protocol type is set to Single run type then only the first handheld
+							terminal ID from the list is used. With the Add button a new terminal can be
+							entered. The maximum size for the terminal ID is six characters. A selected
+							handheld terminal ID can be removed by pressing the remove button. The whole
+							list is cleared by clicking the clear button.
+						</TD>
+					</TR>
+				</TABLE>
+
+				<BR>
+
+				<TABLE class=OPTIONS width=100%>
+					<TR>
+						<TH class="item"><A NAME="Protocoltype"></A>Protocol type</TH>
+					</TR>
+					<TR>
+						<TD>
+							The NetO protocol is split up into two types Single and
+							Continuous. The Single run protocol type tries to communicate with a handheld
+							terminal, when communication is stopped by a successful transfer or by an error
+							the protocol needs to be restarted. The Continuous protocol type starts
+							communication and after a successful communication or a not severe error the
+							protocol continues to by polling the next handheld terminal from the list.
+							Default is the continuous protocol type.
+						</TD>
+					</TR>
+				</TABLE>
+
+				<BR>
+
+				<TABLE class=OPTIONS width=100%>
+					<TR>
+						<TH class="item"><A NAME="QuitSingle"></A>Quit after single run</TH>
+					</TR>
+					<TR>
+						<TD>
+							Quit the NetO32 application after a successful data transfer
+							or by an error. This option is only available when the single run protocol type
+							is selected. Default is this option disabled.
+						</TD>
+					</TR>
+				</TABLE>
+
+				<BR>
+
+				<TABLE class=OPTIONS width=100%>
+					<TR>
+						<TH class="item"><A NAME="Stoppolltimeout"></A>Stop after poll timeout</TH>
+					</TR>
+					<TR>
+						<TD>
+							The stop poll timeout options stops the running protocol
+							after a poll timeout event. This options is only available when the single run
+							protocol type is selected. The timeout time is set by the poll timeout time.
+							By default this option is disabled.
+						</TD>
+					</TR>
+				</TABLE>
+
+				<BR>
+
+				<TABLE class=OPTIONS width=100%>
+					<TR>
+						<TH class="item"><A NAME="PollTimeout"></A>Poll timeout (seconds)</TH>
+					</TR>
+					<TR>
+						<TD>
+							Poll timeout time sets the time in seconds after no answer on
+							the poll the protocol must be stopped. This option is only available when the
+							Protocol type is set to Single and the Stop poll timeout check box is checked.
+							The default value for this option is 5 seconds.
+						</TD>
+					</TR>
+				</TABLE>
+
+				<BR>
+
+				<TABLE class=OPTIONS width=100%>
+					<TR>
+						<TH class="item"><A NAME="TxRxDelay"></A>Tx/Rx Delay (ms)</TH>
+					</TR>
+					<TR>
+						<TD>
+							The Tx/Rx switch delay specifies the delay time between
+							transmitting and receiving a block of data. This options is needed when using a
+							RS485 multi drop network. The default value for this options is 1 ms.
+						</TD>
+					</TR>
+				</TABLE>
+			</TD>
+		</TR>
+	</TABLE>
+</BODY>
+</HTML>

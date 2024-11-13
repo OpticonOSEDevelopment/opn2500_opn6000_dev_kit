@@ -1,0 +1,181 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Writing an application</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Writing an application</H1>
+
+<P>
+Applications for OPN-2500 and OPN-6000 are written in the programming language C.
+All example applications in this SDK have a project files (.emProject) that can be opened using SEGGER Embedded Studio for ARM.
+<BR>
+
+<H3>Important issues</H3>
+
+<TABLE class=OPTIONS cellspacing=7 width=100%>
+	<TR>
+		<TH>
+			When writing an application for an Opticon terminal you must take the following in account:
+		</TH>
+	</TR>
+	<TR>
+		<TD>
+			<LI>Always include the header file 'lib.h' in your application to get access to all
+			public <A HREF="../functions/Introduction.html">Operating System functions</A>.
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<LI>When using the functions <B>malloc()</B> and <B>free()</B> always include the
+				header file 'stdlib.h' in your application.
+			</LI> 
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<LI>Always add an endless loop to the <B>main()</B> function of your application, because
+				when the <B>main()</B> function exits, the application will stop running.
+			</LI>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<LI>When waiting in a loop (i.e. for user input) always use the <A HREF="../functions/Idle.html">Idle()</A>
+				function, because this greatly reduces the power consumption of the terminal. See also the <A HREF="../functions/AutoPowerDown.html">AutoPowerDown()</A> function to control sleep and power off.
+			</LI>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<LI>More information about the use all the <A HREF="../functions/Introduction.html">Operating System functions</A>
+			    can be found in the <A HREF="../functions/Introduction.html">Functions</A> section of this manual.
+				Every described function in this section also contains the sources of an example program,
+				which demonstrates how the function can be used. The description of the standard <A HREF="../functions/Introduction.html">ANSI C functions</A> is beyond the scope of this document,
+				but a detailed description can be found on the Internet, for instance <A HREF="http://en.wikipedia.org/wiki/C_standard_library">here.
+			</LI>
+		</TD>
+	</TR>
+	<TR>
+		<TD>
+			<LI>In case you want to add, remove, edit and export bar code data, then you won't have to write it yourself,
+				because a complete bar code database implementation can be found in the
+				<A HREF="../Snippets/database/database.html">Snippets</A> section of this manual.
+		</TD>
+	</TR>
+</TABLE>
+
+<BR>
+Below you'll find simple application to demonstrate reading of bar codes and menu-labels and basic power management features
+
+<PRE>
+
+<SPAN class="c-comment">// This program reads menu labels from OptiConfigure and executes them.</SPAN>
+
+<SPAN class="c-preprocessor">#include</SPAN> &lt;stdio.h&gt;
+<SPAN class="c-preprocessor">#include</SPAN> &quot;lib.h&quot;
+
+<SPAN class="c-keyword">void</SPAN> main( <SPAN class="c-keyword">void</SPAN> )
+{
+    <SPAN class="c-keyword">char</SPAN> bcr_buf[42] = {0};
+    <SPAN class="c-keyword">struct</SPAN> barcode code  = {0};
+    <SPAN class="c-keyword">int</SPAN> result;
+
+    code.min   = 1;
+    code.max   = 41;
+    code.text  = bcr_buf;
+
+    <SPAN class="c-comment">//</SPAN>
+    <SPAN class="c-comment">// The following function will try to restore system settings from flash memory and will cause</SPAN>
+    <SPAN class="c-comment">// system settings to be stored in flash memory when 'SystemSetting("Z2")' is called.</SPAN>
+    <SPAN class="c-comment">//</SPAN>
+    <SPAN class="c-keyword">if</SPAN>(<A class="clib" href="./SystemSettingsMemorizing.html">SystemSettingsMemorizing</A>(ON) < 0)
+    {
+        <A class="clib" href="./SystemSetting.html">SystemSetting</A>("U2");               <SPAN class="c-comment">// If no old settings were found -> Reset to default</SPAN>
+    }
+
+    <A class="clib" href="./SystemSetting.html">SystemSetting</A>("YC");                   <SPAN class="c-comment">// Make sure menu labels are always enabled after a restart</SPAN>
+
+    <SPAN class="c-comment">// Disable to let the OS handle this. Else: Trigger mode, 5 seconds read time, scanner off after 1 barcode</SPAN>
+    <SPAN class="c-comment">// ScannerPower(TRIGGER | SINGLE, 250);</SPAN>
+
+    <SPAN class="c-keyword">for</SPAN>(;;)
+    {
+        <SPAN class="c-keyword">if</SPAN>(<A class="clib" href="./ReadBarcode.html">ReadBarcode</A>(&amp;code) == OK)
+        {
+            result = 0;
+
+            <SPAN class="c-keyword">if</SPAN>(code.id == MENU_CODE)
+            {
+                <A class="clib" href="./ScannerPower.html">ScannerPower</A>(ON, -1);        <SPAN class="c-comment">// Scanner on indefinitely</SPAN>
+
+                <SPAN class="c-keyword">while</SPAN>(result != EXITING_MENU_MODE && result != ERROR)
+                {
+                    <SPAN class="c-keyword">if</SPAN>(result == 0 || <A class="clib" href="./ReadBarcode.html">ReadBarcode</A>(&amp;code) == OK)
+                    {
+                       <SPAN class="c-keyword">switch</SPAN>( (result=<A class="clib" href="./ExecuteMenuLabel.html">ExecuteMenuLabel</a>(&code)) )
+                       {
+                           <SPAN class="c-keyword">case</SPAN> ENTERING_MENU_MODE:
+                               <A class="clib" href="./Sound.html">Sound</A>(TSTANDARD, VHIGH, SHIGH, SMEDIUM, SHIGH, 0);
+                               <SPAN class="c-keyword">break</SPAN>;
+
+                           <SPAN class="c-keyword">case</SPAN> EXITING_MENU_MODE:
+                               <A class="clib" href="./ScannerPower.html">ScannerPower</A>(OFF, 0);
+                               <A class="clib" href="./Sound.html">Sound</A>(TSTANDARD,VHIGH, SHIGH, SMEDIUM, SHIGH, 0);
+                               <A class="clib" href="./Delay.html">Delay</A>(TSTANDARD * 4);        <SPAN class="c-comment">// Wait till buzzer sound ends before saving (saving flash settings temp. turns of sound timer)</SPAN>
+                               <A class="clib" href="./SystemSetting.html">SystemSetting</A>("YC");        <SPAN class="c-comment"> // Make sure menu labels stay enabled</SPAN>
+                               <A class="clib" href="./SystemSetting.html">SystemSetting</A>("Z2");        <SPAN class="c-comment"> // Save changed settings in flash memory</SPAN>
+
+                               <SPAN class="c-keyword">while</SPAN>(<A class="clib" href="./TriggerPressed.html">TriggerPressed</A>())      <SPAN class="c-comment">// Wait for release before resetting read mode</SPAN>
+                                   <A class="clib" HREF="./Idle.html">Idle</A>();
+
+                               <A class="clib" href="./ScannerPower.html">ScannerPower</A>(TRIGGER | SINGLE, 250);  <SPAN class="c-comment">// Reset read mode, because it's turned off after reading menu labels</SPAN>
+                               <SPAN class="c-keyword">break</SPAN>;
+
+                           <SPAN class="c-keyword">case</SPAN> INVALID_OPTION_READ:
+                               <A class="clib" href="./Sound.html">Sound</A>(TLONG, VHIGH, SLOW, 0);
+                               <SPAN class="c-keyword">break</SPAN>;
+
+                           <SPAN class="c-keyword">case</SPAN> VALID_OPTION_READ:
+                               <A class="clib" href="./Sound.html">Sound</A>(TSTANDARD, VHIGH, SHIGH, SMEDIUM, SHIGH,0);
+                               <SPAN class="c-keyword">break</SPAN>;
+
+                           <SPAN class="c-keyword">case</SPAN> LABEL_IGNORED:
+                               <SPAN class="c-keyword">break</SPAN>;
+
+                           <SPAN class="c-keyword">case</SPAN> ERROR:
+                               <A class="clib" href="./ScannerPower.html">ScannerPower</A>(OFF, 0);
+
+                               <SPAN class="c-keyword">while</SPAN>(<A class="clib" href="./TriggerPressed.html">TriggerPressed</A>())      <SPAN class="c-comment">// Wait for release before resetting read mode</SPAN>
+                                   <A class="clib" HREF="./Idle.html">Idle</A>();
+
+                               <A class="clib" href="./ScannerPower.html">ScannerPower</A>(TRIGGER | SINGLE, 250);  <SPAN class="c-comment">// Reset read mode, because it's turned off after reading menu labels</SPAN>
+                               <SPAN class="c-keyword">break</SPAN>;
+                        }
+                    }
+                }
+            }
+            <SPAN class="c-keyword">else</SPAN>
+            {
+                <A class="clib" href="./GoodReadLed.html">GoodReadLed</A>(GREEN, 10);
+                <A class="clib" href="./Sound.html">Sound</A>( TSTANDARD, VHIGH, SMEDIUM, SHIGH, 0);
+                PutString(code.text);
+            }
+        }
+
+        <A class="clib" HREF="./Idle.html">Idle</A>();
+    }
+}
+</PRE>
+
+When your application is ready to be build, you should invoke the compiler and linker to build your
+application. How this is done in described in the following section of this manual:<BR>
+<BR>
+<H2 align="center"><A HREF="../Appl-development/Appl-building.html">Building an application</A></H2>
+<BR>
+<BR>
+
+</BODY>
+

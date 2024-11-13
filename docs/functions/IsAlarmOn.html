@@ -1,0 +1,103 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>IsAlarmOn</TITLE>
+</HEAD>
+
+<BODY>
+<H1>IsAlarmOn</H1>
+
+<TABLE width=100% class=setup>
+    <TR class=setup>
+        <TD class=item>Availability</TD>
+        <TD class=itemdescr>All terminals</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Description</TD>
+        <TD class=itemdescr>This function returns whether a alarm is set.</TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Syntax</TD>
+        <TD class=itemdescr><SPAN class=c-keyword>int</SPAN> <A class=clib HREF="./IsAlarmOn.html">IsAlarmOn</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+    </TR>
+    <TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TD>0</TD>
+					<TD>The alarm is not set</TD>
+				</TR>
+				<TR>
+					<TD>1</TD>
+					<TD>The alarm is set</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+    <TR class=setup>
+        <TD class=item>Remarks</TD>
+        <TD>
+            <LU>
+                <LI>After the alarm has occured, the alarm is cleared, so <A class=clib HREF="./IsAlarmOn.html">IsAlarmOn</A> returns FALSE.</LI>
+                <LI>If the alarm occurs during power off state, the alarm will boot device from power off state</LI>
+                <LI>If the alarm occurs during power down (sleep) state, the alarm will wake-up from sleep</LI>
+            </LU>
+        </TD>
+    </TR>
+    <TR class=setup>
+        <TD class=item>Example</TD>
+        <TD class=itemdescr>
+<PRE>
+<SPAN class="c-comment">// The following example demonstrates the use of SetAlarm() function.</SPAN>
+<SPAN class="c-preprocessor">#include &lt;stdio.h&gt;</SPAN>
+<SPAN class="c-preprocessor">#include &quot;lib.h&quot;</SPAN>
+
+<SPAN class="c-keyword">void</SPAN> main( <SPAN class="c-keyword">void</SPAN> )
+{
+    <SPAN class="c-keyword">struct</SPAN> time at = {0};
+    <SPAN class="c-keyword">bool</SPAN> alarmOn = <SPAN class="c-keyword">false</SPAN>;
+
+    <A class="clib" href="../functions/AutoPowerDown.html">AutoPowerDown</A>(ON, 2*50); <SPAN class="c-comment">// 2 seconds</SPAN>
+
+    <A class="clib" href="../functions/AutoPowerDown.html">AutoPowerDown</A>(APD_SHUTDOWN_ON, 60*50);  <SPAN class="c-comment">// Alarm will boot device from off state</SPAN>
+    <SPAN class="c-comment">// AutoPowerDown(APD_SHUTDOWN_OFF, 0);  // Alarm will wake-up device from sleep</SPAN>
+
+    <A class="clib" href="../functions/Sound.html">Sound</A>(TSTANDARD, VHIGH, SLOW, SMEDIUM, SHIGH, SLOW, SMEDIUM, SHIGH, 0); <SPAN class="c-comment">// 6 tones: Start-up beep</SPAN>
+
+    <SPAN class="c-keyword">for</SPAN>(;;)
+    {
+        <SPAN class="c-keyword">if</SPAN>(<A class="clib" href="../functions/getchar.html">getchar</A>() != EOF)
+        {
+            <A class="clib" href="../functions/GoodReadLed.html">GoodReadLed</A>(GREEN_FLASH, 0);
+            <A class="clib" href="../functions/GetTime.html">GetTime</A>(&amp;at);
+            at.ti_min = (at.ti_min+2) % 60; <SPAN class="c-comment">// Set alarm 2 minutes in the future</SPAN>
+            at.ti_hour += (at.ti_min &lt; 2) ? 1 : 0;
+            <A class="clib" href="../functions/SetAlarm.html">SetAlarm</A>(&amp;at, ON);
+            alarmOn = <SPAN class="c-keyword">true</SPAN>;
+            <A class="clib" href="../functions/Sound.html">Sound</A>(TSTANDARD, VHIGH, SMEDIUM, SHIGH, 0); <SPAN class="c-comment">// 2 tones: alarm set</SPAN>
+            <SPAN class="c-function">printf</SPAN>(<SPAN class="c-string">&quot;\rALARM SET\r%02d:%02d\rwaiting...&quot;</SPAN>, at.ti_hour, at.ti_min);
+        }
+
+        <SPAN class="c-comment">// Check to see if terminal is woken by the Alarm function</SPAN>
+        <SPAN class="c-keyword">if</SPAN>(alarmOn != <A class="clib" href="../functions/IsAlarmOn.html">IsAlarmOn</A>())
+        {
+            alarmOn = <SPAN class="c-keyword">false</SPAN>;
+            <A class="clib" href="../functions/Sound.html">Sound</A>( TSTANDARD, VHIGH, SLOW, SMEDIUM, SHIGH, 0);  <SPAN class="c-comment">// 3 tones: wake from alarm beep</SPAN>
+            <A class="clib" href="../functions/GoodReadLed.html">GoodReadLed</A>(GREEN_FLASH, 30*50);
+        }
+
+        <A class="clib" href="../functions/Idle.html">Idle</A>();
+    }
+}
+</PRE>
+        </TD>
+    </TR>
+</TABLE>
+</BODY>
+</HTML>

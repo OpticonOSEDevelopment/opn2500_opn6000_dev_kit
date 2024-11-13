@@ -1,0 +1,74 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>ResetReceive</TITLE>
+</HEAD>
+
+<BODY>
+<H1>ResetReceive</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>
+			This function resets the serial receiver electronics and associated
+			software of the communications port last opened with <A class=clib HREF="./ComOpen.html">ComOpen()</A>.
+			It also clears the receive buffers.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>void</SPAN> <A class=clib HREF="./ResetReceive.html">ResetReceive</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>
+			Like <A class=clib HREF="./ResetKey.html">ResetKey()</A>, this routine can be used to
+			delete old data. In this case data still in the receive buffer is cleared.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>int</SPAN> ch;
+
+    <A class=clib HREF="./ComOpen.html">ComOpen</A>( COM9 );    <SPAN class=c-comment>// Open the USB-VCP port</SPAN>
+
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        <A class=clib HREF="./ResetReceive.html">ResetReceive</A>();    <SPAN class=c-comment>// Clear receive buffer</SPAN>
+
+        <SPAN class=c-keyword>while</SPAN>(<A class=clib HREF="./GetCom.html">GetCom</A>( 0 ) != CR)   <SPAN class=c-comment>// Wait for enter</SPAN>
+        {
+            <A class=clib HREF="./Idle.html">Idle</A>();    <SPAN class=c-comment>// Very important to lower the power consumption</SPAN>
+        }
+        <A class=clib HREF="./PutCom.html">PutCom</A>( '!' );
+        
+        <A class=clib HREF="./Delay.html">Delay</A>(2 * 50);    <SPAN class=c-comment>// Ignore all data for 2 seconds</SPAN>
+    }
+}
+    </PRE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

@@ -1,0 +1,73 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Special characters</TITLE>
+</HEAD>
+
+<BODY>
+
+<H1>Special characters</H1>
+
+<P>
+All handheld terminals support a list of escape sequences that can be used in functions
+like <B>printf()</B> or <B>putc()</B> to denote special characters like a form feed, backspace and
+inverted text display. The complete set can be found below.<BR>
+</P>
+
+<TABLE class=OPTIONS width="100%">
+	<TR>
+		<TH style="text-align:center"width=8%>\a</TH>
+		<TD>Alert (bell) character. Sounds the buzzer.</TD>
+	</TR>
+	<TR>
+		<TH style="text-align:center">\b</TH>
+		<TD>Backspace. Decrements the cursor position, and removes the character at the new position.</TD>
+	</TR>
+	<TR>
+		<TH style="text-align:center">\f</TH>
+		<TD>Form feed, clears the display.</TD>
+	</TR>
+	<TR>
+		<TH style="text-align:center">\n</TH>
+		<TD>New line, places the cursor at the beginning of the line below the current line. If the cursor is at the bottom line, the display contents are scrolled up by one line.</TD>
+	</TR>
+	<TR>
+		<TH style="text-align:center">\r</TH>
+		<TD>Carriage return, places the cursor at the start of the current line.</TD>
+	</TR>
+	<TR>
+		<TH style="text-align:center">\\</TH>
+		<TD>The backslash sign.</TD>
+	</TR>
+	<TR>
+		<TH style="text-align:center">\'</TH>
+		<TD>The single quote sign.</TD>
+	</TR>
+	<TR>
+		<TH style="text-align:center">\&quot;</TH>
+		<TD>The double quote sign.</TD>
+	</TR>
+	<TR>
+		<TH style="text-align:center">%%</TH>
+		<TD>The percent sign.</TD>
+	</TR>
+	<TR>
+		<TH style="text-align:center" width=8%>\tr</TH>
+		<TD>
+			Toggles inverted text display on/off. By default inverted display is off.
+		</TD>
+	</TR>
+	<TR>
+		<TH style="text-align:center">\xFF</TH>
+		<TD>
+			Instruction to combine the next two bytes into an index in a font file or table.
+			See the <A HREF="../functions/setfont.html">setfont()</A> function and
+			the paragraph <A HREF="../Appl-development/Fonts.html#TWO_BYTE"> about two byte fonts </A>
+			for more information about font file and tables.
+		</TD>
+	</TR>
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,150 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Sound</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Sound</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>This function sounds one tone or a sequence of tones.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>void</SPAN> <A class=clib HREF="./Sound.html">Sound</A>( <SPAN class=c-keyword>int</SPAN> time, <SPAN class=c-keyword>int</SPAN> vol, ..., 0 );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+			<H5><SPAN class=c-keyword>int</SPAN> <I>time</I></H5>
+			The parameter time defines the time of each tone, in steps of 20 milliseconds. For example, time = 50 is one second. The following constants are defined:
+
+			<TABLE class=OPTIONS width=100% >
+				<TR>
+					<TD>TCLICK</TD>
+					<TD>Duration of 20 msec.</TD>
+				</TR>
+				<TR>
+					<TD>TSHORT</TD>
+					<TD>Duration of 60 msec.</TD>
+				</TR>
+				<TR>
+					<TD>TSTANDARD</TD>
+					<TD>Duration of 100 msec.</TD>
+				</TR>
+				<TR>
+					<TD>TLONG</TD>
+					<TD>Duration of 200 msec.</TD>
+				</TR>
+				<TR>
+					<TD>TVLONG</TD>
+					<TD>Duration of 400 msec.</TD>
+				</TR>
+			</TABLE>
+
+			<H5><SPAN class=c-keyword>int</SPAN> <I>vol</I></H5>
+			The parameter vol specifies the volume. The following values are possible:
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TD>VOFF</TD>
+					<TD>Turn buzzer off</TD>
+				</TR>
+				<TR>
+					<TD>VLOW</TD>
+					<TD>Low volume.</TD>
+				</TR>
+				<TR>
+					<TD>VSTANDARD</TD>
+					<TD>Standard volume.</TD>
+				</TR>
+				<TR>
+					<TD>VMEDIUM</TD>
+					<TD>Medium volume.</TD>
+				</TR>
+				<TR>
+					<TD>VHIGH</TD>
+					<TD>High volume.</TD>
+				</TR>
+				<TR>
+					<TD>VSYSTEM</TD>
+					<TD>System volume set by Menu-labels and <A class=clib HREF="./SystemSetting.html">SystemSetting</A>(); default is VHIGH, which is <A class=clib HREF="./SystemSetting.html">SystemSetting</A>("T0")</TD>
+				</TR>
+			</TABLE>
+
+			<H5><I>..., 0</I></H5>
+			The last argument "... , 0" contains a sequence of at most 15 tones. The last tone should always be the value zero. Each tone can have one of the following values:
+
+			<TABLE class=OPTIONS width=100% >
+				<TR>
+					<TD>SERROR</TD>
+					<TD>Very low error sound.</TD>
+				</TR>
+				<TR>
+					<TD>SLOW</TD>
+					<TD>Low sound.</TD>
+				</TR>
+				<TR>
+					<TD>SMEDIUM</TD>
+					<TD>Medium sound.</TD>
+				</TR>
+				<TR>
+					<TD>SHIGH</TD>
+					<TD>High sound.</TD>
+				</TR>
+				<TR>
+					<TD>SPAUSE</TD>
+					<TD>Pause of 100 msec.</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>
+			Program execution will continue while generating the sound sequence. If you want
+			to execute multiple calls to <A class=clib HREF="./Sound.html">Sound()</A> consecutively,
+			or want to wait till the sound is played, use the <A class=clib HREF="./Delay.html">Delay()</A> function.<BR>
+			(It is also possible to use the function <A class=clib HREF="./IsBuzzerOn.html">IsBuzzerOn</A>() to check whether
+			the buzzer is still busy playing a previous sound or not.)
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        <A class=clib HREF="./Sound.html">Sound</A>(TCLICK, VHIGH, SERROR, SPAUSE, SLOW, SPAUSE, SMEDIUM, SPAUSE, SHIGH,0);
+        <A class=clib HREF="./Delay.html">Delay</A>(200);   <SPAN class=c-comment>// Wait 4 sec</SPAN>
+        <A class=clib HREF="./Sound.html">Sound</A>(TSTANDARD, VMEDIUM, SERROR, SPAUSE, SLOW, SPAUSE, SMEDIUM, SPAUSE, SHIGH,0);
+        <A class=clib HREF="./Delay.html">Delay</A>(200);
+        <A class=clib HREF="./Sound.html">Sound</A>(TLONG, VLOW, SERROR, SPAUSE, SLOW, SPAUSE, SMEDIUM, SPAUSE, SHIGH,0);
+        <A class=clib HREF="./Delay.html">Delay</A>(200);
+        <A class=clib HREF="./Sound.html">Sound</A>(TVLONG, VSYSTEM, SERROR, SPAUSE, SLOW, SPAUSE, SMEDIUM, SPAUSE, SHIGH, 0);
+        <A class=clib HREF="./Delay.html">Delay</A>(200);
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

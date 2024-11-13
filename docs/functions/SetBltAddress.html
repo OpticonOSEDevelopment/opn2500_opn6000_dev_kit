@@ -1,0 +1,69 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>SetBltAddress</TITLE>
+</HEAD>
+
+<BODY>
+<H1>SetBltAddress</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>Obsolete for OPN-2500 and OPN-6000</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>This function changes the remote Bluetooth address and stores it in flash memory.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>void</SPAN> <A class=clib HREF="./SetBltAddress.html">SetBltAddress</A>( <SPAN class=c-keyword>const char</SPAN> *address );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+			<H5><SPAN class=c-keyword>const char</SPAN> *<I>address</I></H5>
+			Address holds the 12 (hex) digit unique Bluetooth address of the remote device to which the terminal will connect.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>
+			- <A class=clib HREF="./GetBltAddress.html">GetBltAddress()</A> retrieves the Bluetooth address.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        printf("\nchange address\n%s\nto\n008098344e59", <A class=clib HREF="./GetBltAddress.html">GetBltAddress</A>());
+        <A class=clib HREF="./ResetKey.html">ResetKey</A>();
+        <SPAN class=c-keyword>while</SPAN>( !<A class=clib HREF="./kbhit.html">kbhit</A>() )
+            <A class=clib HREF="./Idle.html">Idle</A>();
+        <A class=clib HREF="./SetBltAddress.html">SetBltAddress</A>("008098344e59");
+
+        printf("\nBlt Address:\n%s", <A class=clib HREF="./GetBltAddress.html">GetBltAddress</A>() );
+        <A class=clib HREF="./ResetKey.html">ResetKey</A>();
+        <SPAN class=c-keyword>while</SPAN>( !<A class=clib HREF="./kbhit.html">kbhit</A>() )
+            <A class=clib HREF="./Idle.html">Idle</A>();
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

@@ -1,0 +1,97 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>CheckDate</TITLE>
+</HEAD>
+
+<BODY>
+<H1>CheckDate</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>
+			Checks if the date structure passed to the function holds a valid date. For
+			instance, if you specify a date of 29 February 2025, the function will return FALSE,
+			because February only holds 28 days in a non-leap year.<BR>
+			All dates that are not between 1 January 2000 and 31 December 2099 will also return FALSE. 
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>int</SPAN> <A class=clib HREF="./CheckDate.html">CheckDate</A>( <SPAN class=c-keyword>struct</SPAN> date *datep );</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+			<H5><SPAN class=c-keyword>struct</SPAN> date *<I>datep</I></H5>
+			Pointer to the date structure that is to be checked.
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TD>OK</TD>
+					<TD>When the date is valid.</TD>
+				</TR>
+				<TR>
+					<TD>ERROR</TD>
+					<TD>When the date is invalid.</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+	<pre>
+<span class="c-preprocessor">#include &lt;stdio.h&gt;</span>
+<span class="c-preprocessor">#include &quot;lib.h&quot;</span>
+
+<span class="c-keyword">void</span> main( <span class="c-keyword">void</span> )
+{
+    <span class="c-keyword">struct</span> date d;
+
+    d.da_year = 2002;
+    d.da_mon = 2;
+    <span class="c-keyword">for</span>(;;)
+    {
+        d.da_day = 29; <span class="c-comment">// only leap years have 29 days in February</span>
+        printf(&quot;\rDate: %02d-%02d-%04d&quot;,d.da_day,d.da_mon,d.da_year);
+        <span class="c-keyword">if</span>( <a class="clib" href="./CheckDate.html">CheckDate</a>( &amp;d ) == OK )
+            printf(&quot;\nDate ok!!\n&quot;);
+        <span class="c-keyword">else</span>
+            printf(&quot;\nIllegal Date!!&quot;);
+        <span class="c-keyword">while</span>( !kbhit() )
+            <a class="clib" href="./Idle.html">Idle</a>();
+        <a class="clib" href="./ResetKey.html">ResetKey</a>();
+
+        d.da_day = 28;
+        printf(&quot;\rDate: %02d-%02d-%04d&quot;,d.da_day,d.da_mon,d.da_year);
+        <span class="c-keyword">if</span>( <a class="clib" href="./CheckDate.html">CheckDate</a>( &amp;d ) == OK )
+            printf(&quot;\nDate ok!!\n&quot;);
+        <span class="c-keyword">else</span>
+            printf(&quot;\nIllegal Date!!&quot;);
+        <span class="c-keyword">while</span>( !kbhit() )
+            <a class="clib" href="./Idle.html">Idle</a>();
+        <a class="clib" href="./ResetKey.html">ResetKey</a>();
+    }
+}</pre>
+
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

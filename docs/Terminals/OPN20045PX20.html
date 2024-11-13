@@ -1,0 +1,212 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Loading software on the OPN2004, OPN2005, OPN2006, RS3000 and PX20</TITLE>
+</HEAD>
+<BODY>
+<H1>Loading software on the OPN2004, OPN2005, OPN2006, RS3000 and PX20</H1>
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Image</TD>
+		<TD class=itemdescr>
+			<A HREF="./OPN20045PX20.html#OPN2004"><IMG alt="OPN2004" height="170" border="2" src="../images/opn2005.jpg"></A>
+			<A HREF="./OPN20045PX20.html#OPN2005"><IMG alt="OPN2005" height="170" border="2" src="../images/opn2005.jpg"></A>
+			<A HREF="./OPN20045PX20.html#OPN2006"><IMG alt="OPN2006" height="170" border="2" src="../images/opn2005.jpg"></A>
+			<A HREF="./OPN20045PX20.html#PX20"><IMG alt="PX20" height="170" border="2" src="../images/PX20.jpg"></A>
+			<A HREF="./OPN20045PX20.html#PX20"><IMG alt="RS3000" height="170" border="2" src="../images/RS3000.png"></A>
+			<BR>
+			All OPN2004, OPN2005, OPN2006, RS3000 and PX20 terminals run an OS (operating system) and an application. Both the OS and the application can be loaded
+			by a small PC application called <A HREF="../Tools/Appload.html">APPLOAD</A>.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Software codes</TD>
+		<TD>
+			The OPN200x terminals use an Operating System version that contains an unique 3 letter code.
+			Before you try to load a new Operating System on an OPN200x terminal you have to know which Operating System file (i.e. RBFVxxxx.S2) must be loaded on your terminal.
+			In the table below you can find the software codes for the OPN200x terminals.<BR>
+			<BR>
+			<TABLE width=50% class=OPTIONS>
+				<THEAD>
+					<TR>
+						<TH>Terminal</TH>
+						<TH>Code</TH>
+					</TR>
+				</THEAD>
+				<TBODY>
+					<TR>
+						<TD>OPN2004</TD>
+						<TD>RBI</TD>
+					</TR>
+					<TR>
+						<TD>OPN2005</TD>
+						<TD>RBL</TD>
+					</TR>
+					<TR>
+						<TD>OPN2006</TD>
+						<TD>RBN</TD>
+					</TR>
+					<TR>
+						<TD>PX20</TD>
+						<TD>RBM</TD>
+					</TR>
+					<TR>
+						<TD>RS3000</TD>
+						<TD>RBZ</TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+			<BR>
+			<BR>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>USB Driver</TD>
+		<TD>
+			To be able to communicate with the terminals using USB, you will need to have its USB driver installed on your PC. This driver can be found on our web site on the 'Service and Support' page.<BR>
+			<BR>
+			<TABLE width=50% class=OPTIONS>
+				<TBODY>
+					<TR>
+						<TD align=center><A HREF="https://www.opticon.com/support/Drivers/USB%20Drivers%20Installer.exe">USB Driver Installer</A></TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+			After downloading the USB Drivers installer run the downloaded executable and follow the instuction. <BR>
+			<BR>
+			After installing the USB driver, you can connect your OPN2004, OPN2005, OPN2006, RS3000 or PX20 to USB using the USB cable. Windows will then automatically install a virtual COM port on your
+			PC, which can be selected in various applications, like <A HREF="../Tools/Appload.html">appload</A>, Hyperterminal Neto32 or OSEComm.<BR>
+			<BR>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item><A NAME="OPN2004">OPN2004</A></TD>
+		<TD class=itemdescr>
+			To load a new OS or application onto the OPN2004, you will need a mini-USB cable (which is supplied with the OPN2004) or <A HREF="../Cradles/CradleOPN200x.html">CRD2000</A> multi cradle and follow
+			the instructions below.<BR>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH colspan=2 width=100%>Load OS or application. </TH>
+				</TR>
+				<TR>
+					<TD><H4>USB Cable</H4></TD>
+					<TD>
+						Connect the OPN2004 to your PC or laptop using the mini-USB cable<BR>
+						Start <A HREF="../Tools/Appload.html">Appload</A> and select the (Virtual) COM port of your OPN2004 in Appload.<BR>
+						Select the OS or application file in <A HREF="../Tools/Appload.html">Appload</A>.<BR>
+						<BR>
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item><A NAME="OPN2005">OPN2005 & OPN2006</A></TD>
+		<TD class=itemdescr>
+			To load a new OS or application onto the OPN2005/6, you will need a mini-USB cable (which is supplied with the OPN2005/6) and follow the instructions below<BR>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH colspan=2 width=100%>Load OS or application. </TH>
+				</TR>
+				<TR>
+					<TD><H4>USB Cable</H4></TD>
+					<TD>
+						Connect the OPN2005/6 to your PC or laptop using the mini-USB cable.<BR>
+						Start <A HREF="../Tools/Appload.html">Appload</A> and select the (Virtual) COM port of your OPN2005/6 in Appload.<BR>
+						Select the OS or application file in <A HREF="../Tools/Appload.html">Appload</A>.
+					</TD>
+				</TR>			
+				<TR>
+					<TD><H4>Bluetooth</H4></TD>
+					<TD>
+						<I>&lt;Currently not supported&gt;</I>
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item><A NAME="PX20">PX20 & RS3000</A></TD>
+		<TD class=itemdescr>
+			To load a new OS or application onto the device, you will need a USB cable( micro USB for the PX20, USB-C for the RS3000) which is supplied and follow the instructions below<BR>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH colspan=2 width=100%>Load OS or application. </TH>
+				</TR>
+				<TR>
+					<TD><H4>USB Cable</H4></TD>
+					<TD>
+						Connect the device to your PC or laptop using the USB cable.<BR>
+						Start <A HREF="../Tools/Appload.html">Appload</A> and select the (Virtual) COM port of your PX20 in Appload.<BR>
+						Select the OS or application file in <A HREF="../Tools/Appload.html">Appload</A>.
+					</TD>
+				</TR>			
+				<TR>
+					<TD><H4>Bluetooth</H4></TD>
+					<TD>
+						<I>&lt;Currently not supported&gt;</I>
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item><A NAME="TroubleShooting">Trouble shooting</A></TD>
+		<TD class=itemdescr>
+			
+			Since the OPN2004/OPN2005/OPN2006/RS3000 PX20 don't have a display, they also don't have a  <A HREF="../Appl-development/Sysmenu.html">system menu</A>
+			to resort to when a crashing application or OS prevents you from loading new software on the OPN2004 / OPN2005 / OPN2006 / PX20 /RS3000. <BR>
+			<BR>
+			For this reason the OPN2004/OPN2005/OPN2006/RS3000 and PX20 have a few escape mechanisms to allow you to restart, halt your application
+			and/or install new software. This can be very useful in case the OPN2004/OPN2005/OPN2006/RS3000 or PX20 has crashed or is constantly restarting due to a crashing application.
+			<BR>
+			
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH colspan=2 width=100%>Restart mechanisms</TH>
+
+				</TR>
+				<TR>
+					<TD>Automatic</TD>
+					<TD>
+						The OPN2004/OPN2005/OPN2006/RS3000 and PX20 have a watchdog timer to determine whether the OS is still running or has crashed. This watchdog will cause the device to restart after 3 seconds if the OS has crashed. This watchdog timer will not cause a restart when only the application has crashed.
+					</TD>
+				</TR>
+				<TR>
+					<TD>Manually</TD>
+					<TD>
+						The OPN2004/OPN2005/OPN2006/RS3000 and PX20 have a manual restart mechanism that allows you to restart in situations that the OS is still running, but your the application has crashed. In order to activate this mechanism, press and hold both the trigger and delete key for at least 20 seconds. After the terminal has sounded a short beep, you can release both keys to complete the restart. 
+					</TD>
+				</TR>
+			</TABLE>
+
+			<BR>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR><TH width=100%>Halting your application</TH></TR>
+				<TR><TD>Restart your application using one of the two restart methods listed above, but keep both keys pressed after the short beep.</TD></TR>
+				<TR><TD>Release the trigger key first to halt the application.</TD></TR>
+				<TR><TD>If successful, the LED of your OPN2004 / OPN2005 / OPN2006 / RS3000 / PX20 should now be blinking orange. You should now be able to load new application or OS software.</TD></TR>
+				<TR><TD><BR>To exit the halted application state, press both keys for 20 seconds</TD></TR>
+			</TABLE>
+
+			<BR>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR><TH width=100%>Halting the Operating System (only necessary in case a corrupt OS is installed)</TH></TR>
+				<TR><TD>Restart your application using one of the 2 methods listed above, but keep both keys pressed after the short beep.</TD></TR>
+				<TR><TD>Release the clear key first to halt the Operating system.</TD></TR>
+				<TR><TD>If successful, the LED of your OPN2004 / OPN2005 / OPN2006 / RS3000 / PX20 should now be blinking red. You should now be able to load a new OS.</TD></TR>
+				<TR><TD><BR>To exit the halted Operating System state, press both keys for 3 seconds </I></TD></TR>
+			</TABLE>
+		</TD>
+	</TR>
+
+</TABLE>
+</BODY>
+</HTML>

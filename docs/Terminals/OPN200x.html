@@ -1,0 +1,224 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Loading software on the OPN2002 and OPN2003</TITLE>
+</HEAD>
+<BODY>
+<H1>Loading software on the OPN2002 and OPN2003</H1>
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Image</TD>
+		<TD class=itemdescr>
+			<A HREF="./OPN200x.html#OPN2002"><IMG alt="OPN2002"  border="2" src="../images/Fopn2002.jpg"></A>
+			<A HREF="./OPN200x.html#OPN2002"><IMG alt="OPN2003"  border="2" src="../images/Fopn2003.jpg"></A>
+			<BR>
+			All OPN2002 and OPN2003 terminals run an OS (operating system) and an application. Both the OS and the application can be loaded
+			by a small PC application called <A HREF="../Tools/Appload.html">APPLOAD</A>.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Software codes</TD>
+		<TD>
+			The OPN200x terminals use an Operating System version that contains an unique 3 letter code.
+			Before you try to load a new Operating System on an OPN200x terminal you have to know which Operating System file (i.e. RBFVxxxx.S2) must be loaded on your terminal.
+			In the table below you can find the software codes for the OPN200x terminals.<BR>
+			<BR>
+			<TABLE width=50% class=OPTIONS>
+				<THEAD>
+					<TR>
+						<TH>Terminal</TH>
+						<TH>Code</TH>
+					</TR>
+				</THEAD>
+				<TBODY>
+					<TR>
+						<TD>OPN2002</TD>
+						<TD>RBG</TD>
+					</TR>
+					<TR>
+						<TD>OPN2003</TD>
+						<TD>RBF</TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+			<BR>
+			<BR>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>USB Driver</TD>
+		<TD>
+			To be able to communicate with the OPN200x terminals using USB, you will need to have its USB driver installed on your PC. This driver can be found on our web site on the 'Service and Support' page.<BR>
+			<BR>
+			<TABLE width=50% class=OPTIONS>
+				<TBODY>
+					<TR>
+						<TD align=center><A HREF="https://www.opticon.com/support/Drivers/USB%20Drivers%20Installer.exe">USB Driver Installer</A></TD>
+					</TR>
+				</TBODY>
+			</TABLE>
+			After downloading the USB Drivers installer run the downloaded executable and follow the instuction. <BR>
+			<BR>
+			After installing the USB driver, you can connect your OPN2002 or OPN2003 to USB using the mini-USB cable. Windows will then automatically install a virtual COM port on your
+			PC, which can be selected in various applications, like <A HREF="../Tools/Appload.html">appload</A>, Hyperterminal and Neto32.<BR>
+			<BR>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item><A NAME="OPN2002">OPN2002</A></TD>
+		<TD class=itemdescr>
+			To load a new OS or application onto the OPN2002, you'll need a mini-USB cable (which is supplied with the OPN2002) or <A HREF="../Cradles/CradleOPN200x.html">CRD2000</A> multi cradle and follow
+			the instructions below.<BR>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH colspan=2 width=100%>Load OS or application. </TH>
+				</TR>
+				<TR>
+					<TD><H4>USB Cable</H4></TD>
+					<TD>
+						Connect the OPN2002 to your PC or laptop using the mini-USB cable<BR>
+						Start <A HREF="../Tools/Appload.html">Appload</A> and select the (Virtual) COM port of your OPN2002 in Appload.<BR>
+						Select the OS or application file in <A HREF="../Tools/Appload.html">Appload</A>.<BR>
+						<BR>
+					</TD>
+
+				</TR>
+				<TR>
+					<TD width="250"><H4>Multi Cradle</H4></TD>
+					<TD>
+						<B>Loading software on one OPN2002 at a time</B><BR>
+						<BR>
+						- Place one OPN2002 in the cradle.<BR>
+						- Start <A HREF="../Tools/Appload.html">Appload</A> and select the COM port of the <A HREF="../Cradles/CradleOPN200x.html">CRD2000</A> cradle.<BR>
+						- Select the OS or application file in <A HREF="../Tools/Appload.html">Appload</A>.<BR>
+						- Wait until the downloading has finished before inserting another OPN2002 in the cradle.<BR>
+						<BR>
+						<BR>
+						<B>Loading software with multiple OPN2002s in the cradle</B><BR>
+						<P><I>
+							IMPORTANT: Be aware that the <A HREF="../Cradles/CradleOPN200x.html">CRD2000</A> can NOT load software on multiple OPN2002s simultaneously, because only one OPN2002 can communicate to a PC at the same time!
+							<BR>
+							Since all terminals in a CRD2000 cradle will be able to receive the data that <A HREF="../Tools/Appload.html">Appload</A> is sending to the cradle,
+							but the OPN2002s can't tell whether they are currently muted or not, the loading of software will go wrong for all OPN2002s
+							in the CRD2000 cradle besides one. The end result would be OPN2002s with faulty software that will need to be restored by loading
+							the software again (one at a time). See the <A HREF="../Terminals/OPN200x.html#TroubleShooting">trouble shooting</A> section for more information about
+							loading software on OPN2002s with faulty or crashing software.
+						</I></P>
+						<P><I>
+						However, a new download protocol has been added to the OPN2002 that makes sure that only one OPN2002 will start downloading software
+						at the same time when using the CRD2000 cradle. This feature has been added in OS version RBGV0207,
+						so please verify that your OPN2002s have at least this OS version installed.<BR>
+						Also make sure that you are using <A HREF="../Tools/Appload.html">Appload</A> version 1.39 or higher (with LoadDLL EGF34096 or higher), because the old
+						versions of <A HREF="../Tools/Appload.html">Appload</A>	didn't support this new protocol yet.
+						</I></P>
+
+						- Read the important note above.<BR>
+						- Place up to 10 OPN2002s in the cradle.<BR>
+						- Start <A HREF="../Tools/Appload.html">Appload</A> and select the COM port of the <A HREF="../Cradles/CradleOPN200x.html">CRD2000</A> cradle.<BR>
+						- Select the OS or application file in <A HREF="../Tools/Appload.html">Appload</A>.<BR>
+						- To be sure that all OPN2002s have been updated, wait till Appload has finished downloading the software on all OPN2002s.<BR>
+						<BR>
+						<I>Note: The OPN2002 that is currently being updated will be recognizable by its orange LED, so never remove this OPN2002
+						from the cradle during the downloading of the software.</I><BR>
+						<BR>
+					</TD>
+				</TR>
+				<TR>
+					<TD><H4>Bluetooth</H4></TD>
+					<TD>
+						<I>&lt;Currently not supported&gt;</I>
+					</TD>
+
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item><A NAME="OPN2003">OPN2003</A></TD>
+		<TD class=itemdescr>
+			To load a new OS or application onto the OPN2003, you'll need a mini-USB cable (which is supplied with the OPN2003) and follow the instructions below<BR>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH colspan=2 width=100%>Load OS or application. </TH>
+				</TR>
+				<TR>
+					<TD><H4>USB Cable</H4></TD>
+					<TD>
+						Connect the OPN2003 to your PC or laptop using the mini-USB cable.<BR>
+						Start <A HREF="../Tools/Appload.html">Appload</A> and select the (Virtual) COM port of your OPN2003 in Appload.<BR>
+						Select the OS or application file in <A HREF="../Tools/Appload.html">Appload</A>.
+					</TD>
+
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item><A NAME="TroubleShooting">Trouble shooting</A></TD>
+		<TD class=itemdescr>
+			Since the OPN200x doesn't have a display, it also doesn't have a <A HREF="../Appl-development/Sysmenu.html">system menu</A> to resort to when you've installed a crashing application that prevents you from
+			loading new software on the OPN200x.<BR>
+			<BR>
+			For this reason the OPN200x has a few escape mechanisms to allow you to restart, halt your application and/or install new software. This can be very useful in case the OPN200x has crashed or is constantly restarting due to
+			a crashing application.<BR>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH colspan=2 width=100%>Restart mechanisms</TH>
+
+				</TR>
+				<TR>
+					<TD>Automatic</TD>
+					<TD>
+						The OPN200x has a watchdog timer to determine whether the OS is still running or has crashed. This watchdog will cause the OPN200x to restart after about 3 seconds if the OS has crashed.
+						This watchdog timer will not cause a restart when only the application has crashed.
+					</TD>
+				</TR>
+				<TR>
+					<TD>Manually</TD>
+					<TD>
+						The OPN200x has a manual restart mechanism that allows you to restart in situations that the OS is still running, but your the application has crashed. In order to activate
+						this mechanism, press and hold the trigger or delete key for at least 20 seconds. After the OPN200x has sounded the restart beep, you can release the key to complete the restart.
+					</TD>
+				</TR>
+			</TABLE>
+
+			<BR>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR><TH width=100%>Halting your application</TH></TR>
+				<TR><TD>Firstly, make sure your battery isn't empty and your mini-USB cable is not connected to the OPN200x.</TD></TR>
+				<TR><TD>Then restart your application using one of the 2 methods listed above, while keeping the trigger key pressed</TD></TR>
+				<TR><TD>While keeping the trigger key pressed, insert the mini-USB cable into the OPN200x to halt the application.</TD></TR>
+				<TR><TD><BR>(<I>If successful the LED of your OPN200x should now be blinking <B><font color=orange>orange</font></B>. You should now be able to load new application or OS software)</I></TD></TR>
+			</TABLE>
+
+			<BR>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR><TH width=100%>Halting the Operating System (only necessary in case a corrupt OS is installed)</TH></TR>
+				<TR><TD>Firstly, make sure your battery isn't empty and your mini-USB cable is not connected to the OPN200x.</TD></TR>
+				<TR><TD>Then restart your application using one of the 2 methods listed above, while keeping the delete key pressed</TD></TR>
+				<TR><TD>While keeping the delete key pressed, insert the mini-USB cable into the OPN200x to halt the Operating system.</TD></TR>
+				<TR><TD><BR>(<I>If successful the LED of your OPN200x should now be blinking <B><font color=red>red</font></B>. You should now be able to load a new OS)</I></TD></TR>
+			</TABLE>
+
+			<BR>
+			<BR>
+			<TABLE class=OPTIONS width=100%>
+				<TR><TH width=100%>Restarting an OPN200x with an halted or missing OS or application</TH></TR>
+				<TR>
+					<TD>
+						If your OPN200x is blinking <B><font color=red>red</font></B> or <B><font color=orange>orange</font></B>, because either the OS or application has been
+						halted or simple isn't installed, you can either load new software to exit this state or press and hold both keys for 5 seconds.
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

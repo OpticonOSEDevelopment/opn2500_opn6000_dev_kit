@@ -1,0 +1,100 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Bmp2Font</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Bmp2Font</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>
+			<IMG alt="Bmp2Font"  src="../images/bmp2fnt.jpg"></IMG><BR>
+			Convert a bitmaps to a font file with the requested font size.
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Terminals</TD>
+		<TD class=itemdescr>
+			The terminals that support font files are the ones that support the
+			<A class=clib HREF="../functions/setfont.html">setfont()</A> function. The convert file has the
+			extension FNT. If you look in the file it is really a normal header file, but for easy use it is
+			called a FNT file.
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Options</TD>
+		<TD class=itemdescr>
+			Description of the available options:<BR>
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH width=20%>File</TH>
+					<TH>Description</TH>
+				</TR>
+				<TR>
+					<TD>Open</TD>
+					<TD>Open a bmp file you would like to convert to a fnt file format.</TD>
+				</TR>
+				<TR>
+					<TD>Save As</TD>
+					<TD>Converts the loaded bmp file to the fnt file. The font name is the same name as the saved file.</TD>
+				</TR>
+				<TR>
+					<TD>Exit</TD>
+					<TD>Quit the bmp2font application.</TD>
+				</TR>
+			</TABLE>
+
+			<BR>
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH width=20%>Options</TH>
+					<TH>Description</TH>
+				</TR>
+				<TR>
+					<TD>Set FontSize</TD>
+					<TD>Set the width and the height of a character in the font.</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+
+	<TR class=setup>
+		<TD class=item>Conversion</TD>
+		<TD class=itemdescr>
+			The bitmap image before conversion.<BR>
+			<IMG alt="batt0.bmp"  src="../images/batt0.jpg"></IMG><BR>
+			The font file after the bitmap batt0.bmp is converted.<BR>
+<PRE>
+<SPAN class=c-comment>// _batt0 is the font name that can be used in your application
+// The font consists off 8 block(s), Wide 2 block(s), Heigh 4 block(s)
+</SPAN>
+<SPAN class=c-keyword>const char</SPAN> _batt0[] =
+{
+ 0x08, 0x08,
+ 0x00, 0xD0, 0x28, 0x28, 0x44, 0x40, 0x4E, 0x46,
+ 0x46, 0x4E, 0x40, 0x44, 0x28, 0x28, 0xD0, 0x00,
+
+ 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x00,
+
+ 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+ 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0x00,
+
+ 0x00, 0x3F, 0x40, 0x40, 0x80, 0x80, 0x80, 0x80,
+ 0x80, 0x80, 0x80, 0x80, 0x40, 0x40, 0x3F, 0x00,
+
+ };
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

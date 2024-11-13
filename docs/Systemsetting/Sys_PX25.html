@@ -1,0 +1,1713 @@
+<html>
+
+	<head>
+		<title>System settings of the PX35</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">
+		<link rel="stylesheet" type="text/css" href="../global.css">
+	</head>
+<body>
+
+
+		<!-- DSN: DRIVER={Microsoft Access Driver (*.mdb)};DBQ=C:/Inetpub/wwwroot/opticonfigure.mdb -->
+		<h1>System settings of the PX35</h1>
+		Below a list of all menu options that can be used in the <a class="clib" href="../functions/SystemSetting.html">SystemSetting()</a> function of the PX35 is shown.<br>
+		The settings depicted in bold are default values.<br>
+		This list is updated regularly. Please contact your local Opticon dealer if your application needs a setting
+		that is not in the list to find out whether it is already implemented or not.<br>
+		<br>
+		The list of system settings is divided into the following sections:<br>
+
+		<table class="sections">
+			<thead>
+				<tr><th class="options">Sections</th></tr>
+			</thead>
+			<tbody>
+				<tr><td><a href="#baudrate">1. Baudrate settings</a></td></tr>
+				<tr><td><a href="#parity">2. Data, parity and stop bits</a></td></tr>
+				<tr><td><a href="#handshake">3. Handshaking</a></td></tr>
+				<tr><td><a href="#xmodem">4. Xmodem blocksize</a></td></tr>
+				<tr><td><a href="#readonly_codes">5. Enabling a single readable code</a></td></tr>
+				<tr><td><a href="#readable_codes">6. Enabling of readable codes</a></td></tr>
+				<tr><td><a href="#disable_codes">7. Disabling of readable codes</a></td></tr>
+				<tr><td><a href="#upca">8. Options for UPC-A</a></td></tr>
+				<tr><td><a href="#upce">9. Options for UPC-E</a></td></tr>
+				<tr><td><a href="#ean8_ean13">10. Options for EAN-13 and EAN-8</a></td></tr>
+				<tr><td><a href="#code39">11. Options for Code39 and Italian Pharm.</a></td></tr>
+				<tr><td><a href="#codabar">12. Options for Codabar</a></td></tr>
+				<tr><td><a href="#code2of5">13. Options for Code 2of5</a></td></tr>
+				<tr><td><a href="#iata">14. Options for IATA</a></td></tr>
+				<tr><td><a href="#msi">15. Options for MSI/Plessey</a></td></tr>
+				<tr><td><a href="#telepen">16. Options for Telepen</a></td></tr>
+				<tr><td><a href="#uk">17. Options for UK/Plessey</a></td></tr>
+				<tr><td><a href="#code128">18. Options for Code128, EAN128</a></td></tr>
+				<tr><td><a href="#code93">19. Options for Code93</a></td></tr>
+				<tr><td><a href="#code11">20. Options for Code11</a></td></tr>
+				<tr><td><a href="#code3of5">21. Options for Korean Postal Authority code</a></td></tr>
+				<tr><td><a href="#rss">22. Options for RSS</a></td></tr>
+				<tr><td><a href="#composite">23. Options for Composite codes</a></td></tr>
+				<tr><td><a href="#read_modes">24. Read mode options</a></td></tr>
+				<tr><td><a href="#redundancy">25. Redundant reading</a></td></tr>
+				<tr><td><a href="#default">26. Default setting</a></td></tr>
+				<tr><td><a href="#margins">27. White space around barcode (= margin)</a></td></tr>
+				<tr><td><a href="#special_opt">28. Special options</a></td></tr>
+				<tr><td><a href="#text_display">29. Text display options</a></td></tr>
+				<tr><td><a href="#string_opt">30. String options</a></td></tr>
+				<tr><td><a href="#output_length">31. Ouput length options</a></td></tr>
+				<tr><td><a href="#resolution">32. Resolution and density options</a></td></tr>
+				<tr><td><a href="#inverse">33. Positive and negative bar codes</a></td></tr>
+				<tr><td><a href="#bluetooth">34. Bluetooth options</a></td></tr>
+				<tr><td><a href="#keyboard">35. Keyboard options</a></td></tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="baudrate">1. Baudrate settings</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="default">
+					<td>K6</td>
+					<td>9600 baud</td>
+				</tr>
+				<tr>
+					<td>K7</td>
+					<td>19200 baud</td>
+				</tr>
+				<tr>
+					<td>K8</td>
+					<td>38400 baud</td>
+				</tr>
+				<tr>
+					<td>K9</td>
+					<td>57600 baud</td>
+				</tr>
+				<tr>
+					<td>SZ</td>
+					<td>115200 baud</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="parity">2. Data, parity and stop bits</a></h3>
+		<p class="nooptions">No options for this scanner in this section</p>
+		<br>
+		<h3><a name="handshake">3. Handshaking</a></h3>
+		<p class="nooptions">No options for this scanner in this section</p>
+		<br>
+		<h3><a name="xmodem">4. Xmodem blocksize</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+
+			</thead>
+			<tbody>
+				<tr>
+					<td>+1</td>
+					<td>Xmodem block size 1024 bytes</td>
+				</tr>
+				<tr class="default">
+					<td>+0</td>
+
+					<td>Xmodem block size 128 bytes</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="readonly_codes">5. Enabling a single readable code</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="default">
+					<td>A0</td>
+					<td>All codes excl. add-on</td>
+				</tr>
+				<tr>
+					<td>J0</td>
+					<td>Only all UPC and EAN codes</td>
+				</tr>
+				<tr>
+					<td>J1</td>
+					<td>UPC only</td>
+				</tr>
+				<tr>
+					<td>J3</td>
+					<td>UPC + 5 only</td>
+				</tr>
+				<tr>
+					<td>J4</td>
+					<td>EAN only</td>
+				</tr>
+				<tr>
+					<td>J5</td>
+					<td>EAN + 2 only</td>
+				</tr>
+				<tr>
+					<td>J2</td>
+					<td>UPC + 2 only</td>
+				</tr>
+				<tr>
+					<td>J6</td>
+					<td>EAN + 5 only</td>
+				</tr>
+				<tr>
+					<td>JG</td>
+					<td>EAN 13 only</td>
+				</tr>
+				<tr>
+					<td>JH</td>
+					<td>EAN 13 + 2 only</td>
+				</tr>
+				<tr>
+					<td>JI</td>
+					<td>EAN 13 + 5 only</td>
+				</tr>
+				<tr>
+					<td>JA</td>
+					<td>EAN 8 only</td>
+				</tr>
+				<tr>
+					<td>JB</td>
+					<td>EAN 8 + 2 only</td>
+				</tr>
+				<tr>
+					<td>JC</td>
+					<td>EAN 8 + 5 only</td>
+				</tr>
+				<tr>
+					<td>A2</td>
+					<td>Code 39 only</td>
+				</tr>
+				<tr>
+					<td>JD</td>
+					<td>Tri-Optic only</td>
+				</tr>
+				<tr>
+					<td>A3</td>
+					<td>Codabar only</td>
+				</tr>
+				<tr>
+					<td>J7</td>
+					<td>Industrial 2of5 only</td>
+				</tr>
+				<tr>
+					<td>J8</td>
+					<td>Interleaved 2of5 only</td>
+				</tr>
+				<tr>
+					<td>RA</td>
+					<td>S-Code only</td>
+				</tr>
+				<tr>
+					<td>AB</td>
+					<td>Matrix 2of5 only</td>
+				</tr>
+				<tr>
+					<td>JE</td>
+					<td>Chinese Post Matrix 2of5 only</td>
+				</tr>
+				<tr>
+					<td>A4</td>
+					<td>IATA only</td>
+				</tr>
+				<tr>
+					<td>A7</td>
+					<td>MSI/Plessey only</td>
+				</tr>
+				<tr>
+					<td>A9</td>
+					<td>Telepen only</td>
+				</tr>
+				<tr>
+					<td>A1</td>
+					<td>UK/Plessey only</td>
+				</tr>
+				<tr>
+					<td>A6</td>
+					<td>Code 128 only</td>
+				</tr>
+				<tr>
+					<td>A5</td>
+					<td>Code 93 only</td>
+				</tr>
+				<tr>
+					<td>BLB</td>
+					<td>Code 11 only</td>
+				</tr>
+				<tr>
+					<td>JL</td>
+					<td>Korean Postal Authority code only</td>
+				</tr>
+				<tr>
+					<td>BC6</td>
+					<td>RSS only</td>
+				</tr>
+				<tr>
+					<td>J9</td>
+					<td>RSS-14 only</td>
+				</tr>
+				<tr>
+					<td>JJ</td>
+					<td>RSS-limited only</td>
+				</tr>
+				<tr>
+					<td>JK</td>
+					<td>RSS-expanded only</td>
+				</tr>
+				<tr>
+					<td>BC3</td>
+					<td>PDF417 only</td>
+				</tr>
+				<tr>
+					<td>BC4</td>
+					<td>MicroPDF417 only</td>
+				</tr>
+				<tr>
+					<td>BCA</td>
+					<td>Enable all 1D codes only</td>
+				</tr>
+				<tr>
+					<td>BCB</td>
+					<td>Enable all 2D codes only</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="readable_codes">6. Enabling of readable codes</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="default">
+					<td>R1</td>
+					<td>Enable UPC</td>
+				</tr>
+				<tr>
+					<td>R2</td>
+					<td>Enable UPC + 2</td>
+				</tr>
+				<tr>
+					<td>R3</td>
+					<td>Enable UPC + 5</td>
+				</tr>
+				<tr class="default">
+					<td>R4</td>
+					<td>Enable EAN</td>
+				</tr>
+				<tr>
+					<td>R5</td>
+					<td>Enable EAN + 2</td>
+				</tr>
+				<tr>
+					<td>R6</td>
+					<td>Enable EAN + 5</td>
+				</tr>
+				<tr>
+					<td>JQ</td>
+					<td>Enable EAN 8 + 5</td>
+				</tr>
+				<tr class="default">
+					<td>JU</td>
+					<td>Enable EAN 13</td>
+				</tr>
+				<tr>
+					<td>JV</td>
+					<td>Enable EAN 13 + 2</td>
+				</tr>
+				<tr>
+					<td>JW</td>
+					<td>Enable EAN 13 + 5</td>
+				</tr>
+				<tr class="default">
+					<td>JO</td>
+					<td>Enable EAN 8</td>
+				</tr>
+				<tr>
+					<td>JP</td>
+					<td>Enable EAN 8 + 2</td>
+				</tr>
+				<tr class="default">
+					<td>B2</td>
+					<td>Enable Code 39</td>
+				</tr>
+				<tr class="default">
+					<td>JZ</td>
+					<td>Enable Tri-Optic</td>
+				</tr>
+				<tr class="default">
+					<td>B3</td>
+					<td>Enable Codabar</td>
+				</tr>
+				<tr class="default">
+					<td>R7</td>
+					<td>Enable Industrial 2of5</td>
+				</tr>
+				<tr class="default">
+					<td>R8</td>
+					<td>Enable Interleaved 2of5</td>
+				</tr>
+				<tr class="default">
+					<td>R9</td>
+					<td>Enable S-Code</td>
+				</tr>
+				<tr>
+					<td>BB</td>
+					<td>Enable Matrix 2of5</td>
+				</tr>
+				<tr>
+					<td>JS</td>
+					<td>Enable Chinese Post Matrix 2of5</td>
+				</tr>
+				<tr class="default">
+					<td>B4</td>
+					<td>Enable IATA</td>
+				</tr>
+				<tr class="default">
+					<td>B7</td>
+					<td>Enable MSI/Plessey</td>
+				</tr>
+				<tr class="default">
+					<td>B9</td>
+					<td>Enable Telepen</td>
+				</tr>
+				<tr class="default">
+					<td>B1</td>
+					<td>Enable UK/Plessey</td>
+				</tr>
+				<tr class="default">
+					<td>B6</td>
+					<td>Enable Code 128</td>
+				</tr>
+				<tr class="default">
+					<td>B5</td>
+					<td>Enable Code 93</td>
+				</tr>
+				<tr>
+					<td>BLC</td>
+					<td>Enable Code 11</td>
+				</tr>
+				<tr>
+					<td>WH</td>
+					<td>Enable Korean Postal Authority code</td>
+				</tr>
+				<tr>
+					<td>BCI</td>
+					<td>Enable RSS</td>
+				</tr>
+				<tr>
+					<td>JX</td>
+					<td>Enable RSS-14</td>
+				</tr>
+				<tr>
+					<td>JY</td>
+					<td>Enable RSS-limited</td>
+				</tr>
+				<tr>
+					<td>DR</td>
+					<td>Enable RSS-expanded</td>
+				</tr>
+				<tr>
+					<td>B0</td>
+					<td>Disable all</td>
+				</tr>
+				<tr class="default">
+					<td>BCF</td>
+					<td>Enable PDF417</td>
+				</tr>
+				<tr class="default">
+					<td>BCG</td>
+					<td>Enable MicroPDF417</td>
+				</tr>
+				<tr>
+					<td>BCM</td>
+					<td>Enable all 1D codes</td>
+				</tr>
+				<tr>
+					<td>BCN</td>
+					<td>Enable all 2D codes</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="disable_codes">7. Disabling of readable codes</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>V7</td>
+					<td>Disable Industrial 2of5</td>
+				</tr>
+				<tr>
+					<td>V8</td>
+					<td>Disable Interleaved 2of5</td>
+				</tr>
+				<tr>
+					<td>VB</td>
+					<td>Disable Code 39</td>
+				</tr>
+				<tr>
+					<td>VC</td>
+					<td>Disable Codabar</td>
+				</tr>
+				<tr class="default">
+					<td>JT</td>
+					<td>Disable Chinese Post Matrix 2of5</td>
+				</tr>
+				<tr>
+					<td>VH</td>
+					<td>Disable IATA</td>
+				</tr>
+				<tr>
+					<td>VF</td>
+					<td>Disable MSI/Plessey</td>
+				</tr>
+				<tr>
+					<td>VG</td>
+					<td>Disable Telepen</td>
+				</tr>
+				<tr>
+					<td>VA</td>
+					<td>Disable UK/Plessey</td>
+				</tr>
+				<tr>
+					<td>VE</td>
+					<td>Disable Code 128</td>
+				</tr>
+				<tr>
+					<td>VD</td>
+					<td>Disable Code 93</td>
+				</tr>
+				<tr class="default">
+					<td>BLA</td>
+					<td>Disable Code 11</td>
+				</tr>
+				<tr class="default">
+					<td>WI</td>
+					<td>Disable Korean Postal Authority code</td>
+				</tr>
+				<tr>
+					<td>BCU</td>
+					<td>Disable RSS</td>
+				</tr>
+				<tr>
+					<td>SJ</td>
+					<td>Disable RSS-14</td>
+				</tr>
+				<tr>
+					<td>SK</td>
+					<td>Disable RSS Limited</td>
+				</tr>
+				<tr>
+					<td>SL</td>
+					<td>Disable RSS Expanded</td>
+				</tr>
+				<tr>
+					<td>BCR</td>
+					<td>Disable PDF417</td>
+				</tr>
+				<tr>
+					<td>BCS</td>
+					<td>Disable MicroPDF417</td>
+				</tr>
+				<tr>
+					<td>BCY</td>
+					<td>Disable all 1D codes</td>
+				</tr>
+				<tr>
+					<td>BCZ</td>
+					<td>Disable all 2D codes</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="upca">8. Options for UPC-A</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="default">
+					<td>E3</td>
+					<td>UPC-A, No leading zero, transmit CD</td>
+				</tr>
+				<tr>
+					<td>E5</td>
+					<td>UPC-A, No leading zero, not transmit CD</td>
+				</tr>
+				<tr>
+					<td>E2</td>
+					<td>UPC-A, Leading zero, transmit CD</td>
+				</tr>
+				<tr>
+					<td>E4</td>
+					<td>UPC-A, Leading zero, not transmit CD</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="upce">9. Options for UPC-E</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="default">
+					<td>E7</td>
+					<td>UPC-E, No leading digit, transmit CD</td>
+				</tr>
+				<tr>
+					<td>E9</td>
+					<td>UPC-E, No leading digit, not transmit CD</td>
+				</tr>
+				<tr>
+					<td>E6</td>
+					<td>UPC-E, Leading digit, transmit CD</td>
+				</tr>
+				<tr>
+					<td>E8</td>
+					<td>UPC-E, Leading digit, not transmit CD</td>
+				</tr>
+				<tr class="default">
+					<td>KP</td>
+					<td>Disable UPC-E1</td>
+				</tr>
+				<tr>
+					<td>KQ</td>
+					<td>Enable UPC-E1</td>
+				</tr>
+				<tr class="default">
+					<td>6Q</td>
+					<td>Transmit UPC-E as is</td>
+				</tr>
+				<tr>
+					<td>6P</td>
+					<td>Transmit UPC-E as UPC-A</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="ean8_ean13">10. Options for EAN-13 and EAN-8</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>6J</td>
+					<td>EAN-13 not transmit CD</td>
+				</tr>
+				<tr class="default">
+					<td>6K</td>
+					<td>EAN-13 transmit CD</td>
+				</tr>
+				<tr>
+					<td>6H</td>
+					<td>EAN-8 not transmit CD</td>
+				</tr>
+				<tr class="default">
+					<td>6I</td>
+					<td>EAN-8 transmit CD</td>
+				</tr>
+				<tr class="default">
+					<td>IB</td>
+					<td>Disable ISBN translation</td>
+				</tr>
+				<tr>
+					<td>IA</td>
+					<td>Enable ISBN translation</td>
+				</tr>
+				<tr>
+					<td>IK</td>
+					<td>Enable ISBN if possible</td>
+				</tr>
+				<tr class="default">
+					<td>HN</td>
+					<td>Disable ISSN translation</td>
+				</tr>
+				<tr>
+					<td>HO</td>
+					<td>Enable ISSN translation</td>
+				</tr>
+				<tr>
+					<td>4V</td>
+					<td>Enable ISSN if possible</td>
+				</tr>
+				<tr class="default">
+					<td>IO</td>
+					<td>Disable ISMN translation</td>
+				</tr>
+				<tr>
+					<td>IP</td>
+					<td>Enable ISMN translation</td>
+				</tr>
+				<tr>
+					<td>IQ</td>
+					<td>Enable ISMN if possible</td>
+				</tr>
+				<tr>
+					<td>6S</td>
+					<td>Select edge-to-edge method</td>
+				</tr>
+				<tr class="default">
+					<td>6T</td>
+					<td>Select straight forward method</td>
+				</tr>
+				<tr class="default">
+					<td>-H</td>
+					<td>Disable EAN forced ADDON when EAN13 starts with 378, 379, 529</td>
+				</tr>
+				<tr class="default">
+					<td>-D</td>
+					<td>Disable EAN forced ADDON when EAN13 starts with 434, 439, 414, 419, 977, 978</td>
+				</tr>
+				<tr class="default">
+					<td>FC</td>
+					<td>Symbology conversion to EAN13 disable</td>
+				</tr>
+				<tr>
+					<td>FB</td>
+					<td>Symbology conversion to EAN13 enable</td>
+				</tr>
+				<tr>
+					<td>-G</td>
+					<td>Enable EAN forced ADDON when EAN13 starts with 378, 379, 529</td>
+				</tr>
+				<tr>
+					<td>-C</td>
+					<td>Enable EAN forced ADDON when EAN13 starts with 434, 439, 414, 419, 977, 978</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="code39">11. Options for Code39 and Italian Pharm.</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="default">
+					<td>.A</td>
+					<td>Use reference algorithm for thresholding</td>
+				</tr>
+				<tr>
+					<td>.B</td>
+					<td>Use min-max algorithm for thresholding</td>
+				</tr>
+				<tr class="default">
+					<td>D5</td>
+					<td>Normal Code 39</td>
+				</tr>
+				<tr>
+					<td>D4</td>
+					<td>Full ASCII Code 39</td>
+				</tr>
+				<tr>
+					<td>+K</td>
+					<td>Full ASCII Code 39 if possible</td>
+				</tr>
+				<tr>
+					<td>D6</td>
+					<td>It. Pharmaceutical only</td>
+				</tr>
+				<tr>
+					<td>D7</td>
+					<td>It. Pharmaceutical if possible</td>
+				</tr>
+				<tr class="default">
+					<td>C1</td>
+					<td>Not check CD</td>
+				</tr>
+				<tr>
+					<td>C0</td>
+					<td>Check CD</td>
+				</tr>
+				<tr>
+					<td>D8</td>
+					<td>Not transmit CD</td>
+				</tr>
+				<tr class="default">
+					<td>D9</td>
+					<td>Transmit CD</td>
+				</tr>
+				<tr class="default">
+					<td>D1</td>
+					<td>Not transmit ST/SP</td>
+				</tr>
+				<tr>
+					<td>D0</td>
+					<td>Transmit ST/SP</td>
+				</tr>
+				<tr class="default">
+					<td>DA</td>
+					<td>Not transm. ld. A for It. Pharm.Code</td>
+				</tr>
+				<tr>
+					<td>DB</td>
+					<td>Transmit leading A for It. Pharm.Code</td>
+				</tr>
+				<tr>
+					<td>8D</td>
+					<td>Minimum 3 digits</td>
+				</tr>
+				<tr class="default">
+					<td>8E</td>
+					<td>Minimum 1 digit</td>
+				</tr>
+				<tr class="default">
+					<td>+M</td>
+					<td>Disable concatenation</td>
+				</tr>
+				<tr>
+					<td>+L</td>
+					<td>Enable concatenation</td>
+				</tr>
+				<tr>
+					<td>YI</td>
+					<td>Tri-Optic margin low</td>
+				</tr>
+				<tr class="default">
+					<td>YJ</td>
+					<td>Tri-Optic margin normal</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="codabar">12. Options for Codabar</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="default">
+					<td>HA</td>
+					<td>Enable only Codabar normal mode</td>
+				</tr>
+				<tr>
+					<td>H4</td>
+					<td>Enable only ABC code</td>
+				</tr>
+				<tr>
+					<td>H5</td>
+					<td>Enable only CX code</td>
+				</tr>
+				<tr>
+					<td>H3</td>
+					<td>Enable Codabar, ABC and CX</td>
+				</tr>
+				<tr class="default">
+					<td>H7</td>
+					<td>Not check CD</td>
+				</tr>
+				<tr>
+					<td>H6</td>
+					<td>Check CD</td>
+				</tr>
+				<tr>
+					<td>H9</td>
+					<td>Not transmit CD</td>
+				</tr>
+				<tr class="default">
+					<td>H8</td>
+					<td>Transmit CD</td>
+				</tr>
+				<tr class="default">
+					<td>HE</td>
+					<td>Disable space insertion</td>
+				</tr>
+				<tr>
+					<td>HD</td>
+					<td>Enable space insertion</td>
+				</tr>
+				<tr class="default">
+					<td>F0</td>
+					<td>Not transmit ST/SP</td>
+				</tr>
+				<tr>
+					<td>F3</td>
+					<td>ST/SP: ABCD/ABCD</td>
+				</tr>
+				<tr>
+					<td>F4</td>
+					<td>ST/SP: abcd/abcd</td>
+				</tr>
+				<tr>
+					<td>F1</td>
+					<td>ST/SP: ABCD/TN*E</td>
+				</tr>
+				<tr>
+					<td>F2</td>
+					<td>ST/SP: abcd/tn*e</td>
+				</tr>
+				<tr>
+					<td>HJ</td>
+					<td>ST/SP: &lt;DC1&gt;&lt;DC2&gt;&lt;DC3&gt;&lt;DC4&gt; / &lt;DC1&gt;&lt;DC2&gt;&lt;DC3&gt;&lt;DC4&gt;</td>
+				</tr>
+				<tr>
+					<td>HC</td>
+					<td>Minimum data one character</td>
+				</tr>
+				<tr>
+					<td>HB</td>
+					<td>Minimum data three characters</td>
+				</tr>
+				<tr class="default">
+					<td>HF</td>
+					<td>Minimum data five characters</td>
+				</tr>
+				<tr>
+					<td>HI</td>
+					<td>Disable intercharacter gap check</td>
+				</tr>
+				<tr class="default">
+					<td>HH</td>
+					<td>Enable intercharacter gap check</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="code2of5">13. Options for Code 2of5</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="default">
+					<td>/V</td>
+					<td>Disable wider treshholds</td>
+				</tr>
+				<tr>
+					<td>/W</td>
+					<td>Enable wider treshholds</td>
+				</tr>
+				<tr class="default">
+					<td>-X</td>
+					<td>Use G4 decoding algorithm</td>
+				</tr>
+				<tr>
+					<td>-Y</td>
+					<td>Use G5 decoding algorithm</td>
+				</tr>
+				<tr>
+					<td>E1</td>
+					<td>Not transmit CD</td>
+				</tr>
+				<tr class="default">
+					<td>E0</td>
+					<td>Transmit CD</td>
+				</tr>
+				<tr class="default">
+					<td>G0</td>
+					<td>Not check CD</td>
+				</tr>
+				<tr>
+					<td>G1</td>
+					<td>Check CD</td>
+				</tr>
+				<tr>
+					<td>GE</td>
+					<td>Minimum data one character</td>
+				</tr>
+				<tr>
+					<td>GF</td>
+					<td>Minimum data three character</td>
+				</tr>
+				<tr class="default">
+					<td>GI</td>
+					<td>Minimum data five character</td>
+				</tr>
+				<tr>
+					<td>GK</td>
+					<td>Disable space check for Industrial 2of5</td>
+				</tr>
+				<tr class="default">
+					<td>GJ</td>
+					<td>Enable space check for Industrial 2of5</td>
+				</tr>
+				<tr class="default">
+					<td>GH</td>
+					<td>Not transmit S-Code as Interleaved 2of5</td>
+				</tr>
+				<tr>
+					<td>GG</td>
+					<td>Transmit S-Code as Interleaved 2of5</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="iata">14. Options for IATA</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="default">
+					<td>4H</td>
+					<td>Not check CD</td>
+				</tr>
+				<tr>
+					<td>4I</td>
+					<td>Check FC and SN only</td>
+				</tr>
+				<tr>
+					<td>4J</td>
+					<td>Check CPN, FC and SN</td>
+				</tr>
+				<tr>
+					<td>4K</td>
+					<td>Check CPN, AC, FC and SN</td>
+				</tr>
+				<tr>
+					<td>4M</td>
+					<td>Not transmit CD</td>
+				</tr>
+				<tr class="default">
+					<td>4L</td>
+					<td>Transmit CD</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="msi">15. Options for MSI/Plessey</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>4A</td>
+					<td>Not check CD</td>
+				</tr>
+				<tr class="default">
+					<td>4B</td>
+					<td>Check 1 CD = MOD 10</td>
+				</tr>
+				<tr>
+					<td>4C</td>
+					<td>Check 2 CD's = MOD 10/MOD 10</td>
+				</tr>
+				<tr>
+					<td>4D</td>
+					<td>Check 2 CD's = MOD 10/MOD 11</td>
+				</tr>
+				<tr>
+					<td>4R</td>
+					<td>Check 2 CD's = MOD11/MOD10</td>
+				</tr>
+				<tr>
+					<td>4G</td>
+					<td>Not transmit CD</td>
+				</tr>
+				<tr class="default">
+					<td>4E</td>
+					<td>Transmit CD1</td>
+				</tr>
+				<tr>
+					<td>4F</td>
+					<td>Transmit CD1 and CD2</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="telepen">16. Options for Telepen</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="default">
+					<td>D2</td>
+					<td>Numeric mode</td>
+				</tr>
+				<tr>
+					<td>D3</td>
+					<td>ASCII mode</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="uk">17. Options for UK/Plessey</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>4O</td>
+					<td>Not transmit CD's</td>
+				</tr>
+				<tr class="default">
+					<td>4N</td>
+					<td>Transmit CD's</td>
+				</tr>
+				<tr class="default">
+					<td>DO</td>
+					<td>Disable space insertion</td>
+				</tr>
+				<tr>
+					<td>DN</td>
+					<td>Enable space insertion</td>
+				</tr>
+				<tr class="default">
+					<td>DP</td>
+					<td>Disable A to X conversion</td>
+				</tr>
+				<tr>
+					<td>DQ</td>
+					<td>Enable A to X conversion</td>
+				</tr>
+				<tr class="default">
+					<td>GQ</td>
+					<td>Disable UK plessey special stop character</td>
+				</tr>
+				<tr>
+					<td>GP</td>
+					<td>Enable UK plessey special stop character</td>
+				</tr>
+				<tr>
+					<td>%E</td>
+					<td>UK Plessey accepts small termination bar</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="code128">18. Options for Code128, EAN128</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>MF</td>
+					<td>Not check CD</td>
+				</tr>
+				<tr class="default">
+					<td>ME</td>
+					<td>Check CD</td>
+				</tr>
+				<tr>
+					<td>BL6</td>
+					<td>Not transmit ]C1</td>
+				</tr>
+				<tr class="default">
+					<td>BL5</td>
+					<td>Transmit ]C1</td>
+				</tr>
+				<tr class="default">
+					<td>OF</td>
+					<td>Disable EAN-128</td>
+				</tr>
+				<tr>
+					<td>JF</td>
+					<td>Enable EAN-128 only</td>
+				</tr>
+				<tr>
+					<td>OG</td>
+					<td>Enable EAN-128 if possible</td>
+				</tr>
+				<tr class="default">
+					<td>MP</td>
+					<td>Disable concatenation</td>
+				</tr>
+				<tr>
+					<td>MO</td>
+					<td>Enable concatenation</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="code93">19. Options for Code93</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>9Q</td>
+					<td>Not check CD</td>
+				</tr>
+				<tr class="default">
+					<td>AC</td>
+					<td>Check CD</td>
+				</tr>
+				<tr class="default">
+					<td>+W</td>
+					<td>Disable concatenation</td>
+				</tr>
+				<tr>
+					<td>+V</td>
+					<td>Enable concatenation</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="code11">20. Options for Code11</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>BLF</td>
+					<td>Not check CD</td>
+				</tr>
+				<tr>
+					<td>BLG</td>
+					<td>Check 1 CD</td>
+				</tr>
+				<tr>
+					<td>BLH</td>
+					<td>Check 2 CDs</td>
+				</tr>
+				<tr class="default">
+					<td>BLI</td>
+					<td>Check auto 1 or 2 CDs</td>
+				</tr>
+				<tr class="default">
+					<td>BLJ</td>
+					<td>Not transmit CD(s)</td>
+				</tr>
+				<tr>
+					<td>BLK</td>
+					<td>Transmit CD(s)</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="code3of5">21. Options for Korean Postal Authority code</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>*9</td>
+					<td>Upside-down reading enabled</td>
+				</tr>
+				<tr class="default">
+					<td>*8</td>
+					<td>Upside-down reading disabled</td>
+				</tr>
+				<tr class="default">
+					<td>*-</td>
+					<td>Not transmit CD</td>
+				</tr>
+				<tr>
+					<td>*+</td>
+					<td>Transmit CD</td>
+				</tr>
+				<tr>
+					<td>*/</td>
+					<td>Not transmit dash</td>
+				</tr>
+				<tr class="default">
+					<td>*.</td>
+					<td>Transmit dash</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="rss">22. Options for RSS</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>BHC</td>
+					<td>Transmit link flag</td>
+				</tr>
+				<tr class="default">
+					<td>BHD</td>
+					<td>Not transmit link flag</td>
+				</tr>
+				<tr>
+					<td>DM</td>
+					<td>Not transmit CD</td>
+				</tr>
+				<tr>
+					<td>BH0</td>
+					<td>RSS segment memory time out: 0 sec.</td>
+				</tr>
+				<tr class="default">
+					<td>DL</td>
+					<td>Transmit CD</td>
+				</tr>
+				<tr>
+					<td>BH1</td>
+					<td>RSS segment memory time out: 1 sec.</td>
+				</tr>
+				<tr>
+					<td>DT</td>
+					<td>Not transmit Application Identifier</td>
+				</tr>
+				<tr class="default">
+					<td>BH2</td>
+					<td>RSS segment memory time out: 2 sec.</td>
+				</tr>
+				<tr class="default">
+					<td>DS</td>
+					<td>Transmit Application Identifier</td>
+				</tr>
+				<tr>
+					<td>BH3</td>
+					<td>RSS segment memory time out: 3 sec.</td>
+				</tr>
+				<tr>
+					<td>BH4</td>
+					<td>RSS segment memory time out: 4 sec.</td>
+				</tr>
+				<tr>
+					<td>BH5</td>
+					<td>RSS segment memory time out: 5 sec.</td>
+				</tr>
+				<tr>
+					<td>BH6</td>
+					<td>RSS segment memory time out: 6 sec.</td>
+				</tr>
+				<tr>
+					<td>BH7</td>
+					<td>RSS segment memory time out: 7 sec.</td>
+				</tr>
+				<tr>
+					<td>BH8</td>
+					<td>RSS segment memory time out: 8 sec.</td>
+				</tr>
+				<tr>
+					<td>BH9</td>
+					<td>RSS segment memory time out: 9 sec.</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="composite">23. Options for Composite codes</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>RQ</td>
+					<td>Not ignore link flag for RSS, EAN128</td>
+				</tr>
+				<tr class="default">
+					<td>RP</td>
+					<td>Ignore link flag for RSS, EAN128</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="read_modes">24. Read mode options</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>XA</td>
+					<td>Add-on wait mode disabled</td>
+				</tr>
+				<tr>
+					<td>XB</td>
+					<td>Add-on wait mode 0.25 sec.</td>
+				</tr>
+				<tr class="default">
+					<td>XC</td>
+					<td>Add-on wait mode 0.50 sec.</td>
+				</tr>
+				<tr>
+					<td>XD</td>
+					<td>Add-on wait mode 0.75 sec.</td>
+				</tr>
+				<tr>
+					<td>AH</td>
+					<td>50ms</td>
+				</tr>
+				<tr>
+					<td>AI</td>
+					<td>100ms</td>
+				</tr>
+				<tr>
+					<td>AJ</td>
+					<td>200ms</td>
+				</tr>
+				<tr>
+					<td>AK</td>
+					<td>300ms</td>
+				</tr>
+				<tr>
+					<td>AL</td>
+					<td>400ms</td>
+				</tr>
+				<tr class="default">
+					<td>AM</td>
+					<td>500ms</td>
+				</tr>
+				<tr>
+					<td>AN</td>
+					<td>600ms</td>
+				</tr>
+				<tr>
+					<td>AG</td>
+					<td>Indefinitely</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="redundancy">25. Redundant reading</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="default">
+					<td>/O</td>
+					<td>Disable redundancy for both directions</td>
+				</tr>
+				<tr>
+					<td>/N</td>
+					<td>Enable redundancy for both directions</td>
+				</tr>
+				<tr>
+					<td>X0</td>
+					<td>Read 1 time , redundancy = 0</td>
+				</tr>
+				<tr class="default">
+					<td>X1</td>
+					<td>Read 2 times, redundancy = 1</td>
+				</tr>
+				<tr>
+					<td>X2</td>
+					<td>Read 3 times, redundancy = 2</td>
+				</tr>
+				<tr>
+					<td>X3</td>
+					<td>Read 4 times, redundancy = 3</td>
+				</tr>
+				<tr>
+					<td>BS</td>
+					<td>Read 5 times, redundancy = 4</td>
+				</tr>
+				<tr>
+					<td>BT</td>
+					<td>Read 6 times, redundancy = 5</td>
+				</tr>
+				<tr>
+					<td>BU</td>
+					<td>Read 7 times, redundancy = 6</td>
+				</tr>
+				<tr>
+					<td>BV</td>
+					<td>Read 8 times, redundancy = 7</td>
+				</tr>
+				<tr>
+					<td>BW</td>
+					<td>Read 9 times, redundancy = 8</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="default">26. Default setting</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>U2</td>
+					<td>RS232</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="margins">27. White space around barcode (= margin)</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>YN</td>
+					<td>No margin check</td>
+				</tr>
+				<tr>
+					<td>YO</td>
+					<td>Margin check 1/7 nominal</td>
+				</tr>
+				<tr>
+					<td>YP</td>
+					<td>Margin check 2/7 nominal</td>
+				</tr>
+				<tr>
+					<td>YQ</td>
+					<td>Margin check 3/7 nominal</td>
+				</tr>
+				<tr>
+					<td>YR</td>
+					<td>Margin check 4/7 nominal</td>
+				</tr>
+				<tr>
+					<td>YS</td>
+					<td>Margin check 5/7 nominal</td>
+				</tr>
+				<tr>
+					<td>YT</td>
+					<td>Margin check 6/7 nominal</td>
+				</tr>
+				<tr class="default">
+					<td>YU</td>
+					<td>Margin check normal</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="special_opt">28. Special options</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="default">
+					<td>8Z</td>
+					<td>Charging indication LED disabled</td>
+				</tr>
+				<tr>
+					<td>7G</td>
+					<td>Charging indication LED enabled</td>
+				</tr>
+				<tr>
+					<td>*3</td>
+					<td>Both edge-to-similar-edge + edge-to-next-edge method</td>
+				</tr>
+				<tr class="default">
+					<td>YD</td>
+					<td>Accept menulabels as data disabled</td>
+				</tr>
+				<tr>
+					<td>YC</td>
+					<td>Accept menulabels as data enabled</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="text_display">29. Text display options</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="default">
+					<td>/X</td>
+					<td>Echo shifted (alphabetic) keys</td>
+				</tr>
+				<tr>
+					<td>/Y</td>
+					<td>Not echo shifted (alphabetic) keys</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="string_opt">30. String options</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="default">
+					<td>YZ</td>
+					<td>No case conversion</td>
+				</tr>
+				<tr>
+					<td>YW</td>
+					<td>Convert to upper case</td>
+				</tr>
+				<tr>
+					<td>YX</td>
+					<td>Convert to lower case</td>
+				</tr>
+				<tr>
+					<td>YY</td>
+					<td>Exchange case</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="output_length">31. Ouput length options</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="default">
+					<td>H0</td>
+					<td>Fixed length OFF all codes</td>
+				</tr>
+				<tr>
+					<td>H1</td>
+					<td>Fixed length ON all codes</td>
+				</tr>
+				<tr>
+					<td>HK</td>
+					<td>Fixed length ON for selected codes</td>
+				</tr>
+				<tr>
+					<td>HL</td>
+					<td>Minimum length for selected codes</td>
+				</tr>
+				<tr>
+					<td>HM</td>
+					<td>Maximum length for selected codes</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="resolution">32. Resolution and density options</a></h3>
+		<p class="nooptions">No options for this scanner in this section</p>
+		<br>
+		<h3><a name="inverse">33. Positive and negative bar codes</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="default">
+					<td>V2</td>
+					<td>Positive bar codes</td>
+				</tr>
+				<tr>
+					<td>V3</td>
+					<td>Negative bar codes</td>
+				</tr>
+				<tr>
+					<td>V4</td>
+					<td>Positive and negative bar codes</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<h3><a name="bluetooth">34. Bluetooth options</a></h3>
+		<p class="nooptions">No options for this scanner in this section</p>
+		<br>
+		<h3><a name="keyboard">35. Keyboard options</a></h3>
+		<table class="menu_options">
+			<thead>
+				<tr>
+					<th class="menu_option">Menu option</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="default">
+					<td>WL</td>
+					<td>Keyclick off</td>
+				</tr>
+				<tr>
+					<td>WK</td>
+					<td>Keyclick on</td>
+				</tr>
+				<tr>
+					<td>*R</td>
+					<td>Shift key handled by application</td>
+				</tr>
+				<tr class="default">
+					<td>*Q</td>
+					<td>Shift key handled by OS</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+	</body></html>

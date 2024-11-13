@@ -1,0 +1,74 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Idle</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Idle</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr>This function sets the reader in a 'sleep' mode. Calling this function while waiting for an action will reduce the power consumption significantly.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr><SPAN class=c-keyword>void</SPAN> <A class=clib HREF="./Idle.html">Idle</A>( <SPAN class=c-keyword>void</SPAN> );</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>
+			After calling the <A class=clib HREF="./Idle.html">Idle()</A> function, the reader will halt program execution
+			until it is awakened by a software interrupt - like the reception of data over the serial port - or by a hardware interrupt - 
+			like a keystroke.<BR>
+			When no interrupts are received, the terminal will resume program execution within a maximum of 20 milliseconds after calling <A class=clib HREF="./Idle.html">Idle()</A>.<BR>
+			Using <A class=clib HREF="./Idle.html">Idle()</A> has no effect on the scanning performance.<BR> One can use this
+			function while waiting for a keystroke, while waiting for reception of data, etc.<BR>
+			<BR>
+			It's also possible to reduce the power consumption to almost zero by using the
+			<A class=clib HREF="./AutoPowerDown.html">AutoPowerDown</A> function to sleep or power down.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class=c-comment>// The following example demonstrates the use of Idle() and the power reduction.
+// The example may reduce power consumption by about 2-4 times!
+</SPAN>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>unsigned int</SPAN> x;
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        printf("\nIdle loop");
+        <SPAN class=c-keyword>for</SPAN>( x=0; x &lt; 200; x++)
+            <A class=clib HREF="./Idle.html">Idle</A>();
+        printf("\n normal loop");
+        <SPAN class=c-keyword>for</SPAN>( x=0; x &lt; 10000; x++)
+            <SPAN class=c-keyword>continue</SPAN>;
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+</BODY>
+</HTML>

@@ -1,0 +1,71 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>PutByte</TITLE>
+</HEAD>
+
+<BODY>
+<H1>PutByte</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+		<TD class=item>Availability</TD>
+		<TD class=itemdescr>All terminals</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Description</TD>
+		<TD class=itemdescr><A class=clib HREF="./PutByte.html">PutByte</A>() transmits a byte through the serial communications port that was last opened by <A class=clib HREF="./ComOpen.html">ComOpen()</A>.</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Syntax</TD>
+		<TD class=itemdescr>
+			<SPAN class=c-keyword>void</SPAN> <A class=clib HREF="./PutByte.html">PutByte</A>( <SPAN class=c-keyword>unsigned char</SPAN> c );
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Arguments</TD>
+		<TD class=itemdescr>
+			<H5><SPAN class=c-keyword>unsigned char</SPAN> <I>c</I></H5> c is the byte that is to be transmitted.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Returns</TD>
+		<TD class=itemdescr>None</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Remarks</TD>
+		<TD class=itemdescr>
+			- Note that on the default port (COM9) is automatically opened at startup.
+		</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Example</TD>
+		<TD class=itemdescr>
+<PRE>
+<SPAN class=c-preprocessor>#include</SPAN> &#60stdio.h&#62
+<SPAN class=c-preprocessor>#include</SPAN> "lib.h"
+
+<SPAN class=c-keyword>void</SPAN> main( <SPAN class=c-keyword>void</SPAN> )
+{
+    <SPAN class=c-keyword>unsigned char</SPAN> ch;
+
+    <A class=clib HREF="./ComOpen.html">ComOpen</A>( COM9 );    <SPAN class=c-comment>// Open the COM port for USB-VCP</SPAN>
+
+    <SPAN class=c-keyword>for</SPAN>(;;)
+    {
+        <SPAN class=c-keyword>if</SPAN>( (ch = <A class=clib HREF="./GetCom.html">GetCom</A>( 0 )) != -1)
+        {
+            PutCom( ch );
+            <A class=clib HREF="./PutByte.html">PutByte</A>( ch );
+        }
+        <A class=clib HREF="./Idle.html">Idle</A>();    <SPAN class=c-comment>// Very important to lower the power consumption</SPAN>
+    }
+}
+</PRE>
+		</TD>
+	</TR>
+</TABLE>
+
+</BODY>
+</HTML>

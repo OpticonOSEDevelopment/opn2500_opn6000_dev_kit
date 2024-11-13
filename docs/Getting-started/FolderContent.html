@@ -1,0 +1,109 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>Folder Content of the SDK</TITLE>
+</HEAD>
+
+<BODY>
+<H1>Folder Content of the SDK</H1>
+
+    <p>The SDK contains the following components</p>
+
+	<h3>1. SDK</h3>
+
+    <h2>/firmware</h2>
+    <ul>
+        <li><strong>/bootloader</strong>
+            <ul>
+                <li><code>FAMVxxxx.HEX</code> &rarr; Bootloader of the OPN-6000</li>
+                <li><code>FANVxxxx.HEX</code> &rarr; Bootloader of the OPN-2500</li>
+            </ul>
+        </li>
+        <li><strong>/library</strong>
+            <ul>
+                <li><code>OPN2500_FBNVxxxx.a</code> &rarr; OPN-2500 Operating System library file</li>
+                <li><code>OPN6000_FBMVxxxx.a</code> &rarr; OPN-6000 Operating System library file</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>/include</h2>
+    <ul>
+        <li><code>lib.h</code> &rarr; OS library include file</li>
+        <li><code>lib_legacy.h</code> &rarr; Legacy OS library with legacy lower-case function names, file system, and defines (for porting existing applications)</li>
+        <li><code>Debug.h</code> &rarr; Used for debugging</li>
+        <li><code>/FileSystem</code> &rarr; Header files for the 
+            <a href="http://elm-chan.org/fsw/ff/FileSystem" target="_blank">ChaN's FatFs Generic file system</a>
+        </li>
+        <li>(other OS related header files)</li>
+    </ul>
+
+    <h2>/mdk</h2>
+    <ul>
+        <li><code>OPN-2500</code> / <code>OPN-6000</code> / <code>nRF528xx</code> specific header files</li>
+    </ul>
+
+    <h2>/nrfutil</h2>
+    <ul>
+        <li><code>nrfutil.exe</code> &rarr; Nordic tool for signing and packing bootloader, softdevice, OS, and application</li>
+    </ul>
+
+    <h2>/softdevice</h2>
+    <ul>
+        <li><strong>/MBR</strong> &rarr; Master boot record (starts the bootloader)</li>
+        <li><strong>/S113</strong> &rarr; Compiled softdevice S113 (Bluetooth BLE wireless protocol stack for nRF52840 Nordic CPU)</li>
+        <li><strong>/Common</strong> &rarr; Softdevice header files</li>
+    </ul>
+
+    <h2>/toolchain</h2>
+    <ul>
+        <li><strong>/CMSIS</strong> &rarr; Provides software components for retargeting I/O operations in standard C run-time libraries</li>
+    </ul>
+
+    <h2>/documentation</h2>
+    <ul>
+        <li><code>OPN-6000 User Manual.pdf</code> &rarr; Latest version is always available at 
+            <a href="https://www.opticon.com/support/OPN-6000/OPN-6000%20User%20Manual.pdf" target="_blank">OPN-6000 User Manual</a>
+        </li>
+        <li><code>OPN-2500 User Manual.pdf</code> &rarr; Latest version is always available at 
+            <a href="https://www.opticon.com/support/OPN-2500/OPN-2500%20User%20Manual.pdf" target="_blank">OPN-2500 User Manual</a>
+        </li>
+    </ul>
+
+    <h3>2. Applications</h3>
+	
+    <p>In the folder <code>Projects/Applications</code> some applications with basic and advanced features that are commenly used on OPN-2500 / OPN-6000. They provide a good starting point for writing your own application or when only small customizations are required:</p>
+
+	<h2>HelloWorld</h2>
+    <p>&rarr; Simple application to demonstrate reading of bar codes and menu-labels and basic power management features</p>
+	
+    <h2>BatchApplication</h2>
+    <p>&rarr; Batch application to demonstrate using the OPN as batch device and communication using USB-MSD and OseComm</p>
+
+    <h2>BluetoothAppl</h2>
+    <p>&rarr; Bluetooth application to demonstrate Bluetooth BLE Serial, HID and OptiConnect as well as USB-HID, USB-CDC and USB-VCP and memorizing</p>
+	
+    <h2>Snippets</h2>
+    <p>&rarr; Source files used by both applications for storing, updating and exporting bar code data in the file system</p>
+
+	<h2>Editing and building</h2>
+    <p>Open the projects file: <code>BatchApplication\Projects\ses\Batch_Appl.emProject</code> or <code>BluetoothAppl\Projects\ses\Bluetooth_Appl.emProject</code></p>
+
+	<h2>Loading firmware</h2>
+    <p>After building, the resulting <code>.bin</code> file can be found in the root folder of the applications and loaded using Appload.</p>
+
+	<h2>Documentation</h2>
+    <p>The User Manuals of the OPN-2500 and OPN-6000 in this SDK provide more information on how to use these applications.</p>
+
+    <h3>3. Examples</h3>
+    <p>In the folder <code>Projects/Examples</code>, you'll find small example applications for all basic peripheral functions of the OPN-2500 / OPN-6000:</p>
+
+	<h2>Editing and building</h2>
+    <ul>
+        <li>Open the projects file: <code>OPN_Examples.emProject</code> in Segger IDE</li>
+        <li>In the <code>Project explorer</code>, right-click the source files and use the <code>Exclude from build</code> option to select which sample application to build.</li>
+        <li>After building, the resulting <code>.bin</code> file can be found in the <code>/Output</code> folder and loaded using Appload.</li>
+    </ul>
+</BODY>
+

@@ -1,0 +1,129 @@
+<link rel="stylesheet" type="text/css" href="../../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>RS232 Options</TITLE>
+</HEAD>
+
+<BODY>
+<H1>RS232 Options</H1>
+
+<TABLE width=100% class=setup>
+	<TR class=setup>
+	<TD class=item>Description</TD>
+	<TD class=itemdescr>
+		Press on the different areas of the screenshot below to browse through this NetO32 help.<BR>
+		<BR>
+		<IMG src="./Images/RS232.jpg" USEMAP="#RS232_PAGE">
+		<MAP NAME="RS232_PAGE">
+			<AREA SHAPE = "rect" COORDS="23,37,165,54"   HREF=".\RS232_OPTIONS.html">
+			<AREA SHAPE = "rect" COORDS="38,70,165,86"   HREF=".\Download_OPTIONS.html">
+			<AREA SHAPE = "rect" COORDS="38,87,165,102"  HREF=".\Upload_OPTIONS.html">
+			<AREA SHAPE = "rect" COORDS="38,103,166,118" HREF=".\PollTime_OPTIONS.html">
+			<AREA SHAPE = "rect" COORDS="38,135,166,152" HREF=".\Appearance_OPTIONS.html">
+			<AREA SHAPE = "rect" COORDS="38,153,164,169" HREF=".\Log_OPTIONS.html">
+
+			<AREA SHAPE = "rect" COORDS="180,89,280,144"  HREF=".\RS232_OPTIONS.html#comport">
+			<AREA SHAPE = "rect" COORDS="180,156,279,301" HREF=".\RS232_OPTIONS.html#Baudrate">
+			<AREA SHAPE = "rect" COORDS="310,91,410,168"  HREF=".\RS232_OPTIONS.html#Parity">
+			<AREA SHAPE = "rect" COORDS="310,173,409,234" HREF=".\RS232_OPTIONS.html#Bytesize">
+			<AREA SHAPE = "rect" COORDS="310,240,409,301" HREF=".\RS232_OPTIONS.html#Stopbits">
+			<AREA SHAPE = "rect" COORDS="416,90,561,202"  HREF=".\RS232_OPTIONS.html#Irda">
+		</MAP>
+		<H4>Important:</H4> The RS232 settings must all match the settings on the handheld terminal that is being polled by
+			the NetO32 application. When using a communication cradle, also the cradle must be configure on either the
+			same baud rate setting or on auto baud rate.
+	</TD>
+	</TR>
+	<TR class=setup>
+		<TD class=item>Options</TD>
+		<TD class=itemdescr>
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH class=item><A NAME="comport"></A>COM port</TH>
+				</TR>
+				<TR>
+					<TD>
+						Shows all available serial ports that are available on the PC. It also shows serial ports that
+						are in use by other applications. Select in the combo box the serial port to which the handheld terminal(s)
+						is/are connected.
+					</TD>
+				</TR>
+			</TABLE>
+
+			<BR>
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH class=item><A NAME="Baudrate"></A>Baud rate</TH>
+				</TR>
+				<TR>
+					<TD>
+						Sets the speed of the selected serial port. The speed selected must match the baud rate that is
+						configured on the terminal. The default value for the speed is "19200" baud, however most
+						application will use a different baud.
+					</TD>
+				</TR>
+			</TABLE>
+
+			<BR>
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH class=item><A NAME="Parity"></A>Parity</TH>
+				</TR>
+				<TR>
+					<TD>
+						Parity is a simple type of error checking provided by the basic RS232 protocol. The default value for this option is "No parity".
+					</TD>
+				</TR>
+			</TABLE>
+
+			<BR>
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH class=item><A NAME="ByteSize"></A>ByteSize</TH>
+				</TR>
+				<TR>
+					<TD>
+						The number of bits in a transmission byte. The default value is "8".
+					</TD>
+				</TR>
+			</TABLE>
+
+			<BR>
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH class=item><A NAME="StopBits"></A>Stop bit(s)</TH>
+				</TR>
+				<TR>
+					<TD>
+						The number of stop bits is a RS232 standard protocol setting. The default value is "1".
+					</TD>
+				</TR>
+			</TABLE>
+
+			<BR>
+
+			<TABLE class=OPTIONS width=100%>
+				<TR>
+					<TH class=item><A NAME="Irda"></A>IrDA Device</TH>
+				</TR>
+				<TR>
+					<TD>
+						Three standard IrDA devices are supported, and one Opticon specific.
+						If one of these IrDA devices is selected it is possible to connect an IrDA device to the serial port.
+						NetO32 will then configure the connected IrDA device. The default value is "LiteLink compatible", which is the
+						protocol used by most Opticon IrDA cradles to automatically configure the baud rate.
+						This protocl however doesn't effect devices without IrDA.
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+
+</TABLE>
+</BODY>
+</HTML>

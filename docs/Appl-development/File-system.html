@@ -1,0 +1,24 @@
+<link rel="stylesheet" type="text/css" href="../global.css">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" Content="text/html; charset=Windows-1252">
+<TITLE>File system</TITLE>
+</HEAD>
+
+<BODY>
+<H1>File system</H1>
+
+<H3>General</H3>
+
+<P>
+<UL>
+    <LI>The file system of the OPN-2500 & OPN-6000 is a 2mB FLASH drive</LI>    
+    <LI>The file system has a flat directory structure, so no folders are supported</LI>
+    <LI>The file names are in MS-DOS 8.3 format, that is from 1 to 8 characters for the name, and 3 characters or less for the extension</LI>
+    <LI>The maximum number of files that can exist in the file system is 50. The maximum number of files that can be open at the same time is 17, plus stdin, stdout and stderr.</LI>
+    <LI>The file system is based on <a href="http://elm-chan.org/fsw/ff/FileSystem">ChaN's FatFs Generic file system</a>, which uses functions like `f_open` and `f_close` (from `ff.h` and `FileSystem.h`)</LI>
+    <LI>For backwards compatibility: `stdio.h` functions like `fopen` and `fclose` are supported using a wrapper</LI>
+    <LI>Low-level I/O functions: `open`, `close`, `read`, `write` are no longer supported.</LI>
+</UL>
+</BODY>
+
