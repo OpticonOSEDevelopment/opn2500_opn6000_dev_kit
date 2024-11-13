@@ -1,6 +1,5 @@
-# OPN2500_OPN6000_DEV_KIT
-
-This is the official SDK from Opticon Sensors Europe BV for the Companion Scanners OPN-2500 and OPN-6000
+# OPN2500 & OPN6000 C-Development kit
+This is the official SDK from Opticon Sensors Europe BV for the Companion Scanners OPN-2500 and OPN-6000 to create and customize applications and load them onto the OPN-2500 and OPN-6000
 
 The github pages of this SDK can be found here: [opn2500_opn6000_dev_kit](https://opticonosedevelopment.github.io/opn2500_opn6000_dev_kit/)
 
