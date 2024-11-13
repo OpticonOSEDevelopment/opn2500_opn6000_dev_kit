@@ -140,7 +140,7 @@
         <file file_name="../../../../../SDK/softdevice/common/nrf_sections.c" />
       </folder>
       <folder Name="Source">
-        <file file_name="../../../../../source/version.c" />
+        <file file_name="../../../../../SDK/source/version.c" />
       </folder>
     </folder>
   </project>
