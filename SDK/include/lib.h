@@ -1190,9 +1190,11 @@ void SetBltAuthMode(int bt_options);
 #define BT_AUTH_ENABLE          0x02
 
 // Defines for OseComm()
-#define CONNECTION_ABORT		0x0100
+#define CONNECTION_ABORT		0x0100		// Physical connection removed
 #define CRADLE_ABORT			CONNECTION_ABORT
 #define ANY_KEYS_ABORT			0x0200
+#define CONNECTION_CLOSE		0x0400		// Connection closed
+
 
 // Return values for OseComm()
 #define COMM_OK					(0)		// Communication OK
