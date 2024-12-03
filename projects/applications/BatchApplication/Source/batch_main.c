@@ -700,16 +700,35 @@ int ExportBarcode(struct barcode *code)
 int ProcessBarcode(struct barcode *code)
 {
 	int result = 0;
-
+#ifndef HAS_2D_ENGINE
+	int aiming = -1;
+#endif
 	if (code->id == MENU_CODE)	// Check for standard Code-39 menu labels (from the OSE Universal menu book)
 	{
 		while (result != EXITING_MENU_MODE && result != ERROR)
 		{
+#ifndef HAS_2D_ENGINE
+			if(TriggerPressed() && aiming == true)
+			{
+				aiming = false;
+				AimingOff();
+				ScannerPower(ON, -1);
+			}
+			else if(!TriggerPressed() && aiming == false)
+			{
+				aiming = true;
+				ScannerPower(OFF, 0);
+				AimingOn();				
+			}
+#endif
 			if (result == 0 || ReadBarcode(code) == OK)
 			{
 				switch ((result = ExecuteMenuLabel(code)))
 				{
 					case ENTERING_MENU_MODE:
+#ifndef HAS_2D_ENGINE
+						aiming = !TriggerPressed();
+#endif
 						Sound(TSTANDARD, VHIGH, SHIGH, SMEDIUM, SHIGH, 0);
 						break;
 

@@ -22,7 +22,6 @@
 // Includes
 #include <stdlib.h>
 #include <string.h>
-#include <Ctype.h>
 #include "lib.h"
 #include "Debug.h"
 #include "memorize.h"
@@ -87,6 +86,9 @@ static int last_key_pressed = TRIGGER_KEY; 	// Used to determine whether a barco
 // but only if the menu-option default is known by the application, so i.e. "U2" won't trigger this function
 // in this cause we have to perform a default in main() by checking this variable
 static bool set_to_known_default = FALSE;
+
+// When Bluetooth / Memorizing action labels or commands are scanned or received, this variable set the action that needs to be executed
+static unsigned char execute_menu_label = 0xFF;
 
 //
 // States of the connection state machine of this application
@@ -180,7 +182,6 @@ static void StopAutoDisconnectTime(void);
 static int ProcessBarcodeInMemory(struct barcode *pCode);
 #ifdef HAS_BATTERY
 static void CheckForLowBattery(void);
-static void ReportBatteryLevel(void);
 #endif
 static void ApplicationStoreSettings(void);
 static void EnableBuzzer(void);
@@ -188,6 +189,10 @@ static void DisableBuzzer(void);
 static void RS232_TriggerOn(void);
 static void DeleteKeyEnabled(void);
 static void DeleteKeyDisabled(void);
+static void DisconnectAfterTransmissionEnabled(void);
+static void DisconnectAfterTransmissionDisabled(void);
+static int  BleInterfaceToComport(uint8_t ble_interface, bool no_white_list); 
+static int  UsbModeToComport(uint8_t usb_interface); 
 
 #ifndef HAS_2D_ENGINE
 static void SetReadMode(int readmode, int readtime);
@@ -260,7 +265,8 @@ const OPTION blt_menu_option_table[] =
     { "BPL",(void*)&(app.options),						BUTTON_TO_SEND_MASK,                    BUTTON_TO_SEND			    },		//	Disable advanced send mode	(auto clear after transmission)
 	{ "BQB",(void*)&(app.options),						BUTTON_TO_SEND_MASK,                    SEND_AFTER_3SECONDS  		},
 	{ "BQE",(void*)&(app.options),						BUTTON_TO_SEND_MASK,                    SEND_MANUALLY		  		},
-	{ "BATT",(void*)ReportBatteryLevel,					0xFF,									0xFF						},
+	{ "BQI",(void*)DisconnectAfterTransmissionEnabled,	0xFF,				                    0xFF						},
+	{ "BQJ",(void*)DisconnectAfterTransmissionDisabled,	0xFF,				                    0xFF						},
 	{ "TSCD",(void*)&(app.blt_connect_options),			0x00,									DISABLE_TRIGGER_CONNECT		},
 	{ "TSCE",(void*)&(app.blt_connect_options),			DISABLE_TRIGGER_CONNECT,				0x00                        },
 	{ "DTMD",(void*)&(app.memorizing),					MEMORIZING_ENABLED,						0x00		                },
@@ -287,18 +293,32 @@ const OPTION blt_menu_option_table[] =
 	{ "PD07",(void*)&(app.trigger_to_disconnect_time),	0xFF,                                   0x07                        },
 	{ "PD08",(void*)&(app.trigger_to_disconnect_time),	0xFF,                                   0x08                        },
 	{ "PD09",(void*)&(app.trigger_to_disconnect_time),	0xFF,                                   0x09                        },
-	{ "UNPR",(void*)BltUnpair,							0xFF,                                   0xFF                        },
 	{ "BQN", (void*)&(app.options),						0x00,                                   ENABLE_KEYBOARD_TOGGLE|ENABLE_WAKEUP_KEY },
 	{ "BQF", (void*)&(app.options),						ENABLE_KEYBOARD_TOGGLE|ENABLE_WAKEUP_KEY,0x00                       },
 	{ "DELE",(void*)DeleteKeyEnabled,					0xFF,                                   0xFF                        },
 	{ "DELD",(void*)DeleteKeyDisabled,					0xFF,                                   0xFF                        },
 
+	{ "DSPD",(void*)&(app.options),						USB_CONNECT_BEEP|BLE_CONNECT_BEEP,      0x00					    },
+	{ "DSPE",(void*)&(app.options),						0x00,                                   USB_CONNECT_BEEP|BLE_CONNECT_BEEP },
+
 	// Copied from batch application
 	{ "+QB",(void*)DeleteKeyDisabled,					0xFF,                                   0xFF                        },
 	{ "+QC",(void*)DeleteKeyEnabled,					0xFF,                                   0xFF                        },
+	
+	// Bluetooth and memorizing control barcodes (are not stored in memory)
+	{ "DISC",(void*)&execute_menu_label,				0xFF,									DISCONNECT_LABEL,			TRUE	},
+	{ "CONN",(void*)&execute_menu_label,				0xFF,									CONNECT_LABEL,				TRUE	},
+	{ "DSCO",(void*)&execute_menu_label,				0xFF,									CONNECTABLE_LABEL,			TRUE	},
+	{ "UNPR",(void*)BltUnpair,				    		0xFF,                                   0xFF,						TRUE	},
+	{ "MCLR",(void*)&execute_menu_label,				0xFF,                                   MEMORIZE_CLEAR_LABEL,		TRUE	},
+	{ "MSTR",(void*)&execute_menu_label,				0xFF,                                   MEMORIZE_START_LABEL,		TRUE	},
+	{ "MSTP",(void*)&execute_menu_label,				0xFF,                                   MEMORIZE_STOP_LABEL,		TRUE	},
+	{ "MXMT",(void*)&execute_menu_label,				0xFF,                                   MEMORIZE_XMIT_LABEL_CLR,	TRUE	},
+	{ "MXTO",(void*)&execute_menu_label,				0xFF,                                   MEMORIZE_XMIT_LABEL,		TRUE	},
+	{ "MDLD",(void*)&execute_menu_label,				0xFF,                                   MEMORIZE_XMIT_LABEL,		TRUE	},
 
-    { "Z2", ApplicationStoreSettings,                   0xFF,                                   0xFF                        },
-    { "Z",  RS232_TriggerOn,							0xFF,									0xFF                         },
+    { "Z2", ApplicationStoreSettings,                   0xFF,                                   0xFF,						TRUE    },
+    { "Z",  RS232_TriggerOn,							0xFF,									0xFF,						TRUE    },
 };
 
 #define BLUETOOTH_MAX_OPTIONS sizeof(blt_menu_option_table)/sizeof(OPTION)
@@ -389,6 +409,21 @@ void DeleteKeyDisabled(void)
 	ClearKeyAsTrigger(app.del_enable);
 }
 
+void DisconnectAfterTransmissionEnabled(void)
+{
+	// These options don't work well  with the Auto Disconnect After Transmission Enabled
+	app.blt_connect_options &= ~AUTO_CONNECT_AFTER_DECODE;
+	app.blt_connect_options |= DISABLE_TRIGGER_CONNECT;
+	//
+	app.blt_connect_options |= AUTO_DISCONNECT_AFTER_TRANSMIT;
+
+}
+
+void DisconnectAfterTransmissionDisabled(void)
+{
+	app.blt_connect_options &= ~AUTO_DISCONNECT_AFTER_TRANSMIT;
+}
+
 //------------------------------------------------------------------
 //  Application_Default
 //  ============================
@@ -400,11 +435,11 @@ void Application_Default(uint8_t ble_interface, uint8_t usb_mode)
 										// but only if the menu-option default is known by the application, so i.e. "U2" won't trigger this function
 										// in this cause we have to perform a default in main()
 
-	if(usb_mode == USB_MODE_NONE)
+	if(usb_mode == USB_MODE_NONE || ble_interface == BLT_OPC_DEVICE)
 	{
 		app.trigger_to_connect_time = TRIGGER_TO_CONNECT_TIME;			// Trigger to connect time (3 seconds)
 		app.trigger_to_disconnect_time = TRIGGER_TO_DISCONNECT_TIME;	// Trigger to disconnect time (3 seconds)
-		app.blt_connect_options = 0;								// Auto reconnect with trigger: Enabled
+		app.blt_connect_options = (ble_interface == BLT_OPC_DEVICE) ? DISABLE_TRIGGER_CONNECT : 0;		// Auto reconnect with trigger: Enable (EBLE) / Disabled (BQO)
 	}
 	else
 	{
@@ -451,7 +486,7 @@ void Application_Default(uint8_t ble_interface, uint8_t usb_mode)
 	SystemSetting("BL+");			// C128 alternate decode alg.
 #endif
 
-	app.blt_interface = ble_interface;		// Select Bluetooth interface
+	app.ble_interface = ble_interface;		// Select Bluetooth interface
 	app.usb_mode = usb_mode;				// Set USB-mode
 }
 
@@ -530,9 +565,9 @@ void Usb_CDC_Default(void)
 void Usb_OptiConnect_Default(void)
 {
 	memset( &app, 0, sizeof(app) );
-	SystemSetting("BQO");			// Call USB-CDC default function
+	SystemSetting("BQO");			// Call OptiConnect (USB-CDC) default function
 	
-	Application_Default(BLT_BLE_DEVICE, USB_MODE_CDC_OPC);		// Enable USB-CDC transmission
+	Application_Default(BLT_OPC_DEVICE, USB_MODE_CDC_OPC);		// Enable USB-CDC transmission
 }
 
 void EnableBuzzer(void)
@@ -546,20 +581,6 @@ void DisableBuzzer(void)
 	app.buzzer_options &= ~BUZZER_ENABLED;
 	SystemSetting("W0");
 }
-
-//------------------------------------------------------------------
-//  ReportBatteryLevel  ( "BATT" comand , BLE battery service is handled by the OS )
-//  ============================
-//  Put the battery percentage remaining over the open com port
-//------------------------------------------------------------------
-void ReportBatteryLevel(void)
-{
-	static char batt_level[6] = {'\0'};
-	int percentage = GetBatteryLevel();
-	sprintf(batt_level, "%d%%", percentage );
-	PutString(batt_level);
-}
-
 
 void ApplicationStoreSettings(void)
 {
@@ -716,27 +737,30 @@ void ConnectionIndicator(int event_type)
 	switch(event_type)
 	{
 		case STATE_CONNECTED:
+			GoodReadLed(BLUE, TVLONG);
+
 			if(!(app.options & BLE_CONNECT_BEEP))
 				return;
 			
 			Sound(TVLONG, VSYSTEM, SHIGH, 0);
-			GoodReadLed(BLUE, TVLONG);
 			break;
 
 		case STATE_CONNECTED_USB:
+			GoodReadLed(GREEN, TVLONG);
+
 			if(!(app.options & USB_CONNECT_BEEP))
 				return;
 
 			Sound(TVLONG, VSYSTEM, SHIGH, 0);
-			GoodReadLed(GREEN, TVLONG);
 			break;
 
 		case STATE_DISCONNECTED:
+			GoodReadLed(BLUE_FLASH, 0);
+
 			if(!(app.options & BLE_CONNECT_BEEP))
 				return;
 
 			Sound(TVLONG, VSYSTEM, SLOW, 0);
-			GoodReadLed(BLUE_FLASH, 0);
 			break;
 
 		case STATE_DISCONNECTED_USB:
@@ -744,7 +768,6 @@ void ConnectionIndicator(int event_type)
 				return;
 
 			Sound(TVLONG, VSYSTEM, SLOW, 0);
-			GoodReadLed(BLUE_FLASH, 0);
 			break;
 
 		case STATE_MANUAL_DISCONNECT:
@@ -880,53 +903,65 @@ void StopAutoDisconnectTime(void)
 int ProcessBarcode(struct barcode *code)
 {
 	int result = 0;
-
+#ifndef HAS_2D_ENGINE
+	int aiming = -1;
+#endif
 	if( code->id == MENU_CODE || code->id == MENU_CODE_PDF || code->id == MENU_CODE_C128
 		|| code->id == MENU_CODE_QR || code->id == MENU_CODE_AZTEC )	// If a menu label -> check for Bluetooth address, pin and other configuration labels
 	{
-		if(strncmp(code->text, "+-DISC-+", 8) == 0)
-			return DISCONNECT_LABEL;
-
-		if(strncmp(code->text, "+-CONN-+", 8) == 0)
-			return CONNECT_LABEL;
-
-		if(strncmp(code->text, "+-DSCO-+", 8) == 0 && !BltIsConnected_App())
-			return CONNECTABLE_LABEL;
+		if(strncmp(code->text, "+-", 2) == 0 && strncmp(code->text+code->length-2, "-+", 2) == 0)
+		{
+			if(code->length == 8)
+			{ 
+				char tmp[8];
+				sprintf(tmp, "]%-4.4s", code->text+2);
 			
-		if(strncmp(code->text, "+-UNPR-+", 8) == 0)
-			return UNPAIR_LABEL;
-
-		if(strncmp(code->text, "+-MCLR-+", 8) == 0)
-			return MEMORIZE_CLEAR_LABEL;
-
-		if(strncmp(code->text, "+-MSTR-+", 8) == 0)
-			return MEMORIZE_START_LABEL;
-
-		if(strncmp(code->text, "+-MSTP-+", 8) == 0)
-			return MEMORIZE_STOP_LABEL;
-
-		if(strncmp(code->text, "+-MXMT-+", 8) == 0)
-			return MEMORIZE_XMIT_LABEL_CLR;
-
-		if(strncmp(code->text, "+-MXTO-+", 8) == 0 || strncmp(code->text, "+-MDLD-+", 8) == 0)
-			return MEMORIZE_XMIT_LABEL;
-
-		if( (strncmp(code->text, "+-IOSON-+", 9) == 0)  || (strncmp(code->text, "+-IOSOFF-+", 10) == 0) )
-			return CONFIG_IPHONE_LABEL;
-
-		if( (strncmp(code->text, "+-BTLNS-+", 8)) == 0  || (strncmp(code->text, "+-BTLNA-+", 8) == 0) )
-			return CONFIG_BT_LOCAL_NAME;
+				if(SystemSetting(tmp) != OK)
+					BadMenuBeep();
+				else
+					GoodMenuBeep(code->id);
+			}
+			else if( strncmp(code->text+2, "IOSON", 5) == 0  || strncmp(code->text+2, "IOSOFF", 6) == 0 )
+			{
+				execute_menu_label = CONFIG_IPHONE_LABEL;
+				GoodMenuBeep(code->id);
+			}
+			/*else if( strncmp(code->text+2, "BTLNS", 5) == 0  || strncmp(code->text+2, "BTLNA", 5) == 0 )
+			{
+				execute_menu_label = CONFIG_BT_LOCAL_NAME;
+				GoodMenuBeep(code->id);
+			}*/
+			
+			return MENU_LABEL;
+		}
 	}
 
 	if(code->id == MENU_CODE)		// Check for standard Code-39 menu labels (from the OSE Universal menu book)
 	{
 		while(result != EXITING_MENU_MODE && result != ERROR)
 		{
+#ifndef HAS_2D_ENGINE
+			if(TriggerPressed() && aiming == true)
+			{
+				aiming = false;
+				AimingOff();
+				ScannerPower(ON, -1);
+			}
+			else if(!TriggerPressed() && aiming == false)
+			{
+				aiming = true;
+				ScannerPower(OFF, 0);
+				AimingOn();				
+			}
+#endif
 			if(result == 0 || ReadBarcode(code) == OK)
 			{
 				switch( (result=ExecuteMenuLabel(code)) )
 				{
 					case ENTERING_MENU_MODE:
+#ifndef HAS_2D_ENGINE
+						aiming = !TriggerPressed();
+#endif
 						GoodMenuBeep(code->id);
 						break;
 
@@ -1023,10 +1058,10 @@ void ProcessMenuLabels(int res)
 			ConnectionIndicator(STATE_CONNECTABLE);
 			UpdateAutoPowerDown(STATE_CONNECTABLE);		// Update AutoPowerDown, so the device doesn't fall asleep while connecting
 
-			if( app.blt_interface & BLT_BLE_DEVICE )
-				ble_port = (res == CONNECTABLE_LABEL) ? COM14 : COM15;
-			else // if( app.blt_interface == BLT_HID_DEVICE )
-				ble_port = (res == CONNECTABLE_LABEL) ? COM12 : COM13;
+			if(connection_state == STATE_CONNECTABLE || connection_state == STATE_RECONNECTABLE)
+				break;
+
+			ble_port = BleInterfaceToComport(app.ble_interface, (res == CONNECTABLE_LABEL) );
 
 			if(ComOpen(ble_port) == OK)		// Make connectabe
 			{
@@ -1055,9 +1090,9 @@ void ProcessMenuLabels(int res)
 			ConnectionIndicator(STATE_CONNECTABLE);
 			UpdateAutoPowerDown(STATE_CONNECTABLE);		// Update AutoPowerDown, so the device doesn't fall asleep while connecting
 
-			ble_port = (app.blt_interface & BLT_BLE_DEVICE) ? COM14 : COM12;
-
-			if(ComOpen(ble_port) == OK)		// Make connectabe
+			ble_port = BleInterfaceToComport(app.ble_interface, true);
+			
+			if(ComOpen(ble_port) == OK)		// Make connectabe / no white list
 			{
 				com_opened = ble_port;
 				connection_state = STATE_CONNECTABLE;
@@ -1219,6 +1254,32 @@ void DoGoodRead( int quantity, uint8_t memorizing )
 	}
 }
 
+int BleInterfaceToComport(uint8_t ble_interface, bool no_white_list)
+{
+	switch(ble_interface)
+	{
+		case BLT_OPC_DEVICE:		return (no_white_list) ? COM16 : COM17;
+		case BLT_HID_DEVICE:		return (no_white_list) ? COM12 : COM13;
+		//case BLT_SPP_DEVICE:
+		//case BLT_BLE_DEVICE:
+		default:					return (no_white_list) ? COM14 : COM15;
+	}
+}
+
+int UsbModeToComport(uint8_t usb_interface)
+{
+	switch(usb_interface)
+	{
+		case USB_MODE_CDC:		return COM8;
+		case USB_MODE_CDC_OPC:	return COM7;
+		case USB_MODE_HID:		return COM10;
+		case USB_MODE_VCP:	
+		// case USB_MODE_NONE:
+		default:				return COM9;
+
+	}
+}
+
 
 //------------------------------------------------------------------
 //  main
@@ -1300,16 +1361,16 @@ void app_main(void)
         Sound(TSTANDARD, VHIGH, SLOW, SMEDIUM, SHIGH, SLOW, SMEDIUM, SHIGH, 0);	// Start-up beep
     }
 
-	if(app.usb_mode == 0 && !ClearKeyPressed()) // Don't become connectable with clear key pressed, because people want to make it manually reconnectable
+	// Don't become connectable with:
+	// clear key pressed, because people want to make it manually reconnectable
+	// when trigger to connect is disabled
+	if(!ClearKeyPressed() && !(app.blt_connect_options & DISABLE_TRIGGER_CONNECT))
 	{
 		connection_state = STATE_RECONNECTABLE;
 		connection_lost = FALSE;
 
-		if(app.blt_interface & BLT_BLE_DEVICE)
-			com_opened = COM15;
-		else if(app.blt_interface & BLT_HID_DEVICE)
-			com_opened = COM13;
-
+		com_opened = BleInterfaceToComport(app.ble_interface, false);
+		
 		UpdateAutoPowerDown(STATE_RECONNECTABLE);	// Don't power off while waiting for a connection
 				
 		if(ComOpen(com_opened) == OK)		// Make device connectable
@@ -1371,11 +1432,7 @@ void app_main(void)
 #endif
 			reset_read_mode = TRUE;
 	
-			if(res != NORMAL_BARCODE)
-			{
-				ProcessMenuLabels(res);
-			}
-			else
+			if(res == NORMAL_BARCODE)
 			{
 				barcode_read = TRUE;
 			}
@@ -1384,17 +1441,28 @@ void app_main(void)
 #ifdef LOG_STATE
 		LogConnectionState();
 #endif
+
+		if(execute_menu_label != 0xFF)
+		{
+			ProcessMenuLabels(execute_menu_label);
+
+			execute_menu_label = 0xFF;
+		}
 		//
 		// Transmission state machine
 		//
 		TransmitStateMachine(barcode_read);
+		
 
 		if ((ch = KeyOut()) > 0)
 			last_key_pressed = ch;// Used to determine whether a barcode was read using the clear key or trigger key
 		
 #if !defined(HAS_2D_ENGINE) && !defined(HAS_NO_SCANNER)
 		//
-		// Legacy addition due to an old bug in the OPN2005. Most like not need anymore
+		// The inclusion of the read mode code from the OPN2002 Bluetooth Demo is due to a bug reported by a 
+		// customer where sometimes the laser of the OPN2005 would not come on after pairing and connecting with iOS devices.
+		// The bug was random, and nearly impossible to isolate or reproduce.  To make sure the scanner always
+		// comes back on, bringing this code back into this demo is needed, however hacky and unfortunate.
 		//
 		if (TriggerPressed() && !IsScannerOff())
 			SetReadMode(app.read_mode, app.read_time);
@@ -1431,17 +1499,9 @@ void app_main(void)
 		if(com_opened == COM8 || com_opened == COM7)
 			SetDTR(ON);	// Do this here and not only once in the beginning to work around an issue in OS
 
-		if(com_opened == -1)		// Makes sure that barcodes can always can be transmitted by USB or Cradle if there's no Bluetooth connection
+		if(com_opened == -1)		// Makes sure that barcodes can be transmitted by USB when there's no Bluetooth connection
 		{
-			switch(app.usb_mode)
-			{
-				case USB_MODE_CDC:		com_opened = COM8; break;
-				case USB_MODE_CDC_OPC:	com_opened = COM7; break;
-				case USB_MODE_HID:		com_opened = COM10; break;
-				case USB_MODE_VCP:	
-				default:				com_opened = COM9; break;
-
-			}
+			com_opened = UsbModeToComport(app.usb_mode);
 
 			ComOpen( com_opened );	
 		}
@@ -1575,6 +1635,9 @@ void BluetoothStateMachine(bool barcode_read)
 			// If USB-VCP or USB-CDC mode is enabled and UsbIsConnected -> go to connected state
 			if(app.usb_mode != USB_MODE_NONE && UsbIsConnected())				// If Connection established -> go to connected state
 			{
+				if(app.usb_mode != USB_MODE_CDC_OPC)	
+					ComClose(COM14); // While connected to OptiConnect (USB), make sure you're not connectable by BLE
+
 				connection_state = STATE_CONNECTED_USB;
 				connection_lost = FALSE;
 				ResetAutoDisconnectTime(&disc_time);
@@ -1673,7 +1736,7 @@ void BluetoothStateMachine(bool barcode_read)
 				//
 				// Wake up iPhones/iPads on trigger press (if enabled)
 				//
-				if( app.blt_interface == BLT_HID_DEVICE )
+				if( app.ble_interface == BLT_HID_DEVICE )
 				{
 					if( (app.options & ENABLE_WAKEUP_KEY) && TriggerPressed() )
 					{
@@ -1922,6 +1985,12 @@ void TransmitStateMachine(uint8_t new_barcode)
 				//DeleteBarcodeFromMemory should have already taken care of this, but it won't hurt to do it again 
 				if (xmit_state_clr)
 					DeleteStorage();
+
+				if(app.blt_connect_options & AUTO_DISCONNECT_AFTER_TRANSMIT)
+				{
+					Delay(50); // Wait for okbeep
+					SystemSetting("]DISC");	//Disconnect
+				}
 			}
 			else
 			{
@@ -1944,7 +2013,13 @@ void TransmitStateMachine(uint8_t new_barcode)
 				switch(app.options & BUTTON_TO_SEND_MASK)
 				{
 					case BUTTON_TO_SEND:
-						xmit = TriggerPressed();
+						if(timer[TRANSMIT_ERROR_WAIT] == TIMER_DISABLED)
+						{
+							timer[TRANSMIT_ERROR_WAIT] = XMIT_CONNECT_WAIT_TIME;
+							break;
+						}
+						
+						xmit = (timer[TRANSMIT_ERROR_WAIT] == 0 && TriggerPressed());
 						xmit_state_clr = true;
 						break;
 
@@ -2014,7 +2089,7 @@ void TransmitStateMachine(uint8_t new_barcode)
 				if(xmit)
 				{
 					Sound(TSTANDARD, VSYSTEM, SHIGH, NULL);
-					/*if( app.blt_interface == BLT_HID_DEVICE && (app.options & ENABLE_WAKEUP_KEY) )
+					/*if( app.ble_interface == BLT_HID_DEVICE && (app.options & ENABLE_WAKEUP_KEY) )
 					{
 						PutnString("", 0);							// Force a wake-up
 						Delay(25);
@@ -2131,6 +2206,10 @@ void CheckForLowBattery(void)
 
 void TriggerToConnectHandler(bool trigger_enabled, bool barcode_read)
 {
+	// Only allow Trigger-to-connect, when not connectred to OptiConnect by USB (BQO) 
+	if(connection_state == STATE_CONNECTED_USB && app.usb_mode == USB_MODE_CDC_OPC)
+		return; 	
+
 	if( (ClearKeyPressed() && !TriggerPressed()) || (trigger_enabled && TriggerPressed() && !ClearKeyPressed()) || ((app.blt_connect_options & AUTO_CONNECT_AFTER_DECODE) && barcode_read) )		// Check trigger key for 'Trigger to connect' (as master)
 	{
 		if(ClearKeyPressed() && timer[MAKE_CONNECTABLE] == TIMER_DISABLED && app.trigger_to_connect_time != 0)
@@ -2143,10 +2222,7 @@ void TriggerToConnectHandler(bool trigger_enabled, bool barcode_read)
 
 			connection_state = ClearKeyPressed() ? STATE_CONNECTABLE : STATE_RECONNECTABLE;
 
-			if(app.blt_interface & BLT_BLE_DEVICE)
-				com_opened = (connection_state == STATE_CONNECTABLE) ? COM14 : COM15;
-			else if(app.blt_interface & BLT_HID_DEVICE)
-				com_opened = (connection_state == STATE_CONNECTABLE) ? COM12 : COM13;
+			com_opened = BleInterfaceToComport(app.ble_interface, (connection_state == STATE_CONNECTABLE) );
 
 			ConnectionIndicator(connection_state);
 			UpdateAutoPowerDown(connection_state);	// Don't power off while waiting for a connection

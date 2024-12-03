@@ -85,14 +85,16 @@
 
 #define TOGGLE_KEYBOARD         0xA6        // Toggle iPhone/iPad onscreen keyboard
 
-// Defines for app.blt_interface
+// Defines for app.ble_interface
 #define BLT_HID_DEVICE					0x01
 #define BLT_BLE_DEVICE					0x02
 #define BLT_SPP_DEVICE					0x06		// Deliberately added the BLT_BLE_DEVICE flag
+#define BLT_OPC_DEVICE					0x0A		// Deliberately added the BLT_BLE_DEVICE flag
 
 // Defines for app.blt_connect_options
 #define DISABLE_TRIGGER_CONNECT			0x01		// If set, the scanner will only configure the Bluetooth address when reading a Bluetooth address label (and won't connect)
 #define AUTO_CONNECT_AFTER_DECODE		0x02
+#define AUTO_DISCONNECT_AFTER_TRANSMIT	0x04
 
 // Defines for app.memorizing
 #define MEMORIZING_ENABLED				0x01
@@ -143,7 +145,7 @@
 //
 typedef struct
 {
-	unsigned char blt_interface;							// Indicates the currently selected interface (HID or VCP)
+	unsigned char ble_interface;							// Indicates the currently selected interface (HID or VCP)
 	unsigned char trigger_to_connect_time;					// Trigger to connect time (stored in seconds, 0 = disabled)
 	unsigned char trigger_to_disconnect_time;				// Trigger to disconnect time (stored in seconds, 0 = disabled)
 	unsigned char blt_connect_options;						// Bluetooth connect options (Trigger to connect; Auto connect)
