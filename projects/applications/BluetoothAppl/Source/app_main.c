@@ -46,14 +46,14 @@
 #define CONFIG_BT_LOCAL_NAME	12		// A +-BTLNS-+
 
 // Defines used for the various timers used by this application
-#define MAX_TIMERS				6
+#define MAX_TIMERS				7
 #define MAKE_CONNECTABLE		0		// Timer used for 'Trigger to make connectable' time
 #define CONNECTABLE_TIME_OUT	1		// Timer used for time-out mechanism when connectable
 #define DISCONNECT				2		// Timer used for 'Trigger to disconnect' time
 #define TRANSMIT_ERROR_WAIT		3		// Timer used to wait a certain time after a failed transmission before trying to retransmit
 #define BATT_LOW				4		// Timer used to signal when the battery is low
 #define LOCATE_HOST_TIMER		5		// Timer used to detect locate host tripple trigger press with function key held
-
+#define AUTO_DISCONNECT_TIMER	6		// Timer used to detect auto disconnect timer passed or not
 
 #define LOCATE_HOST_TIMER_VALUE			  25
 
@@ -167,6 +167,7 @@ static int ProcessBarcode(struct barcode *code);
 static void ProcessMenuLabels(int res);
 static int ShutdownCallback(void);
 static void Application_Default(uint8_t ble_interface, uint8_t usb_mode);
+static void Bluetooth_SPP_Default(void);
 static void Bluetooth_HID_Default(void);
 static void Bluetooth_BLE_Default(void);
 static void Usb_HID_Default(void);
@@ -176,8 +177,8 @@ static void Usb_OptiConnect_Default(void);
 static int BltIsConnected_App(void);
 static int UsbIsConnected_App(void);
 static int IsConnected_App(void);
-static int AutoDisconnectTimePassed(struct time *dt);
-static void ResetAutoDisconnectTime(struct time *dt);
+static int AutoDisconnectTimePassed(void);
+static void ResetAutoDisconnectTime(void);
 static void StopAutoDisconnectTime(void);
 static int ProcessBarcodeInMemory(struct barcode *pCode);
 #ifdef HAS_BATTERY
@@ -237,7 +238,7 @@ const OPTION blt_menu_option_table[] =
     { "Y9",(void*)&(app.read_time),                     0xFF,                                   90							},
     { "YM",(void*)&(app.read_time),                     0xFF,                                   READ_TIME_INDEFINITELY		},
 #endif
-    { "SO",(void*)Bluetooth_BLE_Default,				0xFF,                                   0xFF                        },
+    { "SO",(void*)Bluetooth_SPP_Default,				0xFF,                                   0xFF                        },
 	{ "GC",(void*)&(app.buzzer_options),				0x00,                                   STARTUP_BUZZER              },
 	{ "GD",(void*)&(app.buzzer_options),				STARTUP_BUZZER,                         0x00                        },
    	{ "VY",(void*)&(app.buzzer_options),      			0x00, 									BUZZER_BEFORE_TRANSMIT      },
@@ -488,6 +489,18 @@ void Application_Default(uint8_t ble_interface, uint8_t usb_mode)
 
 	app.ble_interface = ble_interface;		// Select Bluetooth interface
 	app.usb_mode = usb_mode;				// Set USB-mode
+}
+
+//------------------------------------------------------------------
+//  Bluetooth_SPP_Default
+//  ============================
+//  Reset all Bluetooth settings to default
+//------------------------------------------------------------------
+void Bluetooth_SPP_Default(void)
+{
+	memset( &app, 0, sizeof(app) );
+	SystemSetting("SO");			// Call Bluetooth BLE (SPP) default function
+	Application_Default(BLT_SPP_DEVICE, USB_MODE_NONE);
 }
 
 //------------------------------------------------------------------
@@ -819,39 +832,15 @@ int BluetoothTimers_Heartbeat( void )
 //  ============================
 //  Function that checks if the auto disconnect time has passed
 //------------------------------------------------------------------
-int AutoDisconnectTimePassed(struct time *dt)
+int AutoDisconnectTimePassed(void)
 {
-	struct time now = {0};
-
-	if(app.auto_disconnect_time == 0)		// If the auto disconnect time is disabled it can't pass either
+	if(timer[AUTO_DISCONNECT_TIMER] == TIMER_DISABLED)		// If the auto disconnect time is disabled it can't pass either
 		return FALSE;
 
-	if(TriggerPressed())					// If trigger is pressed, the auto disconnect time can't pass because the scanner is clearly not idle
+	if(timer[AUTO_DISCONNECT_TIMER] != 0)
 		return FALSE;
 
-	GetTime(&now);							// Get current time, then compare the current time with the auto disconnect time
-
-	if(dt->ti_hour + 12 < now.ti_hour)		// Check if the disconnect time is on the next day, causing the disconnect hour to be much lower
-		return FALSE;
-	
-	if(now.ti_hour + 12 < dt->ti_hour)		// Check if the current day has passed, causing the current hour to be much lower
-		now.ti_hour += 24;
-		
-	if(now.ti_hour < dt->ti_hour)			// Time not passed yet
-		return FALSE;
-
-	if(now.ti_hour == dt->ti_hour)
-	{
-		if(now.ti_min < dt->ti_min)
-			return FALSE;					// Time not passed yet
-	
-		if(now.ti_min == dt->ti_min)
-		{
-			if(now.ti_sec < dt->ti_sec)
-				return FALSE;				// Time not passed yet
-		}
-	}
-
+	timer[AUTO_DISCONNECT_TIMER] = TIMER_DISABLED;
 	return TRUE;							// Time passed
 }
 
@@ -860,27 +849,15 @@ int AutoDisconnectTimePassed(struct time *dt)
 //  ============================
 //  Function that disables the auto disconnect time out
 //------------------------------------------------------------------
-void ResetAutoDisconnectTime(struct time *dt)
+void ResetAutoDisconnectTime(void)
 {
 	if(app.auto_disconnect_time == 0)
-		return;
-
-	GetTime( dt );					// Get current time
-
-	dt->ti_min += (app.auto_disconnect_time % 60);		
-
-	if(dt->ti_min >= 60)				// Calculate the time at which the auto-disconnect time passes
 	{
-		dt->ti_min -= 60;
-		++dt->ti_hour;
+		timer[AUTO_DISCONNECT_TIMER] = TIMER_DISABLED;
+		return;
 	}
 
-	dt->ti_hour += (app.auto_disconnect_time / 60);
-
-	if(dt->ti_hour >= 24)
-		dt->ti_hour -= 24;
-
-	SetAlarm(dt, ON);				// Configure the Alarm (in case we've fallen asleep)
+	timer[AUTO_DISCONNECT_TIMER] = 50 * 60 * app.auto_disconnect_time;
 }
 
 //------------------------------------------------------------------
@@ -890,8 +867,7 @@ void ResetAutoDisconnectTime(struct time *dt)
 //------------------------------------------------------------------
 void StopAutoDisconnectTime(void)
 {
-	struct time now = {0};
-	SetAlarm(&now, OFF);				// Disable the alarm
+	timer[AUTO_DISCONNECT_TIMER] = TIMER_DISABLED;
 }
 
 //  ProcessBarcode
@@ -1091,7 +1067,7 @@ void ProcessMenuLabels(int res)
 			UpdateAutoPowerDown(STATE_CONNECTABLE);		// Update AutoPowerDown, so the device doesn't fall asleep while connecting
 
 			ble_port = BleInterfaceToComport(app.ble_interface, true);
-			
+
 			if(ComOpen(ble_port) == OK)		// Make connectabe / no white list
 			{
 				com_opened = ble_port;
@@ -1281,6 +1257,58 @@ int UsbModeToComport(uint8_t usb_interface)
 }
 
 
+//-------------- variables ----------------------------
+#if DEBUG		// Serial commands are handled by the OS, so we only use it for debugging
+static unsigned int  debug_command_length = 0;
+static unsigned char debug_command_len[250+1];
+#else
+#define debug_command_len		NULL
+#endif
+
+//-----------------------------------------------------------------------------
+//  CheckSerCommands
+//  =====================
+//  Checks for OSE serial commands and executes them.
+//-----------------------------------------------------------------------------
+int CheckSerCommands(int comport, unsigned char ch)
+{
+	if(IsBluetoothPort(comport))
+		ResetAutoDisconnectTime();
+
+#if DEBUG		// Serial commands are handled by the OS, so we only use it for debugging
+	if(ch == ESC)
+	{
+		debug_command_length = 0;
+	}
+	else if(ch >= 0x20 && ch <= 0x7e && debug_command_length < sizeof(debug_command_len)-1)
+	{
+		debug_command_len[debug_command_length++] = ch;
+	}
+	else if(ch == CR)
+	{
+		debug_command_len[debug_command_length] ='\0';
+		return debug_command_length;
+	}
+#endif
+	return 0;
+}
+
+int ExecuteSerCommands(int comport, uint8_t *data, uint16_t len)
+{
+#if DEBUG	
+	DEBUGPutString("%s", debug_command_len);
+	debug_command_length = 0;
+#endif
+	return TRUE;
+}
+
+
+void InitSerCmdHandler(void)
+{
+	InstallSerialCommandHandler(CheckSerCommands, ExecuteSerCommands, debug_command_len, FORWARD_TO_APPL);
+}
+
+
 //------------------------------------------------------------------
 //  main
 //  =====================
@@ -1370,7 +1398,7 @@ void app_main(void)
 		connection_lost = FALSE;
 
 		com_opened = BleInterfaceToComport(app.ble_interface, false);
-		
+
 		UpdateAutoPowerDown(STATE_RECONNECTABLE);	// Don't power off while waiting for a connection
 				
 		if(ComOpen(com_opened) == OK)		// Make device connectable
@@ -1403,6 +1431,8 @@ void app_main(void)
 
     // Set shutdown callback to close the barcode database
 	Application_ShutdownCallback(ShutdownCallback);
+
+	InitSerCmdHandler();
 
     com_opened = ComOpen(-1);
 
@@ -1500,7 +1530,7 @@ void app_main(void)
 			SetDTR(ON);	// Do this here and not only once in the beginning to work around an issue in OS
 
 		if(com_opened == -1)		// Makes sure that barcodes can be transmitted by USB when there's no Bluetooth connection
-		{
+			{
 			com_opened = UsbModeToComport(app.usb_mode);
 
 			ComOpen( com_opened );	
@@ -1615,7 +1645,6 @@ void LocateHostStateMachine(void)
 void BluetoothStateMachine(bool barcode_read)
 {
 	static int pressed = FALSE; 
-	static struct time disc_time = {0};
 	int res;
 
 	if(ClearKeyPressed() && TriggerPressed())			
@@ -1640,7 +1669,7 @@ void BluetoothStateMachine(bool barcode_read)
 
 				connection_state = STATE_CONNECTED_USB;
 				connection_lost = FALSE;
-				ResetAutoDisconnectTime(&disc_time);
+				ResetAutoDisconnectTime();
 				ConnectionIndicator(STATE_CONNECTED_USB);
 				UpdateAutoPowerDown(STATE_CONNECTED);		// Don't shutdown when connected, otherwise the connection would be lost
 			}
@@ -1660,7 +1689,7 @@ void BluetoothStateMachine(bool barcode_read)
 				connection_state = STATE_CONNECTED;
 				pressed = FALSE; 	
 				connection_lost = FALSE;					// no need to send a wake-up key when you've just connected (device is on already)
-				ResetAutoDisconnectTime(&disc_time);
+				ResetAutoDisconnectTime();
 				ConnectionIndicator(STATE_CONNECTED);
 				UpdateAutoPowerDown(STATE_CONNECTED);		// Don't shutdown when connected, otherwise the connection would be lost
 				break;
@@ -1732,7 +1761,7 @@ void BluetoothStateMachine(bool barcode_read)
 			//
 			if( ( TriggerPressed() || ClearKeyPressed() ) && ( pressed == FALSE ) )
 			{
-				ResetAutoDisconnectTime(&disc_time);
+				ResetAutoDisconnectTime();
 				//
 				// Wake up iPhones/iPads on trigger press (if enabled)
 				//
@@ -1768,7 +1797,7 @@ void BluetoothStateMachine(bool barcode_read)
 			// as well as using an auto disconnect time
 			//
 			int time_passed = FALSE;
-			if((ClearKeyPressed() && !TriggerPressed()) || ( time_passed = AutoDisconnectTimePassed(&disc_time) )== TRUE)			// Clear key can be used to manually disconnect
+			if((ClearKeyPressed() && !TriggerPressed()) || ( time_passed = AutoDisconnectTimePassed() )== TRUE)			// Clear key can be used to manually disconnect
 			{
 				if(time_passed == TRUE)
 				{
@@ -1822,14 +1851,6 @@ void BluetoothStateMachine(bool barcode_read)
 				StopAutoDisconnectTime();
 			}
 			break;
-	}
-
-	//
-	// Check if data is received, if so, reset auto disconnect time
-	//
-	if(GetCom(0) >= 0 && BltIsConnected_App())
-	{
-		ResetAutoDisconnectTime(&disc_time);
 	}
 }
 
