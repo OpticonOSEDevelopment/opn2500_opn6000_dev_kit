@@ -118,13 +118,25 @@ To exit firmware update mode, press both keys for 3 seconds (or wait 30 seconds)
 
 OptiConnect is a free application developed by Opticon to configure and manage the OPN series of barcode scanners and your bar code data that is available on all platforms.
 
+### Features
+- Easy pairing and connection with Bluetooth
+- Collect barcode data
+- Easy configuration
+- Easy export of barcode data
+- Easy integration with custom apps (Intents; API)
+- Wireless device firmware update (DFU)
+- Barcode validation
+
 To connect your OPN to the OptiConnect app:
 1. Download and install the OptiConnect app from your app store or go to [OptiConnect](https://opticonnect.opticon.com) (available for iOS, Android, Mac OS and Windows).
 2. Make sure the OPN-6000 is set to BLE mode by scanning the label in the quick start guide.
 3. In OptiConnect, go to ‘Pair Scanner,’ and select the discovered ‘OPN-6000’ or 'OPN-25000' to connect
 
-A Flutter SDK is available for mobile app developers to use the OptiConnect functionality in your own application:
+A Flutter SDK is available for mobile app developers to use the OptiConnect functionality in your own Flutter application:
 [opticonnect_sdk_flutter](https://github.com/OpticonOSEDevelopment/opticonnect_sdk_flutter)
+
+An Android SDK is available for mobile app developers to use the OptiConnect functionality in your own Android application:
+[opticonnect_sdk_android](https://github.com/OpticonOSEDevelopment/opticonnect_sdk_android)
 
 # OptiConfigure
 
@@ -196,33 +208,72 @@ When porting applications of the OPN-200x, PX-20 and RS-3000 please note the fol
 ## Source code
 - If your application is derived from the OPN-2006 Batch or Bluetooth application, it is recommended use the new Batch/Bluetooth application as starting point to add your customizations
 
-# BLE Serial / OptiConnect
-
-Enables both the **BLE Serial** & **BLE OptiConnect** services and sets the device to default.
-
----
-
-## BLE OptiConnect
-
-OptiConnect is Opticon's mobile app for iOS, macOS, Android, and Windows.
-
-### Features
-- Easy pairing and connection with Bluetooth
-- Collect barcode data
-- Easy configuration
-- Easy export of barcode data
-- Easy integration with custom apps (Intents; API)
-- Wireless device firmware update (DFU)
-- Barcode validation
-
----
-
 ## BLE Serial
 
-This mode is the BLE alternative to the **Bluetooth 2.0 SSP profile**.  
+BLE Serial (default **EBLE**) is the BLE alternative to the **Bluetooth 2.0 SSP profile**.  
 
 It requires a custom BLE application on the host device with the following UUIDs:
 
 - **Service UUID**: `46409be5-6967-4557-8e70-784e1e55263b`  
 - **Read UUID**: `720330f4-1db7-4fd7-ae5a-87e5bd942880`  
 - **Write UUID**: `708346f9-2a8f-4df6-aba8-b94625aede49`  
+
+The **Read** & **Write** characteristics work like a serial interface.
+
+- **Barcode data** is received on the **Read** characteristic.  
+- **Configurations** can be made using the **Write** characteristic.  
+
+### Command Format
+
+A configuration command is formatted as:
+
+<ESC><Command string><CR>
+
+- `<ESC>` → ASCII escape character (`0x1B`)  
+- `<Command string>` → Configuration option with its parameters (as found on OptiConfigure or the menu book)  
+- `<CR>` → ASCII carriage return (`0x0D`)  
+
+### Configuration Options
+
+All available options for each device can be found here:
+
+- [OptiConfigure for OPN-6000](https://opticonfigure.opticon.com/configure?scanner=OPN6000)  
+- [OptiConfigure for OPN-2500](https://opticonfigure.opticon.com/configure?scanner=OPN2500) 
+
+#### Example 1 — Set Code 39 prefix
+
+`<ESC>`M41B`<CR>`
+
+- Configures the ASCII control code `<STX>` as the prefix for Code 39.  
+- In hexadecimal: 1B 4D 34 31 42 0D
+
+#### Example 2 — 3-character command
+
+`<ESC>`[BCC`<CR>`
+
+- Each **3-character command** should be preceded with the `[` character (`0x5B`).  
+- Enables **Data Matrix**.
+
+#### Example 3 — 4-character command
+
+`<ESC>`]DIAU`<CR>`
+
+- Each **4-character command** should be preceded with the `]` character (`0x5D`).  
+- Disables **auto-connect**.
+
+### Storing Settings
+
+Some options (e.g., defaults) are **not immediately active**.  
+To store changes permanently in non-volatile memory, send: 
+
+`<ESC>`Z2`<CR>`
+
+### Built-in Commands
+
+For feedback the following options are available (i.e `<ESC>`B`<CR>`)
+- `B` → Sound a **good read** beep  
+- `E` → Sound an **error** beep  
+- `L` → Switch on **good read LED**  
+- `N` → Switch on **bad read LED**  
+- `O` → Switch on **both LEDs**  
+
