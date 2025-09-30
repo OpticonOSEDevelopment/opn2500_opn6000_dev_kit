@@ -195,3 +195,34 @@ When porting applications of the OPN-200x, PX-20 and RS-3000 please note the fol
 
 ## Source code
 - If your application is derived from the OPN-2006 Batch or Bluetooth application, it is recommended use the new Batch/Bluetooth application as starting point to add your customizations
+
+# BLE Serial / OptiConnect
+
+Enables both the **BLE Serial** & **BLE OptiConnect** services and sets the device to default.
+
+---
+
+## BLE OptiConnect
+
+OptiConnect is Opticon's mobile app for iOS, macOS, Android, and Windows.
+
+### Features
+- Easy pairing and connection with Bluetooth
+- Collect barcode data
+- Easy configuration
+- Easy export of barcode data
+- Easy integration with custom apps (Intents; API)
+- Wireless device firmware update (DFU)
+- Barcode validation
+
+---
+
+## BLE Serial
+
+This mode is the BLE alternative to the **Bluetooth 2.0 SSP profile**.  
+
+It requires a custom BLE application on the host device with the following UUIDs:
+
+- **Service UUID**: `46409be5-6967-4557-8e70-784e1e55263b`  
+- **Read UUID**: `720330f4-1db7-4fd7-ae5a-87e5bd942880`  
+- **Write UUID**: `708346f9-2a8f-4df6-aba8-b94625aede49`  
