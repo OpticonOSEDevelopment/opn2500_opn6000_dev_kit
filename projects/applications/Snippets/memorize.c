@@ -46,7 +46,7 @@ int OpenStorage(void)
 
 	dbFile.fdDb = &mOutFile;
 	dbFile.ix.ixfile = &mIdxFile;
-		
+
 	if( OpenBarcodeDatabase((char*)DBASE_NAME, (char*)DBASE_IDX, &dbFile ) != DATABASE_OK)
 	{
 		if( CreateBarcodeDatabase((char*)DBASE_NAME, (char*)DBASE_IDX, &dbFile ) != DATABASE_OK )
@@ -76,23 +76,39 @@ int CloseStorage(void)
 static long records = 0;
 
 //------------------------------------------------------------------------------
+//	DeleteInternalStorage
+//	=====================
+//	Deletes all internal storage files from memory (but not the export)
+//-----------------------------------------------------------------------------
+void DeleteInternalStorage(void)
+{
+	CloseStorage();				// Just to be sure
+	
+	dbFile.lTotalRecords = 0;
+
+	remove(DBASE_NAME);
+	remove(DBASE_IDX);
+	//format();					// Much quicker than a file delete
+
+	records = 0;
+}
+
+//------------------------------------------------------------------------------
 //	DeleteStorage
 //	=====================
 //	Deletes all barcodes from memory
 //-----------------------------------------------------------------------------
 void DeleteStorage(void)
 {
-	//CloseStorage();
-	//remove(DBASE_NAME);
-	//remove(DBASE_IDX);
+	CloseStorage();				// Just to be sure
 
-	dbFile.fdDb = NULL;		// Much quicker than a file close
 	dbFile.lTotalRecords = 0;
-	records = 0;
 
-	format();			// Much quicker than a file delete
+	format();					// Much quicker than a file delete
+
+	records = 0;
 }
-	
+		
 //------------------------------------------------------------------------------
 //	BarcodesInMemory
 //	=====================
@@ -180,12 +196,11 @@ int DeleteCurrentBarcodeFromMemory(void)
 int IsLastBarcodeInMemory(struct barcode *pCode)
 {
 	ENTRY e = {0};
-	struct barcode pTemp = {0};
 
 	if(OpenStorage() != OK)	// Re-opens if closed
 		return ERROR;
 
-	if (ReadLastBarcode(&dbFile, &pTemp) == DATABASE_OK)
+	if (ReadLastEntry(&dbFile, &e) == DATABASE_OK)
 	{
 		HASHKEY hKey = hash(pCode->text, pCode->length);
 

@@ -309,8 +309,7 @@ int ExportBarcodeData(db_record *db_rec)
 	int field_size;
 	int result = OK;
 	
-	// RDW to be tested
-	if(CoreLeft() + fsize(FNAME_SCANNED_EXPORT) <  2 * fsize(DBASE_NAME) + fsize(DBASE_IDX))	// Please note that we need enough disk space to create the export file when we connect to USB
+	if(CoreLeft() < 10000)	// During export we keep a safe margin to prevent a full disk
 		return ERROR_FILESYSTEM;
 	
 	// Start building the output record
@@ -610,6 +609,9 @@ int ExportBarcode(struct barcode *code)
 	// fill the barcode into the record structure
 	db_rec.barcode = code->text;
 	db_rec.barcode_len = code->length;
+
+	if(db_rec.barcode_len < 0 || db_rec.barcode_len > code->max)
+		return  ERROR;
 		
 	// Remove possible trailing CR (suffix)
 	if(db_rec.barcode[db_rec.barcode_len-1] == '\r')
@@ -705,7 +707,7 @@ int ProcessBarcode(struct barcode *code)
 #endif
 	if (code->id == MENU_CODE)	// Check for standard Code-39 menu labels (from the OSE Universal menu book)
 	{
-		while (result != EXITING_MENU_MODE && result != ERROR)
+		while(result != EXITING_MENU_MODE && result != ERROR)
 		{
 #ifndef HAS_2D_ENGINE
 			if(TriggerPressed() && aiming == true)
@@ -721,9 +723,9 @@ int ProcessBarcode(struct barcode *code)
 				AimingOn();				
 			}
 #endif
-			if (result == 0 || ReadBarcode(code) == OK)
+			if(result == 0 || ReadBarcode(code) == OK)
 			{
-				switch ((result = ExecuteMenuLabel(code)))
+				switch( (result=ExecuteMenuLabel(code)) )
 				{
 					case ENTERING_MENU_MODE:
 #ifndef HAS_2D_ENGINE
@@ -965,8 +967,15 @@ int ShutdownCallback(void)
 #else
 		ScannerPower(OFF, 0);				// Disable scanning while waiting to transmit its data
 #endif
-		ExportDatabase();					// Export the database.
-		GoodReadLed(GREEN_FLASH, -1);		// Show blinking green LED when connected to USB.
+		if(!TriggerPressed() || !ClearKeyPressed()) 
+		{
+			ExportDatabase();					// Export the database.
+			GoodReadLed(GREEN_FLASH, -1);		// Show blinking green LED when connected to USB.
+		}
+		else
+		{
+			GoodReadLed(MAGENTA | LED_FLASH, -1);		// Show blinking green LED when connected to USB.
+		}
 	}
 
 	return OK;
@@ -994,6 +1003,8 @@ int ExportDatabase(void)
 
 	dbExportStorage.fdDb = &SDBExportFile;
 
+	DEBUGPUTStr("ExportDatabase() started (%d)", GetSystemTime());  
+
 	if( CreateBarcodeDatabase((char*)FNAME_SCANNED_EXPORT, NULL, &dbExportStorage) != DATABASE_OK )
 		return ERROR;
 
@@ -1009,7 +1020,7 @@ int ExportDatabase(void)
 		} while (ReadNextBarcodeFromMemory(&code) == DATABASE_OK);
 	}
 
-    DEBUGPUTStr("ExportDatabase() Records: %d exported", records);  
+    DEBUGPUTStr("ExportDatabase() Records: %d exported (%d)", records, GetSystemTime());  
 
 	// close databases
 	CloseBarcodeDatabase(&dbExportStorage);
@@ -1202,10 +1213,19 @@ void app_main(void)
 					if (app.default_interface != COM11)	// If not MSD -> Generate the export file here. Else Generate it in the shutdown-callback
 					{
 						CloseStorage();					// Forces a flush of the last scanned data
-						AutoPowerDown(APD_SUSPEND, 0);
-						ExportDatabase();				// Export the database
-						AutoPowerDown(APD_RESUME, 0);
-						GoodReadLed(GREEN_FLASH, -1);	// Show blinking green LED when connected to USB
+
+						if(!TriggerPressed() || !ClearKeyPressed()) 
+						{
+							AutoPowerDown(APD_SUSPEND, 0);
+							ExportDatabase();				// Export the database
+							AutoPowerDown(APD_RESUME, 0);
+							GoodReadLed(GREEN_FLASH, -1);	// Show blinking green LED when connected to USB
+						}
+						else
+						{
+							GoodReadLed(MAGENTA | LED_FLASH, -1);		// Show blinking green LED when connected to USB.
+						}
+
 #ifdef HAS_2D_ENGINE
 						ScannerPower(SCAN_SUSPEND, 0);			// Remember the current read mode
 #else

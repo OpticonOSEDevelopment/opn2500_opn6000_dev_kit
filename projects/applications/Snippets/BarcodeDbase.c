@@ -36,22 +36,47 @@ int OpenBarcodeDatabase(const char* filename, const char *idx_file, SDBOutVal *d
 		}
 	}
 
+	DWORD current_size = f_size(dbFile->fdDb);
+
+	// Increase database file size if needed
+	if(current_size == 0 || (current_size % FILE_ALLOC_SIZE) != 0 )
+	{
+		if( AllocateBlock(dbFile->fdDb, current_size, true) != IX_OK )
+			return ERR_OPEN_DATABASE;
+	}
+
+	if(idx_file != NULL)
+		dbFile->ix.allocated_dbase_bytes = f_size(dbFile->fdDb);
+	else
+		f_lseek(dbFile->fdDb, current_size);	// Go to the end of the actual data
+
 	dbFile->lTotalRecords = -1L;
 	return DATABASE_OK;
 }
 
 int CreateBarcodeDatabase(const char* filename, const char *idx_file, SDBOutVal *dbFile) 
 {
-	if( f_open(dbFile->fdDb, filename, FA_CREATE_ALWAYS | FA_READ | FA_WRITE) != FR_OK )
-		return ERR_OPEN_DATABASE;
+	FRESULT res;
 
-	if( f_lseek(dbFile->fdDb, f_size(dbFile->fdDb)) != FR_OK )
-		return ERR_OPEN_DATABASE;
+	if( (res = f_open(dbFile->fdDb, filename, FA_CREATE_ALWAYS | FA_READ | FA_WRITE)) != FR_OK )
+		return (res == FR_NO_PATH) ? ERR_PATH_NOT_FOUND : ERR_OPEN_DATABASE;
 
-	if(idx_file != NULL && MakeIndex( idx_file, &(dbFile->ix), (dbFile->quantity_options & QNT_OPT_ALLOW_DUPLICATES) ) != IX_OK )
+	if(AllocateBlock(dbFile->fdDb, 0, (idx_file != NULL)) != IX_OK)
+		return ERR_OPEN_DATABASE;
+	
+	if(idx_file != NULL)
 	{
-		f_close( dbFile->fdDb );
-		return ERR_OPEN_INDEX;	// Error creating the index file 
+		dbFile->ix.allocated_dbase_bytes = f_size(dbFile->fdDb);
+
+		if(MakeIndex( idx_file, &(dbFile->ix), (dbFile->quantity_options & QNT_OPT_ALLOW_DUPLICATES) ) != IX_OK )
+		{
+			f_close( dbFile->fdDb );
+			return ERR_OPEN_INDEX;	// Error creating the index file 
+		}
+	}
+	else
+	{
+		f_lseek(dbFile->fdDb, 0);		// We don't have an index file, so we start writing from the start
 	}
 
 	dbFile->lTotalRecords = -1L;
@@ -60,12 +85,15 @@ int CreateBarcodeDatabase(const char* filename, const char *idx_file, SDBOutVal 
 
 void CloseBarcodeDatabase(SDBOutVal *dbFile) 
 {
+	if (dbFile->ix.ixfile == NULL)	// Without index file, we truncate the file to the file pointer to remove the allocated block
+		f_truncate(dbFile->fdDb);
+
+	// Close the database file first, because we don't want the index file to point to non-existing data
+	f_close(dbFile->fdDb);
+
 	// Close the index file
 	if (dbFile->ix.ixfile != NULL)
 		CloseIndex(&(dbFile->ix));
-
-	// Close the database file
-	f_close(dbFile->fdDb);
 }
 
 int IsBarcodeDatabaseOpen(SDBOutVal *dbFile) 
@@ -83,7 +111,7 @@ int ReadBarcodeRecord(SDBOutVal *dbFile, ENTRY *e, struct barcode *pCode)
 {
 	UINT bytes_read;
 
-	pCode->length = e->length;
+	pCode->length = MIN(e->length, pCode->max);		// If bigger, then it's most likely a corrupt database 
 	pCode->id = e->code_id;
 	pCode->quantity = e->quantity;
 
@@ -94,7 +122,7 @@ int ReadBarcodeRecord(SDBOutVal *dbFile, ENTRY *e, struct barcode *pCode)
 		if( f_lseek(dbFile->fdDb, e->recptr) != FR_OK )
 			return ERR_INDEX_KEY_NF; // TODO: maybe change this in some other value
 
-		if( f_read(dbFile->fdDb, pCode->text, e->length, &bytes_read) != FR_OK || bytes_read != e->length )
+		if( f_read(dbFile->fdDb, pCode->text, pCode->length, &bytes_read) != FR_OK || bytes_read != (UINT)pCode->length )
 			return ERR_INDEX_KEY_NF; // TODO: maybe change this in some other value
 	}
 
@@ -162,6 +190,24 @@ int ReadFirstBarcode(SDBOutVal *dbFile, struct barcode *pCode)
 			return ReadBarcodeRecord(dbFile, &e, pCode);
 	}
 	while(NextKey(&e, &(dbFile->ix)) == IX_OK);
+
+	return ERROR;
+}
+
+int ReadLastEntry(SDBOutVal *dbFile, ENTRY *e) 
+{
+	if (!IsBarcodeDatabaseOpen(dbFile))
+		return ERROR;
+
+	if (LastKey(e, &(dbFile->ix)) != IX_OK)
+		return ERROR;
+
+	do
+	{
+		if(IsValidQuantity(dbFile, e->quantity))
+			return OK;
+	}
+	while(PrevKey(e, &(dbFile->ix)) == IX_OK);
 
 	return ERROR;
 }
@@ -262,7 +308,7 @@ int WriteBarcode( SDBOutVal *dbFile, ENTRY *pEntry, struct barcode *pCode)
 		length = pCode->length;
 
 		e.key = hash(pCode->text, length);
-		e.recptr =  f_size(dbFile->fdDb);
+		e.recptr =  dbFile->ix.last_recptr; // f_size(dbFile->fdDb);
 		e.length = length;
 		e.quantity = pCode->quantity;
 		e.code_id = pCode->id;
@@ -271,6 +317,14 @@ int WriteBarcode( SDBOutVal *dbFile, ENTRY *pEntry, struct barcode *pCode)
 		// Append to the end of the database
 		if(f_lseek(dbFile->fdDb, e.recptr) != FR_OK)
 			return ERR_DB_WRITE;
+
+		if(e.recptr + length > dbFile->ix.allocated_dbase_bytes)
+		{
+			if(AllocateBlock(dbFile->fdDb, dbFile->ix.allocated_dbase_bytes, true) != IX_OK)
+				return ERR_DB_WRITE;
+
+			dbFile->ix.allocated_dbase_bytes += f_size(dbFile->fdDb);
+		}
 
 		if (f_write(dbFile->fdDb, pCode->text, length, &bytes_written ) != FR_OK || bytes_written != length)
 			return ERR_DB_WRITE;
@@ -320,9 +374,16 @@ int AppendRecord( SDBOutVal *dbFile, uint8_t *data, uint32_t data_len)
 	if (dbFile->fdDb == NULL)
 		return ERROR;
 
-	// Append to the end of the database
-	//if(f_lseek(dbFile->fdDb, f_size(dbFile->fdDb)) != FR_OK)
-	//	return ERR_DB_WRITE;
+	int recptr = f_tell(dbFile->fdDb);
+
+	if(recptr + data_len > f_size(dbFile->fdDb))
+	{
+		if(AllocateBlock(dbFile->fdDb, recptr + data_len, false) != IX_OK)
+			return ERR_DB_WRITE;
+
+		if(f_lseek(dbFile->fdDb, recptr) != FR_OK)
+			return ERR_DB_WRITE;
+	}
 
 	if (f_write(dbFile->fdDb, data, data_len, &bytes_written ) != FR_OK || bytes_written != data_len)
 		return ERR_DB_WRITE;
@@ -387,7 +448,8 @@ int RebuildIndex(SDBOutVal *dbFile, const char *idxName )
 	struct date date;
 	struct time time;
 	int error;
-	int length, recptr;
+	int length = 0;
+	int recptr = 0;
 
 	if(dbFile->fdDb == NULL || dbFile->ix.ixfile == NULL)
 		return ERR_OPEN_DATABASE;
@@ -405,21 +467,29 @@ int RebuildIndex(SDBOutVal *dbFile, const char *idxName )
 	GetTime(&time);	
 	DateTimeToTimeStamp(&date, &time, e.timestamp);
 
-	recptr = 0;
+	dbFile->ix.last_recptr = 0;
 
 	while( f_gets(g_Record, MAX_RECORD_SIZE, dbFile->fdDb ) != NULL )
 	{
 		length = strlen(g_Record);
 
 		if(length == 0 || (length == 1 && g_Record[0] == '\n'))
+		{
+			dbFile->ix.last_recptr = dbFile->fdDb->fptr;
 			continue;
+		}
+
+		if(length >= 1 && g_Record[0] == 0xFF)
+			break;
 		
 		e.key = hash(g_Record, length);
 		e.recptr = recptr;
-		e.length = length;
+		e.length = dbFile->fdDb->fptr - recptr;
 		e.code_id = CODE128;				// We don't know the code-id
 		e.quantity = 1;						// We don't even know the quantity (deleted barcodes will be added!!!)
 	
+		dbFile->ix.last_recptr = dbFile->fdDb->fptr;
+
 		if(AddKey(&e, &(dbFile->ix)) == IX_FAIL)
 			return ERR_DB_WRITE;
 

@@ -64,19 +64,66 @@ FRESULT CloseIf( FIL *fp )
     return f_close(fp);
 }
 
-int OpenIndex( const char *idxName, IX_DESC *pix, int dup)
+int OpenIndex(const char *idxName, IX_DESC *pix, int dup)
 {
-	ENTRY dummy;
+    ENTRY e;
+    UINT br;
 
-    if( OpenIf( idxName, pix->ixfile) != FR_OK )
-		return (IX_FAIL);
+    if ( OpenIf(idxName, pix->ixfile) != FR_OK )
+        return (IX_FAIL);
 
-	pix->duplicate = dup;
-	pix->cache_offset = -1;
+    pix->duplicate      = dup;
+    pix->cache_offset   = -1;
+    pix->cache_size     = 0;
+    pix->cache_idx      = 0;
+    pix->logical_entries = 0;
+	pix->last_recptr = 0;
 
-	LastKey(&dummy, pix);		// Loads cache with the last block
+	DWORD current_size = f_size(pix->ixfile);
 
-	return (IX_OK);
+	if( (current_size % ENT_SIZE) != 0 )	// This should not be possible, because everything is ENT_SIZE aligned
+		return IX_FAIL;
+
+	// Backwards compatiblity....increase index file size if needed, but keep the data
+	if(current_size == 0 || (current_size % FILE_ALLOC_SIZE) != 0 )
+	{
+		if( AllocateBlock(pix->ixfile, current_size, true) != IX_OK )
+			return IX_FAIL;
+
+		current_size = f_size(pix->ixfile);
+	}
+
+	/* allocated_bytes = physical file size (preallocated at MakeIndex) */
+	pix->allocated_bytes = current_size;
+
+    /* Scan entries of the current block to find first empty/unused slot */
+	FSIZE_t offset = pix->allocated_bytes - FILE_ALLOC_SIZE;
+
+	// Calculate number of entries in the full blocks
+	pix->logical_entries += (offset / FILE_ALLOC_SIZE) * (FILE_ALLOC_SIZE / ENT_SIZE);
+
+	if (f_lseek(pix->ixfile, offset) != FR_OK)
+		return IX_FAIL;
+
+    while (offset + ENT_SIZE <= (FSIZE_t)pix->allocated_bytes)
+    {
+        if (f_read(pix->ixfile, &e, ENT_SIZE, &br) != FR_OK || br != ENT_SIZE)
+            break;
+
+		if( (e.length == 0 && e.key == 0) || (e.code_id == 0 && e.recptr == 0))	// This is a corrupt file, because this should not be possible
+			return IX_FAIL;
+
+		// Validate entry
+		if((uint32_t)e.recptr == 0xFFFFFF || (e.key == 0xFFFFFFFF && e.length >= 0xFFF) )
+			break;
+
+        pix->logical_entries++;
+		pix->last_recptr = e.recptr + e.length;
+		offset += ENT_SIZE;
+    }
+    
+    LastKey(&e, pix);		// Loads cache with the last block
+    return (IX_OK);
 }
 
 int CloseIndex( IX_DESC *pix)
@@ -86,16 +133,81 @@ int CloseIndex( IX_DESC *pix)
     return (IX_OK);
 }
 
-int MakeIndex( const char *idxName, IX_DESC *pix, int dup)
+int MakeIndex(const char *idxName, IX_DESC *pix, int dup)
 {
-	if( CreatIf( idxName, pix->ixfile ) != FR_OK )
+    if (CreatIf(idxName, pix->ixfile) != FR_OK)
 		return (IX_FAIL);
-    
-	pix->duplicate = dup;
+
+    pix->duplicate = dup;
 	pix->cache_offset = 0;				// Initialize empty cache
-	pix->cache_size = 0;
-	pix->cache_idx = 0;
-    return ( IX_OK );
+    pix->cache_size = 0;
+    pix->cache_idx = 0;
+    pix->logical_entries = 0;
+	pix->last_recptr = 0;
+	pix->allocated_bytes = 0;
+
+    // Preallocate block of 64KB
+	if(AllocateBlock(pix->ixfile, 0, true) != IX_OK)
+		return IX_FAIL;
+
+	pix->allocated_bytes = FILE_ALLOC_SIZE;
+    return IX_OK;
+}
+
+int AllocateBlock(FIL *ixfile, int offset, bool erase)
+{
+    const size_t IDX_CHUNK_SIZE = 512;
+    UINT bw;
+    BYTE buffer[IDX_CHUNK_SIZE];
+
+	if(CoreLeft() < FILE_ALLOC_SIZE)
+		return IX_FAIL;
+
+    // Fill the buffer with 0xFF
+    memset(buffer, 0xFF, IDX_CHUNK_SIZE);
+
+    // Compute the next FILE_ALLOC_SIZE boundary
+    size_t newSize = (offset == 0) ? FILE_ALLOC_SIZE : ((offset + FILE_ALLOC_SIZE - 1 ) / FILE_ALLOC_SIZE) * FILE_ALLOC_SIZE;
+
+    // Get current file size
+    FSIZE_t fileSize = f_size(ixfile);
+
+    if (fileSize >= newSize) {
+        // Already large enough, nothing to do
+        return IX_OK;
+    }
+
+    // Seek to current end of file
+    f_lseek(ixfile, fileSize);
+
+	if(erase)
+	{
+	    size_t remaining = newSize - fileSize;
+
+	    while (remaining) {
+	        UINT toWrite = (remaining > IDX_CHUNK_SIZE) ? IDX_CHUNK_SIZE : remaining;
+	        if (f_write(ixfile, buffer, toWrite, &bw) != FR_OK || bw != toWrite) {
+	            return IX_FAIL;
+	        }
+	        remaining -= toWrite;
+	    }
+
+		f_sync(ixfile); // Ensure data is flushed
+	}
+	else 
+	{   /* Extend file size by writing a single byte at the end */
+        BYTE ff = 0xFF;
+
+        if (f_lseek(ixfile, newSize - 1) != FR_OK) {
+            return IX_FAIL;
+        }
+
+        if (f_write(ixfile, &ff, 1, &bw) != FR_OK || bw != 1) {
+            return IX_FAIL;
+        }
+    }    
+
+    return IX_OK;
 }
 
 
@@ -146,7 +258,7 @@ int LastKey( ENTRY *pe, IX_DESC *pix)
 		return (IX_OK);
 	}
 
-	if (f_lseek(pix->ixfile, f_size(pix->ixfile)) == FR_OK)
+	if (f_lseek(pix->ixfile, pix->logical_entries * ENT_SIZE) == FR_OK)
 	{
 		pix->cache_offset = f_tell(pix->ixfile);			// Set offset to file size
 
@@ -208,7 +320,7 @@ int NextKey( ENTRY *pe, IX_DESC *pix )
 	{
 		if(pix->cache_idx + 1 >= pix->cache_size)	// Is there still a cached item available
 		{
-			int fsize = f_size(pix->ixfile);
+			int fsize = pix->logical_entries * ENT_SIZE;
 
 			if( fsize < (pix->cache_offset + CACHE_SIZE_IN_BYTES))	// End of file
 				return (IX_FAIL);
@@ -356,7 +468,19 @@ int AddKey( ENTRY *pe, IX_DESC *pix )
 		}
 	}
 
-	if (f_lseek(pix->ixfile, f_size(pix->ixfile)) == FR_OK)
+	DWORD offset = pix->logical_entries * ENT_SIZE;
+
+    // Check if the logical write crosses the allocated region
+    if (offset + ENT_SIZE > pix->allocated_bytes)
+    {
+		// Allocate next 64-KB chunk
+		if(AllocateBlock(pix->ixfile, pix->allocated_bytes, true) != IX_OK)
+			return IX_FAIL;
+	                
+        pix->allocated_bytes += FILE_ALLOC_SIZE;
+    }
+
+	if (f_lseek(pix->ixfile, pix->logical_entries * ENT_SIZE) == FR_OK)
 	{
 		if(pix->cache_offset >= 0)		// If cache is initialized
 		{
@@ -382,7 +506,11 @@ int AddKey( ENTRY *pe, IX_DESC *pix )
 		}
 				
 		if (f_write(pix->ixfile, pe, ENT_SIZE, &bytes_written) == FR_OK && bytes_written == ENT_SIZE)		// Write key to file
+		{
+			pix->logical_entries++;
+			pix->last_recptr = pe->recptr + pe->length;
             return (IX_OK);
+		}
 #ifdef DEBUG
 		++blocks_written;
 #endif
@@ -415,12 +543,7 @@ int GetTotalKeys( IX_DESC *pix )
 	if(pix->ixfile == NULL)
 		return 0;
 
-	if (f_lseek(pix->ixfile, f_size(pix->ixfile)) == FR_OK)
-	{
-		return f_tell(pix->ixfile) / ENT_SIZE ;
-	}
-
-	return 0;
+	return pix->logical_entries;
 }
 
 

@@ -22,6 +22,7 @@
 #define	ERR_EMPTY			(-4)		// Error Database is empty
 #define ERR_INDEX_DUPLICATE	(-5)		// Duplicate key found in index while not allowed
 #define ERR_INDEX_KEY_NF	(-6)		// Key has not been found.
+#define ERR_PATH_NOT_FOUND	(-7)		// Folder does not exist
 
 #define ERR_DB_READ			(-3)
 #define ERR_DB_WRITE		(-4)
@@ -62,6 +63,7 @@ void CloseBarcodeDatabase(SDBOutVal *dbFile);
 int ReadBarcodeRecord(SDBOutVal *dbFile, ENTRY *e, struct barcode *pCode); 
 int SearchBarcodeDatabase(SDBOutVal *dbFile, struct barcode *pCode, int origin, long offset, ENTRY **pFoundEntry); 
 int ReadFirstBarcode(SDBOutVal *dbFile, struct barcode *pCode); 
+int ReadLastEntry(SDBOutVal *dbFile, ENTRY *e);
 int ReadLastBarcode(SDBOutVal *dbFile, struct barcode *pCode);
 int ReadPreviousBarcode(SDBOutVal *dbFile, struct barcode *pCode); 
 int ReadNextBarcode(SDBOutVal *dbFile, struct barcode *pCode); 

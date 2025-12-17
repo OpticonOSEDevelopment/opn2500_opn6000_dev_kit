@@ -64,6 +64,8 @@ typedef struct						// entry structure in index
 
 #define  CACHE_SIZE  (CACHE_SIZE_IN_BYTES/ENT_SIZE)
 
+#define FILE_ALLOC_SIZE				(16 * 1024)		// We allocate chucks of 16kb for files to reduce writes to the FAT table
+
 typedef struct						// in-memory index descriptor 
 {  
 	FIL 	*ixfile;				// file descriptor
@@ -72,11 +74,18 @@ typedef struct						// in-memory index descriptor
 	UINT    cache_idx;								// Pointer to current position in cache
 	int		cache_offset;							// Offset of cache block in index file
 	UINT	cache_size;								// Size of current cache block
+
+	DWORD	logical_entries;			// Number of valid entries in the file
+    DWORD	allocated_bytes;			// Total allocated file size of index file (64k, 128k, etc)
+	DWORD	allocated_dbase_bytes;		// Total allocated file size of database file (64k, 128k, etc)
+	DWORD	last_recptr;				// Contains the end-of-file of the database, because we can't ise f_size anymore
 } IX_DESC;
 
 int  OpenIndex( const char *idxName, IX_DESC *pix, int dup);
 int  MakeIndex( const char *idxName, IX_DESC *pix, int dup);
 int  CloseIndex( IX_DESC *pix);
+
+int  AllocateBlock(FIL *ixfile, int offset, bool erase);
 
 int  GetTotalKeys( IX_DESC *pix );
 

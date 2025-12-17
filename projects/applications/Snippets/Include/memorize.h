@@ -35,6 +35,13 @@ int CloseStorage(void);
 void DeleteStorage(void);
 
 //------------------------------------------------------------------------------
+//	DeleteInternalStorage
+//	=====================
+//	Deletes all internal storage files from memory (but not the export)
+//-----------------------------------------------------------------------------
+void DeleteInternalStorage(void);
+
+//------------------------------------------------------------------------------
 //	BarcodesInMemory
 //	=====================
 //	Returns the number of (untransmitted) barcodes in memory
@@ -42,13 +49,6 @@ void DeleteStorage(void);
 int BarcodesInMemory(void);
 
 int BarcodesInMemoryISR(void);	// For heartbeats
-
-//------------------------------------------------------------------------------
-//	StoreBarcodeInMemory
-//	=====================
-//	Updates a barcode in the database file (pCode->quantity determines the action)
-//-----------------------------------------------------------------------------
-int UpdateBarcodeInMemory(struct barcode *pCode);
 
 //------------------------------------------------------------------------------
 //	DeleteBarcodeFromMemory
