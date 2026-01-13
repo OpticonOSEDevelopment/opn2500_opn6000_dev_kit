@@ -88,7 +88,6 @@ void DeleteInternalStorage(void)
 
 	remove(DBASE_NAME);
 	remove(DBASE_IDX);
-	//format();					// Much quicker than a file delete
 
 	records = 0;
 }

@@ -41,7 +41,7 @@ int OpenBarcodeDatabase(const char* filename, const char *idx_file, SDBOutVal *d
 	// Increase database file size if needed
 	if(current_size == 0 || (current_size % FILE_ALLOC_SIZE) != 0 )
 	{
-		if( AllocateBlock(dbFile->fdDb, current_size, true) != IX_OK )
+		if( AllocateBlock(dbFile->fdDb, current_size) != IX_OK )
 			return ERR_OPEN_DATABASE;
 	}
 
@@ -61,7 +61,7 @@ int CreateBarcodeDatabase(const char* filename, const char *idx_file, SDBOutVal 
 	if( (res = f_open(dbFile->fdDb, filename, FA_CREATE_ALWAYS | FA_READ | FA_WRITE)) != FR_OK )
 		return (res == FR_NO_PATH) ? ERR_PATH_NOT_FOUND : ERR_OPEN_DATABASE;
 
-	if(AllocateBlock(dbFile->fdDb, 0, (idx_file != NULL)) != IX_OK)
+	if(AllocateBlock(dbFile->fdDb, 0) != IX_OK)
 		return ERR_OPEN_DATABASE;
 	
 	if(idx_file != NULL)
@@ -320,7 +320,7 @@ int WriteBarcode( SDBOutVal *dbFile, ENTRY *pEntry, struct barcode *pCode)
 
 		if(e.recptr + length > dbFile->ix.allocated_dbase_bytes)
 		{
-			if(AllocateBlock(dbFile->fdDb, dbFile->ix.allocated_dbase_bytes, true) != IX_OK)
+			if(AllocateBlock(dbFile->fdDb, dbFile->ix.allocated_dbase_bytes) != IX_OK)
 				return ERR_DB_WRITE;
 
 			dbFile->ix.allocated_dbase_bytes += f_size(dbFile->fdDb);
@@ -378,7 +378,7 @@ int AppendRecord( SDBOutVal *dbFile, uint8_t *data, uint32_t data_len)
 
 	if(recptr + data_len > f_size(dbFile->fdDb))
 	{
-		if(AllocateBlock(dbFile->fdDb, recptr + data_len, false) != IX_OK)
+		if(AllocateBlock(dbFile->fdDb, recptr + data_len) != IX_OK)
 			return ERR_DB_WRITE;
 
 		if(f_lseek(dbFile->fdDb, recptr) != FR_OK)

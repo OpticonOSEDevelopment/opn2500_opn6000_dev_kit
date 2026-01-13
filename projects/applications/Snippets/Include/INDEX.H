@@ -85,7 +85,7 @@ int  OpenIndex( const char *idxName, IX_DESC *pix, int dup);
 int  MakeIndex( const char *idxName, IX_DESC *pix, int dup);
 int  CloseIndex( IX_DESC *pix);
 
-int  AllocateBlock(FIL *ixfile, int offset, bool erase);
+int  AllocateBlock(FIL *ixfile, int offset);
 
 int  GetTotalKeys( IX_DESC *pix );
 

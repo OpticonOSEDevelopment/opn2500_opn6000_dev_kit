@@ -87,7 +87,7 @@ int OpenIndex(const char *idxName, IX_DESC *pix, int dup)
 	// Backwards compatiblity....increase index file size if needed, but keep the data
 	if(current_size == 0 || (current_size % FILE_ALLOC_SIZE) != 0 )
 	{
-		if( AllocateBlock(pix->ixfile, current_size, true) != IX_OK )
+		if( AllocateBlock(pix->ixfile, current_size) != IX_OK )
 			return IX_FAIL;
 
 		current_size = f_size(pix->ixfile);
@@ -147,14 +147,14 @@ int MakeIndex(const char *idxName, IX_DESC *pix, int dup)
 	pix->allocated_bytes = 0;
 
     // Preallocate block of 64KB
-	if(AllocateBlock(pix->ixfile, 0, true) != IX_OK)
+	if(AllocateBlock(pix->ixfile, 0) != IX_OK)
 		return IX_FAIL;
 
 	pix->allocated_bytes = FILE_ALLOC_SIZE;
     return IX_OK;
 }
 
-int AllocateBlock(FIL *ixfile, int offset, bool erase)
+int AllocateBlock(FIL *ixfile, int offset)
 {
     const size_t IDX_CHUNK_SIZE = 512;
     UINT bw;
@@ -172,41 +172,26 @@ int AllocateBlock(FIL *ixfile, int offset, bool erase)
     // Get current file size
     FSIZE_t fileSize = f_size(ixfile);
 
-    if (fileSize >= newSize) {
-        // Already large enough, nothing to do
+    if (fileSize >= newSize) 
+	{   // Already large enough, nothing to do
         return IX_OK;
     }
 
     // Seek to current end of file
     f_lseek(ixfile, fileSize);
 
-	if(erase)
-	{
-	    size_t remaining = newSize - fileSize;
+	size_t remaining = newSize - fileSize;
 
-	    while (remaining) {
-	        UINT toWrite = (remaining > IDX_CHUNK_SIZE) ? IDX_CHUNK_SIZE : remaining;
-	        if (f_write(ixfile, buffer, toWrite, &bw) != FR_OK || bw != toWrite) {
-	            return IX_FAIL;
-	        }
-	        remaining -= toWrite;
-	    }
-
-		f_sync(ixfile); // Ensure data is flushed
+	while (remaining) {
+		UINT toWrite = (remaining > IDX_CHUNK_SIZE) ? IDX_CHUNK_SIZE : remaining;
+		if (f_write(ixfile, buffer, toWrite, &bw) != FR_OK || bw != toWrite) {
+			return IX_FAIL;
+		}
+		remaining -= toWrite;
 	}
-	else 
-	{   /* Extend file size by writing a single byte at the end */
-        BYTE ff = 0xFF;
 
-        if (f_lseek(ixfile, newSize - 1) != FR_OK) {
-            return IX_FAIL;
-        }
-
-        if (f_write(ixfile, &ff, 1, &bw) != FR_OK || bw != 1) {
-            return IX_FAIL;
-        }
-    }    
-
+	f_sync(ixfile); // Ensure data is flushed
+	
     return IX_OK;
 }
 
@@ -474,7 +459,7 @@ int AddKey( ENTRY *pe, IX_DESC *pix )
     if (offset + ENT_SIZE > pix->allocated_bytes)
     {
 		// Allocate next 64-KB chunk
-		if(AllocateBlock(pix->ixfile, pix->allocated_bytes, true) != IX_OK)
+		if(AllocateBlock(pix->ixfile, pix->allocated_bytes) != IX_OK)
 			return IX_FAIL;
 	                
         pix->allocated_bytes += FILE_ALLOC_SIZE;
