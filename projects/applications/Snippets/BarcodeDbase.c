@@ -27,7 +27,7 @@ int OpenBarcodeDatabase(const char* filename, const char *idx_file, SDBOutVal *d
 	if( f_open(dbFile->fdDb, filename, FA_READ | FA_WRITE) != FR_OK )
 		return ERR_OPEN_DATABASE;
 
-	if(idx_file != NULL && OpenIndex( idx_file, &(dbFile->ix), (dbFile->quantity_options & QNT_OPT_ALLOW_DUPLICATES) ) != IX_OK )
+	if(idx_file != NULL && OpenIndex( idx_file, &(dbFile->ix) ) != IX_OK )
 	{
 		if(RebuildIndex(dbFile, idx_file ) != OK)
 		{
@@ -45,12 +45,7 @@ int OpenBarcodeDatabase(const char* filename, const char *idx_file, SDBOutVal *d
 			return ERR_OPEN_DATABASE;
 	}
 
-	if(idx_file != NULL)
-		dbFile->ix.allocated_dbase_bytes = f_size(dbFile->fdDb);
-	else
-		f_lseek(dbFile->fdDb, current_size);	// Go to the end of the actual data
-
-	dbFile->lTotalRecords = -1L;
+	f_lseek(dbFile->fdDb, (idx_file != NULL) ? dbFile->ix.last_recptr : current_size);
 	return DATABASE_OK;
 }
 
@@ -66,20 +61,14 @@ int CreateBarcodeDatabase(const char* filename, const char *idx_file, SDBOutVal 
 	
 	if(idx_file != NULL)
 	{
-		dbFile->ix.allocated_dbase_bytes = f_size(dbFile->fdDb);
-
-		if(MakeIndex( idx_file, &(dbFile->ix), (dbFile->quantity_options & QNT_OPT_ALLOW_DUPLICATES) ) != IX_OK )
+		if(MakeIndex( idx_file, &(dbFile->ix) ) != IX_OK )
 		{
 			f_close( dbFile->fdDb );
 			return ERR_OPEN_INDEX;	// Error creating the index file 
 		}
 	}
-	else
-	{
-		f_lseek(dbFile->fdDb, 0);		// We don't have an index file, so we start writing from the start
-	}
 
-	dbFile->lTotalRecords = -1L;
+	f_lseek(dbFile->fdDb, 0);		// We start writing from the start
 	return DATABASE_OK;
 }
 
@@ -298,13 +287,15 @@ int DeleteCurrentBarcode(SDBOutVal *dbFile)
 int WriteBarcode( SDBOutVal *dbFile, ENTRY *pEntry, struct barcode *pCode) 
 {
 	UINT length, bytes_written;
-	ENTRY e = {0};
+	bool isValid, wasValid;
     
 	if (dbFile->fdDb == NULL)
 		return ERROR;
 
 	if(pEntry == NULL)
 	{
+		ENTRY lCopy, e = {0};
+
 		length = pCode->length;
 
 		e.key = hash(pCode->text, length);
@@ -314,30 +305,44 @@ int WriteBarcode( SDBOutVal *dbFile, ENTRY *pEntry, struct barcode *pCode)
 		e.code_id = pCode->id;
 		DateTimeToTimeStamp(&pCode->date, &pCode->time, e.timestamp); // Update timestamp
 	
+		if(e.recptr + length > f_size(dbFile->fdDb))
+		{
+			if(AllocateBlock(dbFile->fdDb, e.recptr + length) != IX_OK)
+				return ERR_DB_WRITE;
+		}
+
 		// Append to the end of the database
 		if(f_lseek(dbFile->fdDb, e.recptr) != FR_OK)
 			return ERR_DB_WRITE;
 
-		if(e.recptr + length > dbFile->ix.allocated_dbase_bytes)
-		{
-			if(AllocateBlock(dbFile->fdDb, dbFile->ix.allocated_dbase_bytes) != IX_OK)
-				return ERR_DB_WRITE;
-
-			dbFile->ix.allocated_dbase_bytes += f_size(dbFile->fdDb);
-		}
-
 		if (f_write(dbFile->fdDb, pCode->text, length, &bytes_written ) != FR_OK || bytes_written != length)
 			return ERR_DB_WRITE;
-		
-		if(AddKey(&e, &(dbFile->ix)) == IX_FAIL)
-			return ERR_DB_WRITE;
 
-		if(IsValidQuantity(dbFile, e.quantity))
-			++dbFile->lTotalRecords;
+		f_sync(dbFile->fdDb);
+		
+		memcpy(&lCopy, &e, ENT_SIZE);				// Use a local copy for searching, so we don't loose the record pointer
+
+		// If we don't allow duplicates, but it already present, update the entry instead of adding it
+		if( (dbFile->quantity_options & QNT_OPT_ALLOW_DUPLICATES) == 0 && FindLastKey( &lCopy, &(dbFile->ix) ) )
+		{
+			wasValid = IsValidQuantity(dbFile, lCopy.quantity);
+			
+			if(UpdateKey(&e, &(dbFile->ix)) == IX_FAIL)
+				return ERR_DB_WRITE;
+		}
+		else
+		{
+			if(AddKey(&e, &(dbFile->ix)) == IX_FAIL)
+				return ERR_DB_WRITE;
+				
+			wasValid = false;
+		}
+
+		isValid = IsValidQuantity(dbFile, e.quantity);
 	} 
 	else 
 	{
-		bool isValid, wasValid = IsValidQuantity(dbFile, e.quantity);
+		wasValid = IsValidQuantity(dbFile, pEntry->quantity);
 
 		if(pCode == NULL)
 		{
@@ -349,19 +354,19 @@ int WriteBarcode( SDBOutVal *dbFile, ENTRY *pEntry, struct barcode *pCode)
 
 			if(pCode->quantity > 0)
 				DateTimeToTimeStamp(&pCode->date, &pCode->time, pEntry->timestamp); // Update timestamp
-		}
-
-		isValid = IsValidQuantity(dbFile, e.quantity);
-
+		}		
+		
 		// Overwrite the current key
 		if(UpdateKey(pEntry, &(dbFile->ix)) == IX_FAIL)
 			return ERR_DB_WRITE;
 
-		if(isValid && !wasValid)
-			++dbFile->lTotalRecords;
-		else if(!isValid && wasValid)
-			--dbFile->lTotalRecords;
+		isValid = IsValidQuantity(dbFile, pEntry->quantity);
 	}
+
+	if(isValid && !wasValid)
+		++dbFile->ix.total_records;
+	else if(!isValid && wasValid)
+		--dbFile->ix.total_records;
 
 	return DATABASE_OK;
 }
@@ -394,26 +399,10 @@ int AppendRecord( SDBOutVal *dbFile, uint8_t *data, uint32_t data_len)
 
 long GetTotalRecords( SDBOutVal *dbFile )
 {
-	ENTRY e;
+	if(dbFile == NULL || dbFile->ix.ixfile == NULL)
+		return 0;
 
-	if(dbFile->lTotalRecords == -1L)
-	{
-		dbFile->lTotalRecords = 0;
-		
-		if (FirstKey(&e, &(dbFile->ix)) != IX_OK)
-			return ERR_INDEX_KEY_NF;
-
-		do
-		{
-			if(IsValidQuantity(dbFile, e.quantity))
-			{
-				++dbFile->lTotalRecords;
-			}
-		} 
-		while(NextKey(&e, &(dbFile->ix)) == IX_OK);
-	}
-
-	return dbFile->lTotalRecords;
+	return dbFile->ix.total_records;
 }
 
 bool IsValidQuantity(SDBOutVal *dbFile, int16_t quantity)
@@ -457,7 +446,7 @@ int RebuildIndex(SDBOutVal *dbFile, const char *idxName )
 	if( idxName == NULL )
 		return ERR_OPEN_INDEX; 
 
-	if( MakeIndex( idxName, &(dbFile->ix), (dbFile->quantity_options & QNT_OPT_ALLOW_DUPLICATES)) == IX_FAIL )
+	if( MakeIndex( idxName, &(dbFile->ix) ) == IX_FAIL )
 		return ERR_OPEN_INDEX; 
 
 	error = OK;

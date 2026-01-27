@@ -64,19 +64,20 @@ FRESULT CloseIf( FIL *fp )
     return f_close(fp);
 }
 
-int OpenIndex(const char *idxName, IX_DESC *pix, int dup)
+int OpenIndex(const char *idxName, IX_DESC *pix)
 {
     ENTRY e;
     UINT br;
+	FSIZE_t offset = 0;
 
     if ( OpenIf(idxName, pix->ixfile) != FR_OK )
         return (IX_FAIL);
 
-    pix->duplicate      = dup;
     pix->cache_offset   = -1;
     pix->cache_size     = 0;
     pix->cache_idx      = 0;
     pix->logical_entries = 0;
+	pix->total_records = 0;
 	pix->last_recptr = 0;
 
 	DWORD current_size = f_size(pix->ixfile);
@@ -97,10 +98,18 @@ int OpenIndex(const char *idxName, IX_DESC *pix, int dup)
 	pix->allocated_bytes = current_size;
 
     /* Scan entries of the current block to find first empty/unused slot */
-	FSIZE_t offset = pix->allocated_bytes - FILE_ALLOC_SIZE;
-
-	// Calculate number of entries in the full blocks
-	pix->logical_entries += (offset / FILE_ALLOC_SIZE) * (FILE_ALLOC_SIZE / ENT_SIZE);
+	if(!pix->fast_open || pix->allocated_bytes <= FILE_ALLOC_SIZE)
+	{
+		offset = 0;
+		pix->logical_entries = 0;
+		pix->total_records = 0;
+	}
+	else	// We have more than 1 block of barcodes and we're not interested in keeping exact track of the amount of barcodes in memory
+	{
+		offset = pix->allocated_bytes - FILE_ALLOC_SIZE;
+		pix->logical_entries = (offset / FILE_ALLOC_SIZE) * (FILE_ALLOC_SIZE / ENT_SIZE);
+		pix->total_records = pix->logical_entries;
+	}
 
 	if (f_lseek(pix->ixfile, offset) != FR_OK)
 		return IX_FAIL;
@@ -118,6 +127,10 @@ int OpenIndex(const char *idxName, IX_DESC *pix, int dup)
 			break;
 
         pix->logical_entries++;
+
+		if(e.quantity != 0)
+			pix->total_records++;
+
 		pix->last_recptr = e.recptr + e.length;
 		offset += ENT_SIZE;
     }
@@ -133,24 +146,26 @@ int CloseIndex( IX_DESC *pix)
     return (IX_OK);
 }
 
-int MakeIndex(const char *idxName, IX_DESC *pix, int dup)
+int MakeIndex(const char *idxName, IX_DESC *pix)
 {
     if (CreatIf(idxName, pix->ixfile) != FR_OK)
 		return (IX_FAIL);
 
-    pix->duplicate = dup;
 	pix->cache_offset = 0;				// Initialize empty cache
     pix->cache_size = 0;
     pix->cache_idx = 0;
     pix->logical_entries = 0;
+	pix->total_records = 0;
 	pix->last_recptr = 0;
 	pix->allocated_bytes = 0;
 
-    // Preallocate block of 64KB
+    // Preallocate block of 16KB
 	if(AllocateBlock(pix->ixfile, 0) != IX_OK)
 		return IX_FAIL;
 
 	pix->allocated_bytes = FILE_ALLOC_SIZE;
+
+	f_lseek(pix->ixfile, 0); // New file so we start writing at the begin of the file
     return IX_OK;
 }
 
@@ -160,8 +175,8 @@ int AllocateBlock(FIL *ixfile, int offset)
     UINT bw;
     BYTE buffer[IDX_CHUNK_SIZE];
 
-	if(CoreLeft() < FILE_ALLOC_SIZE)
-		return IX_FAIL;
+    if (CoreLeft() < FILE_ALLOC_SIZE)
+        return IX_FAIL;
 
     // Fill the buffer with 0xFF
     memset(buffer, 0xFF, IDX_CHUNK_SIZE);
@@ -172,26 +187,28 @@ int AllocateBlock(FIL *ixfile, int offset)
     // Get current file size
     FSIZE_t fileSize = f_size(ixfile);
 
-    if (fileSize >= newSize) 
+    if (fileSize >= newSize)
 	{   // Already large enough, nothing to do
         return IX_OK;
     }
+    
+   	//debug_printf("Allocate: %s %d %d", (ixfile == &mIdxFile) ? "IDX" : "DAT", fileSize, newSize);
 
     // Seek to current end of file
     f_lseek(ixfile, fileSize);
 
 	size_t remaining = newSize - fileSize;
 
-	while (remaining) {
+	while (remaining) 
+	{
 		UINT toWrite = (remaining > IDX_CHUNK_SIZE) ? IDX_CHUNK_SIZE : remaining;
-		if (f_write(ixfile, buffer, toWrite, &bw) != FR_OK || bw != toWrite) {
+		
+		if (f_write(ixfile, buffer, toWrite, &bw) != FR_OK || bw != toWrite)
 			return IX_FAIL;
-		}
 		remaining -= toWrite;
 	}
 
 	f_sync(ixfile); // Ensure data is flushed
-	
     return IX_OK;
 }
 
@@ -441,28 +458,16 @@ int AddKey( ENTRY *pe, IX_DESC *pix )
 {
     UINT bytes_written;
 
-    if(pix->duplicate == 0)
-	{
-		ENTRY lCopy;
-		
-		memcpy(&lCopy, pe, ENT_SIZE);				// Use a local copy for searching, so we don't loose the record pointer
-
-		if( FindLastKey( &lCopy, pix ) )			// If no duplicate keys allowed and key already exists
-		{
-			return UpdateKey(pe, pix);
-		}
-	}
-
 	DWORD offset = pix->logical_entries * ENT_SIZE;
 
     // Check if the logical write crosses the allocated region
     if (offset + ENT_SIZE > pix->allocated_bytes)
     {
 		// Allocate next 64-KB chunk
-		if(AllocateBlock(pix->ixfile, pix->allocated_bytes) != IX_OK)
+		if(AllocateBlock(pix->ixfile, offset + ENT_SIZE) != IX_OK)
 			return IX_FAIL;
 	                
-        pix->allocated_bytes += FILE_ALLOC_SIZE;
+        pix->allocated_bytes = f_size(pix->ixfile);
     }
 
 	if (f_lseek(pix->ixfile, pix->logical_entries * ENT_SIZE) == FR_OK)
@@ -494,12 +499,13 @@ int AddKey( ENTRY *pe, IX_DESC *pix )
 		{
 			pix->logical_entries++;
 			pix->last_recptr = pe->recptr + pe->length;
+			f_sync(pix->ixfile);
+#ifdef DEBUG
+			++blocks_written;
+#endif
             return (IX_OK);
 		}
-#ifdef DEBUG
-		++blocks_written;
-#endif
-	}
+}
 
 	pix->cache_offset = -1L;		// Invalidate cache
 	return (IX_FAIL);

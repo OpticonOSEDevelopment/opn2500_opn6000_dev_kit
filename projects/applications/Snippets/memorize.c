@@ -47,6 +47,9 @@ int OpenStorage(void)
 	dbFile.fdDb = &mOutFile;
 	dbFile.ix.ixfile = &mIdxFile;
 
+	if(dbFile.quantity_options & QNT_OPT_FAST_OPEN)
+		dbFile.ix.fast_open = TRUE;
+
 	if( OpenBarcodeDatabase((char*)DBASE_NAME, (char*)DBASE_IDX, &dbFile ) != DATABASE_OK)
 	{
 		if( CreateBarcodeDatabase((char*)DBASE_NAME, (char*)DBASE_IDX, &dbFile ) != DATABASE_OK )
@@ -73,8 +76,6 @@ int CloseStorage(void)
 	return OK;
 }
 
-static long records = 0;
-
 //------------------------------------------------------------------------------
 //	DeleteInternalStorage
 //	=====================
@@ -83,13 +84,9 @@ static long records = 0;
 void DeleteInternalStorage(void)
 {
 	CloseStorage();				// Just to be sure
-	
-	dbFile.lTotalRecords = 0;
 
 	remove(DBASE_NAME);
 	remove(DBASE_IDX);
-
-	records = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -100,12 +97,7 @@ void DeleteInternalStorage(void)
 void DeleteStorage(void)
 {
 	CloseStorage();				// Just to be sure
-
-	dbFile.lTotalRecords = 0;
-
 	format();					// Much quicker than a file delete
-
-	records = 0;
 }
 		
 //------------------------------------------------------------------------------
@@ -118,14 +110,14 @@ int BarcodesInMemory(void)
 	if(OpenStorage() != OK)	// Re-opens if closed
 		return ERROR;
 
-	records = GetTotalRecords( &dbFile );
-
-	return (records > 0) ? records : 0;
+	return BarcodesInMemoryISR();
 }
 
 int BarcodesInMemoryISR(void)
 {
-	return records;
+	int records = GetTotalRecords( &dbFile );
+
+	return (records > 0) ? records : 0;
 }
 
 //------------------------------------------------------------------------------

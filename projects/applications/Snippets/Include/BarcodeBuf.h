@@ -11,7 +11,7 @@
 #ifdef OPN6000
 #define MAX_BARCODE_LENGTH		3000
 #else
-#define MAX_BARCODE_LENGTH		25-0
+#define MAX_BARCODE_LENGTH		250
 #endif
 #endif
 

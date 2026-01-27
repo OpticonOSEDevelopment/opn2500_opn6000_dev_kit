@@ -67,8 +67,8 @@
 #define IDLE_POWER_DOWN_TIME		   2*50			// Powerdown time when idle: 2 seconds
 #define IDLE_POWER_OFF_TIME			   10*60*50		// Shutdown time when idle: 10 minutes
 #else
-#define IDLE_POWER_DOWN_TIME		   1*50			// Sleep time when idle: 1 second
-#define IDLE_POWER_OFF_TIME			   2*50			// Powerdown time when idle: 2 seconds
+#define IDLE_POWER_DOWN_TIME		   2*50			// Sleep time when idle: 2 second
+#define IDLE_POWER_OFF_TIME			   4*50			// Powerdown time when idle: 4 seconds
 #endif
 
 #define XMIT_CONNECT_WAIT_TIME		   (3*50-1)		// After a reonnection, wait this long before trying a transmit: 3 seconds (-1 tick, so it's shorter than default trigger to disconnect)
@@ -1424,10 +1424,7 @@ void app_main(void)
 	//
 	// After a restart, reopen the barcode database if memorizing is enabled or there are barcodes left in memory
 	//
-	if( IsMemorizingEnabled(FALSE) || BarcodesInMemory() )
-	{
-		OpenStorage();
-	}
+	OpenStorage();
 
     // Set shutdown callback to close the barcode database
 	Application_ShutdownCallback(ShutdownCallback);

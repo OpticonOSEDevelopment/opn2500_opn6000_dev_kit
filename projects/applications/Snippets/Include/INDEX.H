@@ -59,30 +59,29 @@ typedef struct						// entry structure in index
 
 #define	 ENT_SIZE		sizeof(ENTRY)
 
-#define	 CACHE_SIZE_IN_BYTES		512		// For optimal performance use flash block size of the file system
+#define	 CACHE_SIZE_IN_BYTES		4096		// For optimal performance use flash block size of the file system
 											// CACHE_SIZE must be devidable by ENT_SIZE
 
 #define  CACHE_SIZE  (CACHE_SIZE_IN_BYTES/ENT_SIZE)
 
-#define FILE_ALLOC_SIZE				(16 * 1024)		// We allocate chucks of 16kb for files to reduce writes to the FAT table
+#define FILE_ALLOC_SIZE				(4 * 4096)		// We allocate chucks of 16kb for files to reduce writes to the FAT table
 
 typedef struct						// in-memory index descriptor 
 {  
 	FIL 	*ixfile;				// file descriptor
-    int		duplicate;				// no duplicate keys if 0        
-	ENTRY   cache[CACHE_SIZE];						// Used to speed up reading (especially search from bottom to top)
-	UINT    cache_idx;								// Pointer to current position in cache
-	int		cache_offset;							// Offset of cache block in index file
-	UINT	cache_size;								// Size of current cache block
-
+	ENTRY   cache[CACHE_SIZE];			// Used to speed up reading (especially search from bottom to top)
+	UINT    cache_idx;					// Pointer to current position in cache
+	int		cache_offset;				// Offset of cache block in index file
+	UINT	cache_size;					// Size of current cache block
+	DWORD	total_records;				// Total number of non-zero quantity records 
 	DWORD	logical_entries;			// Number of valid entries in the file
-    DWORD	allocated_bytes;			// Total allocated file size of index file (64k, 128k, etc)
-	DWORD	allocated_dbase_bytes;		// Total allocated file size of database file (64k, 128k, etc)
+    DWORD	allocated_bytes;			// Total allocated file size of index file (16KB, 32KB, etc)
 	DWORD	last_recptr;				// Contains the end-of-file of the database, because we can't ise f_size anymore
+	bool	fast_open;					
 } IX_DESC;
 
-int  OpenIndex( const char *idxName, IX_DESC *pix, int dup);
-int  MakeIndex( const char *idxName, IX_DESC *pix, int dup);
+int  OpenIndex( const char *idxName, IX_DESC *pix);
+int  MakeIndex( const char *idxName, IX_DESC *pix);
 int  CloseIndex( IX_DESC *pix);
 
 int  AllocateBlock(FIL *ixfile, int offset);

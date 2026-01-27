@@ -63,7 +63,7 @@
       linker_printf_width_precision_supported="Yes"
       linker_scanf_fmt_level="long"
       linker_section_placement_file="flash_placement.xml"
-      macros="OS_VERSION=V0134;BOOTLOADER_VERSION=V0030;APP_VERSION=xxxx0;CPU=nRF52840"
+      macros="OS_VERSION=V0135;BOOTLOADER_VERSION=V0030;APP_VERSION=xxxx0;CPU=nRF52840"
       post_build_command="$(ProjectDir)/postbuild.bat $(BOARD) $(OS_VARIANT)$(OS_VERSION) $(APP_VARIANT)$(APP_VERSION) $(BOOTLOADER_VARIANT)$(BOOTLOADER_VERSION) $(CPU)"
       post_build_command_wd="$(ProjectDir)/$(OutDir)"
       project_directory=""

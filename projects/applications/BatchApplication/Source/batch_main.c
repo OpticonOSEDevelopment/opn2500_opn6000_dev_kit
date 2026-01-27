@@ -70,8 +70,8 @@ static SDBOutVal dbExportStorage = { NULL };
 #define IDLE_POWER_DOWN_TIME		   2*50			// Powerdown time when idle: 2 seconds
 #define IDLE_POWER_OFF_TIME			   10*60*50		// Shutdown time when idle: 10 minutes
 #else
-#define IDLE_POWER_DOWN_TIME		   1*50			// Sleep time when idle: 1 second
-#define IDLE_POWER_OFF_TIME			   2*50			// Powerdown time when idle: 2 seconds
+#define IDLE_POWER_DOWN_TIME		   2*50			// Sleep time when idle: 2 second
+#define IDLE_POWER_OFF_TIME			   4*50			// Powerdown time when idle: 4 seconds
 #endif
 
 #define CLR_KEY_FORMAT_TIME			12*50		// Time clear key must be held to erase stored data
@@ -869,6 +869,7 @@ int ReinitBarcodeStorage(void)
 	quantity_options |= (app.output.quantity_options & QUANTITY_ALLOW_NEGATIVE_QNTY) ? QNT_OPT_ALLOW_NEGATIVE_QNTY : 0;
 	quantity_options |= (app.output.quantity_options & QUANTITY_DELETE_ZERO_QNTY) ? 0 : QNT_OPT_KEEP_ZERO_QNTY;
 	quantity_options |= (GetQuantityFieldNr() == -1) ? QNT_OPT_ALLOW_DUPLICATES : 0;
+	quantity_options |= QNT_OPT_FAST_OPEN;	// We don't need to know exactly how many barcodes are in memory when we have over 1024 records, so we'd rather be fast
 
 	InitStorage(quantity_options);
 	return OK;
