@@ -64,7 +64,9 @@ typedef struct						// entry structure in index
 
 #define  CACHE_SIZE  (CACHE_SIZE_IN_BYTES/ENT_SIZE)
 
-#define FILE_ALLOC_SIZE				(4 * 4096)		// We allocate chucks of 16kb for files to reduce writes to the FAT table
+#define DATA_ALLOC_SIZE				(4 * 4096)		// We allocate chucks of 16KB for datax files to reduce writes to the FAT table
+#define INDEX_ALLOC_SIZE			(4 * 4096)		// We allocate chucks of 16KB for idx files to reduce writes to the FAT table
+#define EXPORT_ALLOC_SIZE			(4096)			// We allocate chucks of 4KB for export files to reduce writes to the FAT table
 
 typedef struct						// in-memory index descriptor 
 {  
@@ -75,16 +77,16 @@ typedef struct						// in-memory index descriptor
 	UINT	cache_size;					// Size of current cache block
 	DWORD	total_records;				// Total number of non-zero quantity records 
 	DWORD	logical_entries;			// Number of valid entries in the file
-    DWORD	allocated_bytes;			// Total allocated file size of index file (16KB, 32KB, etc)
 	DWORD	last_recptr;				// Contains the end-of-file of the database, because we can't ise f_size anymore
 	bool	fast_open;					
+	bool	fast_read;
 } IX_DESC;
 
 int  OpenIndex( const char *idxName, IX_DESC *pix);
 int  MakeIndex( const char *idxName, IX_DESC *pix);
 int  CloseIndex( IX_DESC *pix);
 
-int  AllocateBlock(FIL *ixfile, int offset);
+int  AllocateBlock(FIL *ixfile, int offset, int len, size_t size, bool sync);
 
 int  GetTotalKeys( IX_DESC *pix );
 

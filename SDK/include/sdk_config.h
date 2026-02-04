@@ -189,6 +189,8 @@
 #define NRF_FSTORAGE_SD_MAX_WRITE_SIZE 4096
 #endif
 
+#define NRF_BLOCK_DEV_SPI_LEGACY_SECTOR_SIZE	512
+#define NRF_BLOCK_DEV_SPI_SECTOR_SIZE			4096
 
 // <e> NRFX_GPIOTE_ENABLED - nrfx_gpiote - GPIOTE peripheral driver
 //==========================================================
@@ -1712,7 +1714,7 @@
  
 
 #ifndef APP_USBD_HID_KBD_ENABLED
-#define APP_USBD_HID_KBD_ENABLED 1
+#define APP_USBD_HID_KBD_ENABLED 0
 #endif
 
 // <q> APP_USBD_HID_MOUSE_ENABLED  - app_usbd_hid_mouse - USB HID mouse
@@ -5641,6 +5643,7 @@
 #ifndef BLE_OPC_CONFIG_LOG_ENABLED
 #define BLE_OPC_CONFIG_LOG_ENABLED 0
 #endif
+
 // <o> BLE_OPC_CONFIG_LOG_LEVEL  - Default Severity level
  
 // <0=> Off 
@@ -5667,6 +5670,40 @@
 
 #ifndef BLE_OPC_CONFIG_INFO_COLOR
 #define BLE_OPC_CONFIG_INFO_COLOR 0
+#endif
+
+// <e> BLE_HIDS_CONFIG_LOG_ENABLED - Enables logging in the module.
+//==========================================================
+#ifndef BLE_HIDS_CONFIG_LOG_ENABLED
+#define BLE_HIDS_CONFIG_LOG_ENABLED 0
+#endif
+
+// <o> BLE_HIDS_CONFIG_LOG_LEVEL  - Default Severity level
+ 
+// <0=> Off 
+// <1=> Error 
+// <2=> Warning 
+// <3=> Info 
+// <4=> Debug 
+
+#ifndef BLE_HIDS_CONFIG_LOG_LEVEL
+#define BLE_HIDS_CONFIG_LOG_LEVEL 0
+#endif
+
+// <o> BLE_OPC_CONFIG_INFO_COLOR  - ANSI escape code prefix.
+ 
+// <0=> Default 
+// <1=> Black 
+// <2=> Red 
+// <3=> Green 
+// <4=> Yellow 
+// <5=> Blue 
+// <6=> Magenta 
+// <7=> Cyan 
+// <8=> White 
+
+#ifndef BLE_HIDS_CONFIG_INFO_COLOR
+#define BLE_HIDS_CONFIG_INFO_COLOR 0
 #endif
 
 // <o> BLE_OPC_CONFIG_DEBUG_COLOR  - ANSI escape code prefix.

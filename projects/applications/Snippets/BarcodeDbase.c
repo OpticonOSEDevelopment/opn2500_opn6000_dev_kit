@@ -36,16 +36,12 @@ int OpenBarcodeDatabase(const char* filename, const char *idx_file, SDBOutVal *d
 		}
 	}
 
-	DWORD current_size = f_size(dbFile->fdDb);
+	DWORD current_size = (idx_file != NULL) ? dbFile->ix.last_recptr : f_size(dbFile->fdDb);
 
-	// Increase database file size if needed
-	if(current_size == 0 || (current_size % FILE_ALLOC_SIZE) != 0 )
-	{
-		if( AllocateBlock(dbFile->fdDb, current_size) != IX_OK )
-			return ERR_OPEN_DATABASE;
-	}
+	// Allocates the next 16KB chunk if needed (and sync in fast read mode, because file size has changed and f_sync is not called after appending barcodes)
+	if( AllocateBlock(dbFile->fdDb, current_size, 0, DATA_ALLOC_SIZE, (dbFile->quantity_options & QNT_OPT_FAST_READ) ) != IX_OK )
+		return ERR_OPEN_DATABASE;
 
-	f_lseek(dbFile->fdDb, (idx_file != NULL) ? dbFile->ix.last_recptr : current_size);
 	return DATABASE_OK;
 }
 
@@ -56,7 +52,8 @@ int CreateBarcodeDatabase(const char* filename, const char *idx_file, SDBOutVal 
 	if( (res = f_open(dbFile->fdDb, filename, FA_CREATE_ALWAYS | FA_READ | FA_WRITE)) != FR_OK )
 		return (res == FR_NO_PATH) ? ERR_PATH_NOT_FOUND : ERR_OPEN_DATABASE;
 
-	if(AllocateBlock(dbFile->fdDb, 0) != IX_OK)
+	// Allocates the first 16KB chunk (and sync in fast read mode, because file size has changed and f_sync is not called after appending barcodes)
+	if(AllocateBlock(dbFile->fdDb, 0, 0, (idx_file != NULL) ? DATA_ALLOC_SIZE : EXPORT_ALLOC_SIZE, (dbFile->quantity_options & QNT_OPT_FAST_READ)) != IX_OK)
 		return ERR_OPEN_DATABASE;
 	
 	if(idx_file != NULL)
@@ -68,7 +65,6 @@ int CreateBarcodeDatabase(const char* filename, const char *idx_file, SDBOutVal 
 		}
 	}
 
-	f_lseek(dbFile->fdDb, 0);		// We start writing from the start
 	return DATABASE_OK;
 }
 
@@ -305,20 +301,18 @@ int WriteBarcode( SDBOutVal *dbFile, ENTRY *pEntry, struct barcode *pCode)
 		e.code_id = pCode->id;
 		DateTimeToTimeStamp(&pCode->date, &pCode->time, e.timestamp); // Update timestamp
 	
-		if(e.recptr + length > f_size(dbFile->fdDb))
-		{
-			if(AllocateBlock(dbFile->fdDb, e.recptr + length) != IX_OK)
-				return ERR_DB_WRITE;
-		}
-
-		// Append to the end of the database
-		if(f_lseek(dbFile->fdDb, e.recptr) != FR_OK)
+		// Allocates the next 16KB chunk if needed (and sync in fast read mode, because file size has changed and f_sync is not called after appending barcodes)
+		if(AllocateBlock(dbFile->fdDb, e.recptr, length, DATA_ALLOC_SIZE, (dbFile->quantity_options & QNT_OPT_FAST_READ)) != IX_OK)
 			return ERR_DB_WRITE;
 
 		if (f_write(dbFile->fdDb, pCode->text, length, &bytes_written ) != FR_OK || bytes_written != length)
 			return ERR_DB_WRITE;
 
-		f_sync(dbFile->fdDb);
+		// Slower, but data isn't lost when a reset occurs before the device powered down
+		if( (dbFile->quantity_options & QNT_OPT_FAST_READ) == 0 )
+		{
+			f_sync(dbFile->fdDb);
+		}
 		
 		memcpy(&lCopy, &e, ENT_SIZE);				// Use a local copy for searching, so we don't loose the record pointer
 
@@ -381,14 +375,9 @@ int AppendRecord( SDBOutVal *dbFile, uint8_t *data, uint32_t data_len)
 
 	int recptr = f_tell(dbFile->fdDb);
 
-	if(recptr + data_len > f_size(dbFile->fdDb))
-	{
-		if(AllocateBlock(dbFile->fdDb, recptr + data_len) != IX_OK)
-			return ERR_DB_WRITE;
-
-		if(f_lseek(dbFile->fdDb, recptr) != FR_OK)
-			return ERR_DB_WRITE;
-	}
+	// Check if nwe need to allocate the next 16KB chunk (and sync in fast read mode, because file size has changed and f_sync is not called after appending barcodes)
+	if(AllocateBlock(dbFile->fdDb, recptr, data_len, EXPORT_ALLOC_SIZE, false) != IX_OK)
+		return ERR_DB_WRITE;
 
 	if (f_write(dbFile->fdDb, data, data_len, &bytes_written ) != FR_OK || bytes_written != data_len)
 		return ERR_DB_WRITE;

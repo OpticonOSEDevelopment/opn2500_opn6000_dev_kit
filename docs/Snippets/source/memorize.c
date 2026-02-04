@@ -14,7 +14,6 @@
 #include <stdlib.h>
 #include "lib.h"
 #include "ff.h"
-#include "FileSystem.h"
 #include "Debug.h"
 #include "BarcodeDBase.h"
 #include "memorize.h"

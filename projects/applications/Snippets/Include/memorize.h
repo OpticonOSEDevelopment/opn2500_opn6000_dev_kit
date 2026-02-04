@@ -1,7 +1,9 @@
 
 
-#define DBASE_NAME	"SCANNED.DAT"
-#define DBASE_IDX	"SCANNED.IDX"
+#define DBASE_NAME		"SCANNED.DAT"
+#define DBASE_IDX		"SCANNED.IDX"
+#define DBASE_EXPORT	"SCANNED.TXT"	// Comment this line is you never make an export file, which will increase memory available for barcode storage		
+										// Change it when your export file is named differently
 
 #define ALLOW_NEGATIVES			0x01
 #define KEEP_ZERO_QUANTITY		0x02

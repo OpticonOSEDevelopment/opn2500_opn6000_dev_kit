@@ -34,7 +34,6 @@
 #include <string.h>
 #include "lib.h"
 #include "ff.h"
-#include "FileSystem.h"
 #include "index.h"
 
 #ifdef DEBUG
@@ -85,20 +84,15 @@ int OpenIndex(const char *idxName, IX_DESC *pix)
 	if( (current_size % ENT_SIZE) != 0 )	// This should not be possible, because everything is ENT_SIZE aligned
 		return IX_FAIL;
 
-	// Backwards compatiblity....increase index file size if needed, but keep the data
-	if(current_size == 0 || (current_size % FILE_ALLOC_SIZE) != 0 )
-	{
-		if( AllocateBlock(pix->ixfile, current_size) != IX_OK )
-			return IX_FAIL;
-
-		current_size = f_size(pix->ixfile);
-	}
+	// Backwards compatiblity....increases index file size if needed, but keeps the data
+	if( AllocateBlock(pix->ixfile, current_size, 0, INDEX_ALLOC_SIZE, pix->fast_read) != IX_OK )
+		return IX_FAIL;
 
 	/* allocated_bytes = physical file size (preallocated at MakeIndex) */
-	pix->allocated_bytes = current_size;
+	current_size = f_size(pix->ixfile);
 
     /* Scan entries of the current block to find first empty/unused slot */
-	if(!pix->fast_open || pix->allocated_bytes <= FILE_ALLOC_SIZE)
+	if(!pix->fast_open || current_size <= INDEX_ALLOC_SIZE)
 	{
 		offset = 0;
 		pix->logical_entries = 0;
@@ -106,15 +100,15 @@ int OpenIndex(const char *idxName, IX_DESC *pix)
 	}
 	else	// We have more than 1 block of barcodes and we're not interested in keeping exact track of the amount of barcodes in memory
 	{
-		offset = pix->allocated_bytes - FILE_ALLOC_SIZE;
-		pix->logical_entries = (offset / FILE_ALLOC_SIZE) * (FILE_ALLOC_SIZE / ENT_SIZE);
+		offset = current_size - INDEX_ALLOC_SIZE;
+		pix->logical_entries = (offset / INDEX_ALLOC_SIZE) * (INDEX_ALLOC_SIZE / ENT_SIZE);
 		pix->total_records = pix->logical_entries;
 	}
 
 	if (f_lseek(pix->ixfile, offset) != FR_OK)
 		return IX_FAIL;
 
-    while (offset + ENT_SIZE <= (FSIZE_t)pix->allocated_bytes)
+    while (offset + ENT_SIZE <= (FSIZE_t)current_size)
     {
         if (f_read(pix->ixfile, &e, ENT_SIZE, &br) != FR_OK || br != ENT_SIZE)
             break;
@@ -157,58 +151,60 @@ int MakeIndex(const char *idxName, IX_DESC *pix)
     pix->logical_entries = 0;
 	pix->total_records = 0;
 	pix->last_recptr = 0;
-	pix->allocated_bytes = 0;
 
-    // Preallocate block of 16KB
-	if(AllocateBlock(pix->ixfile, 0) != IX_OK)
+    // Allocate first 16KB chunk (and sync in fast read mode, because file size has changed and f_sync is not called upon appending of entries)
+	if(AllocateBlock(pix->ixfile, 0, 0, INDEX_ALLOC_SIZE, pix->fast_read) != IX_OK)
 		return IX_FAIL;
 
-	pix->allocated_bytes = FILE_ALLOC_SIZE;
-
-	f_lseek(pix->ixfile, 0); // New file so we start writing at the begin of the file
     return IX_OK;
 }
 
-int AllocateBlock(FIL *ixfile, int offset)
+int AllocateBlock(FIL *pFile, int offset, int len, size_t block_size, bool sync)
 {
-    const size_t IDX_CHUNK_SIZE = 512;
-    UINT bw;
-    BYTE buffer[IDX_CHUNK_SIZE];
+    #define IDX_CHUNK_SIZE		512
+	static BYTE buffer[IDX_CHUNK_SIZE];
+    
+	UINT bw;
 
-    if (CoreLeft() < FILE_ALLOC_SIZE)
+    // Compute the next 'size' boundary
+    size_t newSize = (offset == 0) ? block_size : ((offset + len + block_size - 1 ) / block_size) * block_size;
+
+    // Get current file size
+    FSIZE_t fileSize = f_size(pFile);
+
+	// Start at the current position (and make sure this function always returns the file pointer in this position)
+    f_lseek(pFile, offset);
+
+    if (fileSize >= newSize)	// If already large enough, then there's nothing to do
+        return IX_OK;
+
+    if (CoreLeft() < block_size * 2 || block_size < IDX_CHUNK_SIZE)
         return IX_FAIL;
 
     // Fill the buffer with 0xFF
     memset(buffer, 0xFF, IDX_CHUNK_SIZE);
-
-    // Compute the next FILE_ALLOC_SIZE boundary
-    size_t newSize = (offset == 0) ? FILE_ALLOC_SIZE : ((offset + FILE_ALLOC_SIZE - 1 ) / FILE_ALLOC_SIZE) * FILE_ALLOC_SIZE;
-
-    // Get current file size
-    FSIZE_t fileSize = f_size(ixfile);
-
-    if (fileSize >= newSize)
-	{   // Already large enough, nothing to do
-        return IX_OK;
-    }
     
-   	//debug_printf("Allocate: %s %d %d", (ixfile == &mIdxFile) ? "IDX" : "DAT", fileSize, newSize);
-
-    // Seek to current end of file
-    f_lseek(ixfile, fileSize);
-
-	size_t remaining = newSize - fileSize;
+	size_t remaining = newSize - offset;
 
 	while (remaining) 
 	{
 		UINT toWrite = (remaining > IDX_CHUNK_SIZE) ? IDX_CHUNK_SIZE : remaining;
 		
-		if (f_write(ixfile, buffer, toWrite, &bw) != FR_OK || bw != toWrite)
+		if (f_write(pFile, buffer, toWrite, &bw) != FR_OK || bw != toWrite)
 			return IX_FAIL;
+
 		remaining -= toWrite;
 	}
 
-	f_sync(ixfile); // Ensure data is flushed
+	// If fast_read mode is enabled the f_sync isn't executed after each barcode, 
+	// so this one is then mandatory, because the file size has changed and we need to update the FAT
+	if(sync)
+	{
+		f_sync(pFile);
+	}
+
+	f_lseek(pFile, offset);		// Set file pointer back to were we left off
+			
     return IX_OK;
 }
 
@@ -460,52 +456,48 @@ int AddKey( ENTRY *pe, IX_DESC *pix )
 
 	DWORD offset = pix->logical_entries * ENT_SIZE;
 
-    // Check if the logical write crosses the allocated region
-    if (offset + ENT_SIZE > pix->allocated_bytes)
-    {
-		// Allocate next 64-KB chunk
-		if(AllocateBlock(pix->ixfile, offset + ENT_SIZE) != IX_OK)
-			return IX_FAIL;
-	                
-        pix->allocated_bytes = f_size(pix->ixfile);
-    }
+	// Allocate next 16KB chunk (and sync in fast read mode, because file size has changed and f_sync is not called upon appending of entries)
+	if(AllocateBlock(pix->ixfile, offset, ENT_SIZE, INDEX_ALLOC_SIZE, pix->fast_read) != IX_OK)
+		return IX_FAIL;
 
-	if (f_lseek(pix->ixfile, pix->logical_entries * ENT_SIZE) == FR_OK)
+	if(pix->cache_offset >= 0)		// If cache is initialized
 	{
-		if(pix->cache_offset >= 0)		// If cache is initialized
+		if((UINT)(pix->cache_offset + (long)(pix->cache_size * ENT_SIZE)) == f_tell(pix->ixfile))		// If cache reaches end of the file
 		{
-			if((UINT)(pix->cache_offset + (long)(pix->cache_size * ENT_SIZE)) == f_tell(pix->ixfile))		// If cache reaches end of the file
+			if(pix->cache_size == CACHE_SIZE)				// If cache is full
 			{
-				if(pix->cache_size == CACHE_SIZE)				// If cache is full
-				{
-					pix->cache_size = 0;						// Start a new cache
-					pix->cache_offset += CACHE_SIZE_IN_BYTES;
-				}
-
-				pix->cache_size += 1;
-				pix->cache_idx = pix->cache_size - 1;		// Add key to the end of cache
-				memcpy(&pix->cache[pix->cache_idx], pe, ENT_SIZE);
+				pix->cache_size = 0;						// Start a new cache
+				pix->cache_offset += CACHE_SIZE_IN_BYTES;
 			}
-		}
-		else if(f_tell(pix->ixfile) == 0)
-		{
-			pix->cache_idx = 0;
-			pix->cache_size = 1;						// Start a new cache
-			pix->cache_offset = 0;
+
+			pix->cache_size += 1;
+			pix->cache_idx = pix->cache_size - 1;		// Add key to the end of cache
 			memcpy(&pix->cache[pix->cache_idx], pe, ENT_SIZE);
 		}
-				
-		if (f_write(pix->ixfile, pe, ENT_SIZE, &bytes_written) == FR_OK && bytes_written == ENT_SIZE)		// Write key to file
+	}
+	else if(f_tell(pix->ixfile) == 0)
+	{
+		pix->cache_idx = 0;
+		pix->cache_size = 1;						// Start a new cache
+		pix->cache_offset = 0;
+		memcpy(&pix->cache[pix->cache_idx], pe, ENT_SIZE);
+	}
+			
+	if (f_write(pix->ixfile, pe, ENT_SIZE, &bytes_written) == FR_OK && bytes_written == ENT_SIZE)		// Write key to file
+	{
+		pix->logical_entries++;
+		pix->last_recptr = pe->recptr + pe->length;
+
+		// Slower, but data isn't lost when a reset occurs before the device powered down
+		if( !pix->fast_read )
 		{
-			pix->logical_entries++;
-			pix->last_recptr = pe->recptr + pe->length;
 			f_sync(pix->ixfile);
-#ifdef DEBUG
-			++blocks_written;
-#endif
-            return (IX_OK);
 		}
-}
+#ifdef DEBUG
+		++blocks_written;
+#endif
+		return (IX_OK);
+	}
 
 	pix->cache_offset = -1L;		// Invalidate cache
 	return (IX_FAIL);

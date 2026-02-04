@@ -14,7 +14,6 @@
 #include <stdlib.h>
 #include "lib.h"
 #include "ff.h"
-#include "FileSystem.h"
 #include "Debug.h"
 #include "BarcodeDBase.h"
 #include "memorize.h"
@@ -23,6 +22,8 @@ SDBOutVal dbFile;
 
 static FIL mOutFile;
 static FIL mIdxFile;
+
+static int lExportFileSize = 0;
 
 int InitStorage(uint8_t quantity_options)
 {
@@ -49,6 +50,13 @@ int OpenStorage(void)
 
 	if(dbFile.quantity_options & QNT_OPT_FAST_OPEN)
 		dbFile.ix.fast_open = TRUE;
+
+	if(dbFile.quantity_options & QNT_OPT_FAST_READ)
+		dbFile.ix.fast_read = TRUE;
+
+#ifdef DBASE_EXPORT
+	lExportFileSize = MAX(0, fsize(DBASE_EXPORT));
+#endif
 
 	if( OpenBarcodeDatabase((char*)DBASE_NAME, (char*)DBASE_IDX, &dbFile ) != DATABASE_OK)
 	{
@@ -87,6 +95,7 @@ void DeleteInternalStorage(void)
 
 	remove(DBASE_NAME);
 	remove(DBASE_IDX);
+	remove(DBASE_EXPORT);
 }
 
 //------------------------------------------------------------------------------
@@ -133,6 +142,9 @@ int UpdateBarcodeInMemory(struct barcode *pCode)
 	if(OpenStorage() != OK)	// Re-opens if closed
 		return ERROR;
 
+	if(CoreLeft() + lExportFileSize < f_size(dbFile.fdDb) + (f_size(dbFile.ix.ixfile)/16 * 30))	// 30/16, because index file is 16 bytes per record and maximum export overhead is 30 bytes
+		return ERROR;
+
 	if( !(dbFile.quantity_options & QNT_OPT_ALLOW_DUPLICATES) )	// if Store quantities
 	{
 		if( SearchBarcodeDatabase(&dbFile, pCode, SEEK_END, 0, &foundEntry) != DATABASE_OK)
@@ -152,7 +164,7 @@ int UpdateBarcodeInMemory(struct barcode *pCode)
 				return ERROR;	// If not found, can't delete
 		}
 	}
-	
+
 	if( WriteBarcode(&dbFile, foundEntry, pCode) != DATABASE_OK )
 	{
 		ret = ERROR;

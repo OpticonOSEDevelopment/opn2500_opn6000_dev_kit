@@ -21,8 +21,6 @@
 
 #define FNAME_SCANNED_EXPORT		"SCANNED.TXT"
 
-#define SZ_SCANNED					SZ_RECORD
-
 // Defines for app.read_time
 #define READ_TIME_INDEFINITELY			0xFE		// Read time indefinitely
 // Defines for app.buzzer_options
@@ -87,6 +85,8 @@
 // Defines for app.special_options
 #define NETO_COMMUNICATE				0x00
 #define OSECOMM_COMMUNICATE				0x01
+
+#define PERFORMANCE_MODE				0x80
 
 //
 // public functions

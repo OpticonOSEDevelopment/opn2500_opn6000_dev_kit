@@ -43,6 +43,7 @@ extern char g_Record[MAX_RECORD_SIZE];
 #define	QNT_OPT_KEEP_ZERO_QNTY			0x02
 #define	QNT_OPT_ALLOW_NEGATIVE_QNTY		0x04
 #define	QNT_OPT_FAST_OPEN				0x08	// Reduces start-up time when having >1024 barcodes in memory. Enable when it's not required to keep exact track of the number of barcodes in memory or when deleting of barcodes is not used
+#define	QNT_OPT_FAST_READ				0x10	// Speeds up read performance by not syncing on each barcode
 
 //
 // This is really the handle that is returned by open/create database

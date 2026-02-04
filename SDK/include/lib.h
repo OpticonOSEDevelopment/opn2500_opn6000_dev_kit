@@ -261,7 +261,7 @@ typedef int  (*ret_func_ptr_arg)(int argument);
 #define BLUE                0x0000FF                //!< Turn Blue led continuously on.
 #define YELLOW              0xFFFF00                //!< Turn Yellow ( RED and GREEN) led continuously on.
 #define ORANGE              0xFF8000                //!< Turn Orange ( RED and GREEN @ 50%) led continuously on.
-#define DIMMED_ORANGE       0x080200                //!< Turn Orange ( RED and GREEN @ 50%) led continuously on.
+#define DIMMED_ORANGE       0x402000                //!< Turn Orange ( RED and GREEN @ 50%) led continuously on with minimal brightness
 #define WHITE               0xFFFFFF                //!< Turn White on
 #define CYAN				0x00FFFF
 #define MAGENTA             0xFF00FF
@@ -1118,6 +1118,9 @@ int UsbIsPowered(void);
 // Returns TRUE if the USB connection is open
 int UsbIsConnected(void);
 
+// Returns TRUE if the specified USB connection is open
+int UsbIsConnected2(int port);
+
 /** @brief Checks whether the device was powered down.
  *
  * @retval TRUE     Device was powered down in the mean time.
@@ -1135,7 +1138,8 @@ void Application_ShutdownCallback(ret_func_ptr callback);
 //int findnext(struct ffblk *ffblk);
 //int findfirst(const char *fname,struct ffblk *ffblk);
 int format(void);
-size_t fsize(const char *filename);
+int stat(const char *fname);
+long fsize(const char *filename);
 //long lseek(int handle, long offset, int orgin);
 //long tell(int handle);
 int chsize(int handle, long size);

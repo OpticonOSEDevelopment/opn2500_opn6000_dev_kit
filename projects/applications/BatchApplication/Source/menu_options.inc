@@ -58,7 +58,7 @@ const OPTION batch_menu_option_table[] =
 	{ "+FS",(void*)&(app.output.field_separator),		0xFF,									FIELD_SEPARATOR_SLASH		},
 	{ "+FT",(void*)&(app.output.field_separator),		0xFF,									FIELD_SEPARATOR_TAB			},
 	{ "+FZ",(void*)&(app.output.field_separator),		0xFF,									FIELD_SEPARATOR_ZERO		},
-	//{ "+NO",(void*)&(app.special_options),			\OSECOMM_COMMUNICATE,					NETO_COMMUNICATE			},
+	//{ "+NO",(void*)&(app.special_options),			OSECOMM_COMMUNICATE,					NETO_COMMUNICATE			},
 	{ "+OC",(void*)&(app.special_options),				NETO_COMMUNICATE,						OSECOMM_COMMUNICATE			},
 	{ "+Q0",(void*)&(app.output.quantity_size),			0xFF,									0x00						},
 	{ "+Q1",(void*)&(app.output.quantity_size),			0xFF,									0x01						},
@@ -134,6 +134,9 @@ const OPTION batch_menu_option_table[] =
 	
 	{ "+AMN",(void*)EnableAiming,						0xFF,									0xFF						},
 	{ "+AMF",(void*)DisableAiming,						0xFF,									0xFF						},
+
+	{ "FAST",(void*)&(app.special_options),		        0x00,                                   PERFORMANCE_MODE			},
+	{ "SLOW",(void*)&(app.special_options),				PERFORMANCE_MODE,						0x00                        },
 };
 
 #define BATCH_MAX_OPTIONS sizeof(batch_menu_option_table)/sizeof(OPTION)

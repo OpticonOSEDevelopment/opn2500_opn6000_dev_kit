@@ -29,7 +29,6 @@
 #include <Ctype.h>
 #include "lib.h"
 #include "ff.h"
-#include "FileSystem.h"
 #include "Debug.h"
 #include "batch_main.h"
 #include "BarcodeDBase.h"
@@ -267,7 +266,7 @@ void OnCommInfo(int status, int errorsuccess, int progress, const char *info)
 //------------------------------------------------------------------
 void Communicate(void)
 {
-	if (app.special_options == OSECOMM_COMMUNICATE)
+	if (app.special_options & OSECOMM_COMMUNICATE)
 		OseComm(GetSerialNumber(), CONNECTION_ABORT, GetApplVersion(), OnCommInfo);
 }
 
@@ -870,6 +869,7 @@ int ReinitBarcodeStorage(void)
 	quantity_options |= (app.output.quantity_options & QUANTITY_DELETE_ZERO_QNTY) ? 0 : QNT_OPT_KEEP_ZERO_QNTY;
 	quantity_options |= (GetQuantityFieldNr() == -1) ? QNT_OPT_ALLOW_DUPLICATES : 0;
 	quantity_options |= QNT_OPT_FAST_OPEN;	// We don't need to know exactly how many barcodes are in memory when we have over 1024 records, so we'd rather be fast
+	quantity_options |= (app.special_options & PERFORMANCE_MODE) ? QNT_OPT_FAST_READ : 0;	// Skips the f_sync after writing each barcode
 
 	InitStorage(quantity_options);
 	return OK;
@@ -987,53 +987,61 @@ int ShutdownCallback(void)
 //------------------------------------------------------------------------------
 // 	ExportDatabase
 //  =====================
-// 	Exports the database from the SCANNED.TMP file to the SCANNED.TXT file.
-//	The .TMP file is for internal use. The .TXT file is for export to the computer.
-// 	It removes the first column from the db. With all the 'X' and 'O''s.
-//	It's builded due to speed issues. A copy database is faster than remove
-// 	within a database.
+// 	Exports the database from the SCANNED.DAT/IDX files to the SCANNED.TXT file.
+//	The .DAT/.IDX files are for internal use. The .TXT file is for export to the computer.
+//	.IDX keeps track of the code id, quantity, deleted flag, date/time and record offsets
+//	.DAT contains the raw barcode data (it can also contain deleted barcodes)
 //------------------------------------------------------------------------------
 int ExportDatabase(void)
 {
 	int res = 0;
 	int records = 0;
+	int total_records = BarcodesInMemory();
 
-	GoodReadLed(ORANGE, -1);
-
+	//*********** show orange flash if data available to download ( code from OPN-2002 program) **********************
+	SystemSetting("8Z");				// Disable charge indicator (or we wouldn't see the orange flashing)
+	GoodReadLed(ORANGE_FLASH, -1);
+	//***************************************************************
+	
 	remove(FNAME_SCANNED_EXPORT);
 
-	dbExportStorage.fdDb = &SDBExportFile;
-
-	DEBUGPUTStr("ExportDatabase() started (%d)", GetSystemTime());  
-
-	if( CreateBarcodeDatabase((char*)FNAME_SCANNED_EXPORT, NULL, &dbExportStorage) != DATABASE_OK )
-		return ERROR;
-
-	if( ReadFirstBarcodeFromMemory(&code) == DATABASE_OK )
+	dbExportStorage.fdDb = &SDBExportFile;   
+	
+   	if( CreateBarcodeDatabase((char*)FNAME_SCANNED_EXPORT, NULL, &dbExportStorage) == DATABASE_OK )
 	{
-		do
+		if(total_records > 0)
 		{
-			if((res=ExportBarcode(&code)) < 0)
-				break;
+		    if( ReadFirstBarcodeFromMemory(&code) == DATABASE_OK )
+		    {
+		        do
+		        {
+		            if((res=ExportBarcode(&code)) < 0)
+		                break;
 
-			++records;
+		            ++records;
 
-		} while (ReadNextBarcodeFromMemory(&code) == DATABASE_OK);
+		        } while (ReadNextBarcodeFromMemory(&code) == DATABASE_OK);
+		    }
+
+		    DEBUGPUTStr("ExportDatabase() Records: %d exported", records); 
+		}
+
+		// close databases (and truncates it to the actual size)
+		CloseBarcodeDatabase(&dbExportStorage);
+
+		CloseStorage();
+
+		if(total_records == 0)
+		{
+			ClearBarcodes(false);
+		}
 	}
 
-    DEBUGPUTStr("ExportDatabase() Records: %d exported (%d)", records, GetSystemTime());  
-
-	// close databases
-	CloseBarcodeDatabase(&dbExportStorage);
-
-	CloseStorage();
-
-	if(records == 0)
-	{
-		DeleteStorage();
-	}
-
-    GoodReadLed(ORANGE, 0);
+		
+	//*********** Stop orange flashing and re-enable charge indicator ***********************
+	GoodReadLed(ORANGE_FLASH, 0);	// Stop the orange flashing LED (if enabled)
+	SystemSetting("7G");			// Re-enabled charge indicator
+	//***************************************************************
 
     if(res < 0)
     {
