@@ -59,7 +59,7 @@ typedef struct						// entry structure in index
 
 #define	 ENT_SIZE		sizeof(ENTRY)
 
-#define	 CACHE_SIZE_IN_BYTES		4096		// For optimal performance use flash block size of the file system
+#define	 CACHE_SIZE_IN_BYTES		512	// For optimal performance use sector size of the file system
 											// CACHE_SIZE must be devidable by ENT_SIZE
 
 #define  CACHE_SIZE  (CACHE_SIZE_IN_BYTES/ENT_SIZE)

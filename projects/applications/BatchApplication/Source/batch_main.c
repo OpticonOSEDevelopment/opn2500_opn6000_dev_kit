@@ -148,7 +148,7 @@ void Application_Default(int comport)
 	SystemSetting("TS");											// Serial config disabled
 	SystemSetting("BPV");											// Set interface independent default suffix: <CR> (VCP) / Enter key (HID)
 	
-	app.special_options = OSECOMM_COMMUNICATE;						// Use OseComm by default
+	app.special_options = PERFORMANCE_MODE | OSECOMM_COMMUNICATE;	// Use OseComm by default
 
 #ifndef HAS_2D_ENGINE
 	app.read_mode = SCAN_SINGLE;											// Single read
