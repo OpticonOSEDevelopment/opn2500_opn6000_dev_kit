@@ -257,6 +257,7 @@ typedef int  (*ret_func_ptr_arg)(int argument);
  *--------------------------------------
  */
 #define RED                 0xFF0000                //!< Turn Red led continuously on.
+#define DIMMED_RED          0x600000                //!< Turn Red led continuously on with minimal brightness
 #define GREEN               0x00FF00                //!< Turn Green led continuously on.
 #define BLUE                0x0000FF                //!< Turn Blue led continuously on.
 #define YELLOW              0xFFFF00                //!< Turn Yellow ( RED and GREEN) led continuously on.
@@ -548,12 +549,19 @@ int GetBatteryCurrent(void);
 /** @brief Returns if the battery temperature in C */
 int GetBatteryTemperature(void);
 
-/** @brief Returns if the battery is nearly depleted.
+/** @brief Returns if the battery is low (and not charging)
  *
  * @retval TRUE     Battery is low
  * @retval FALSE    Battery is not low.
  */
 int IsBatteryLow(void);
+
+/** @brief Returns if the battery is nearly depleted
+ *
+ * @retval TRUE     Battery is critically low
+ * @retval FALSE    Battery is not critically low.
+ */
+int IsBatteryCriticallyLow(void);
 
 /** @brief This will set the date and the time which will be stored in the RTC. It will also check the time if it is possible.
  *
@@ -1180,6 +1188,7 @@ uint16_t GetOpcServiceId(void);
 
 
 void SetBltSppServiceUUIDs(const uint8_t *service_uuid, const uint8_t *tx_char_uuid, const uint8_t *rx_char_uuid);
+int SetBltManufacturingData(uint16_t company_id, uint8_t *manu, uint8_t len);
 
 int BltIsConnected(void);
 void BltUnpair(void);
@@ -1230,6 +1239,7 @@ void SetBltAuthMode(int bt_options);
 #define STAT_XMIT_FILE_TO_PC	5
 #define STAT_RECV_FILE_FROM_PC	6
 #define STAT_LIST_FILES			7
+#define STAT_DELETE_FILES		8
 
 // Callback function prototype
 typedef void (*pOnOseCommInfo)( int status, int errorsuccess, int progress, const char *info );

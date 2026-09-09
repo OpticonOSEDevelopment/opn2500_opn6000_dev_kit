@@ -59,7 +59,7 @@ typedef struct						// entry structure in index
 
 #define	 ENT_SIZE		sizeof(ENTRY)
 
-#define	 CACHE_SIZE_IN_BYTES		512	// For optimal performance use sector size of the file system
+#define	 CACHE_SIZE_IN_BYTES		512		// For optimal performance use sector size of the file system
 											// CACHE_SIZE must be devidable by ENT_SIZE
 
 #define  CACHE_SIZE  (CACHE_SIZE_IN_BYTES/ENT_SIZE)
@@ -80,6 +80,7 @@ typedef struct						// in-memory index descriptor
 	DWORD	last_recptr;				// Contains the end-of-file of the database, because we can't ise f_size anymore
 	bool	fast_open;					
 	bool	fast_read;
+	bool	keep_qty_zero;
 } IX_DESC;
 
 int  OpenIndex( const char *idxName, IX_DESC *pix);

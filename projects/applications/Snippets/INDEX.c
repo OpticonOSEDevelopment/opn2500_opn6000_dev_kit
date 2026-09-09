@@ -41,6 +41,9 @@ volatile int blocks_read = 0;
 volatile int blocks_written = 0;
 #endif
 
+static int ValidKeyQuantity( ENTRY *pe, IX_DESC *pix );
+static int IsMatchingKey( ENTRY *db_pe, ENTRY *pe, IX_DESC *pix );
+
 //
 // file I/O for indexing routines
 //
@@ -122,7 +125,7 @@ int OpenIndex(const char *idxName, IX_DESC *pix)
 
         pix->logical_entries++;
 
-		if(e.quantity != 0)
+		if( ValidKeyQuantity(&e, pix) )
 			pix->total_records++;
 
 		pix->last_recptr = e.recptr + e.length;
@@ -398,7 +401,7 @@ ENTRY *FindFirstKey( ENTRY *pe, IX_DESC *pix )
 	{
 		do
 		{
-			if( r_pe.quantity != 0 && r_pe.code_id == pe->code_id && r_pe.key == pe->key )
+			if( IsMatchingKey(&r_pe, pe, pix) )
 				return &r_pe;
 		} while ( NextKey( &r_pe, pix ) == (IX_OK) );
 	}
@@ -414,7 +417,7 @@ ENTRY *FindLastKey( ENTRY *pe, IX_DESC *pix )
 	{
 		do
 		{
-			if( r_pe.quantity != 0 && r_pe.code_id == pe->code_id && r_pe.key == pe->key )
+			if( IsMatchingKey(&r_pe, pe, pix) )
 				return &r_pe;
 		} while ( PrevKey( &r_pe, pix ) == (IX_OK) );
 	}
@@ -429,7 +432,7 @@ ENTRY *FindNextKey( ENTRY *pe, IX_DESC *pix )
 
 	while ( NextKey( &r_pe, pix ) == (IX_OK) )
 	{
-		if( r_pe.quantity != 0 && r_pe.code_id == pe->code_id && r_pe.key == pe->key )
+		if( IsMatchingKey(&r_pe, pe, pix) )
 			return &r_pe;
 	}
 
@@ -443,7 +446,7 @@ ENTRY *FindPrevKey( ENTRY *pe, IX_DESC *pix )
 
 	while ( PrevKey( &r_pe, pix ) == (IX_OK) )
 	{
-		if( r_pe.quantity != 0 && r_pe.code_id == pe->code_id && r_pe.key == pe->key )
+		if( IsMatchingKey(&r_pe, pe, pix) )
 			return &r_pe;
 	}
 
@@ -519,6 +522,16 @@ int UpdateKey( ENTRY *pe, IX_DESC *pix )
 	}
 	
 	return (IX_FAIL);
+}
+
+int ValidKeyQuantity( ENTRY *pe, IX_DESC *pix )
+{
+	return (pe->quantity != 0 || pix->keep_qty_zero);
+}
+
+int IsMatchingKey( ENTRY *db_pe, ENTRY *pe, IX_DESC *pix )
+{
+	return ValidKeyQuantity(db_pe, pix) && db_pe->code_id == pe->code_id && db_pe->key == pe->key;
 }
 
 int GetTotalKeys( IX_DESC *pix )

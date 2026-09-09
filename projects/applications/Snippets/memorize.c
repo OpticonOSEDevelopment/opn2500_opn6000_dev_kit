@@ -54,6 +54,9 @@ int OpenStorage(void)
 	if(dbFile.quantity_options & QNT_OPT_FAST_READ)
 		dbFile.ix.fast_read = TRUE;
 
+	if( (dbFile.quantity_options & QNT_OPT_ALLOW_DUPLICATES) == 0 && (dbFile.quantity_options & QNT_OPT_KEEP_ZERO_QNTY) )
+		dbFile.ix.keep_qty_zero = TRUE;
+
 #ifdef DBASE_EXPORT
 	lExportFileSize = MAX(0, fsize(DBASE_EXPORT));
 #endif
@@ -147,7 +150,8 @@ int UpdateBarcodeInMemory(struct barcode *pCode)
 
 	if( !(dbFile.quantity_options & QNT_OPT_ALLOW_DUPLICATES) )	// if Store quantities
 	{
-		if( SearchBarcodeDatabase(&dbFile, pCode, SEEK_END, 0, &foundEntry) != DATABASE_OK)
+		// If no barcode was found or it has quantity of 0, then validate for negative quantities
+		if( SearchBarcodeDatabase(&dbFile, pCode, SEEK_END, 0, &foundEntry) != DATABASE_OK || foundEntry->quantity == 0)
 		{
 			// If not found and we don't allow negative quantities -> ERROR
 			if(pCode->quantity < 0 && !(dbFile.quantity_options & QNT_OPT_ALLOW_NEGATIVE_QNTY))

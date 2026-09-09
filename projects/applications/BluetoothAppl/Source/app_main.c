@@ -181,9 +181,6 @@ static int AutoDisconnectTimePassed(void);
 static void ResetAutoDisconnectTime(void);
 static void StopAutoDisconnectTime(void);
 static int ProcessBarcodeInMemory(struct barcode *pCode);
-#ifdef HAS_BATTERY
-static void CheckForLowBattery(void);
-#endif
 static void ApplicationStoreSettings(void);
 static void EnableBuzzer(void);
 static void DisableBuzzer(void);
@@ -479,7 +476,7 @@ void Application_Default(uint8_t ble_interface, uint8_t usb_mode)
 	SystemSetting("TT");			// Serial config enabled
 	SystemSetting("BPV");			// Set interface independent default suffix: <CR> (VCP) / Enter key (HID)
 	SystemSetting("7G");			// charging indicator enabled
-	SystemSetting("-R");			// operate on battery low
+	SystemSetting("-R");			// Do not operate on battery low
 	SystemSetting("W2");			// Two tone buzzer
 	SystemSetting("W5");			// 200ms
 	SystemSetting("W8");			// buzzer enabled.
@@ -1501,12 +1498,8 @@ void app_main(void)
         }
 #endif
 
-#ifdef HAS_BATTERY
-		//
-		// Check if battery drops below critical threshold
-		//
-		CheckForLowBattery();
-#endif	
+		// CheckForLowBattery();  Disabled because it didn't work before and because disconnecting on battery low is undesired on OPN6000/OPN2500
+
 		//
 		// Update Bluetooth connection state machine
 		//
@@ -1726,6 +1719,16 @@ void BluetoothStateMachine(bool barcode_read)
 				connection_state = STATE_WAIT_FOR_RELEASE;
 			}
 
+			// Only in USB-CDC Opticonnect mode -> USB connected state
+			if(app.usb_mode == USB_MODE_CDC_OPC && UsbIsConnected())				// If Connection established -> go to connected state
+			{
+				ComClose(COM14); // While connected to OptiConnect (USB), make sure you're not connectable by BLE
+				connection_state = STATE_CONNECTED_USB;
+				connection_lost = FALSE;
+				ResetAutoDisconnectTime();
+				ConnectionIndicator(STATE_CONNECTED_USB);
+				UpdateAutoPowerDown(STATE_CONNECTED);		// Don't shutdown when connected, otherwise the connection would be lost
+			}
 			break;
 
 		case STATE_CONNECTED:			// Connected state (Bluetooth)
@@ -2180,13 +2183,14 @@ int ProcessBarcodeInMemory(struct barcode *pCode)
 	}
 }
 
+/* This code never worked on OPN-2500 / OPN-6000
 #ifdef HAS_BATTERY
 void CheckForLowBattery(void)
 {
 	static int max_batt_low_warnings = MAX_BATT_LOW_WARNINGS;
 
 	//if the battery is low, warn the user
-	if (IsBatteryLow() && !IsCharging())
+	if (IsBatteryLow() && !IsCharging() && connection_state != STATE_DISCONNECTED)
 	{
 		if (timer[BATT_LOW] == TIMER_DISABLED)
 		{
@@ -2221,6 +2225,7 @@ void CheckForLowBattery(void)
 	}
 }
 #endif
+*/
 
 void TriggerToConnectHandler(bool trigger_enabled, bool barcode_read)
 {
