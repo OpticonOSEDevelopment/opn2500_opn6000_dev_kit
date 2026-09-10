@@ -151,7 +151,7 @@ void Application_Default(int comport)
 	app.special_options = PERFORMANCE_MODE | OSECOMM_COMMUNICATE;	// Use OseComm by default
 
 #ifndef HAS_2D_ENGINE
-	app.read_mode = SCAN_SINGLE;											// Single read
+	app.read_mode = SCAN_SINGLE;									// Single read
     app.read_time = 0;												// 0 seconds (trigger)
 #endif
 
